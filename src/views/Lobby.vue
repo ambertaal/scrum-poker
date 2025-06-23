@@ -8,7 +8,8 @@
   const username = ref('')
 
   const generateRoomId = (): string => {
-    return Math.random().toString(36).substring(2, 8)
+    const id = Math.floor(100000 + Math.random() * 900000)
+    return id.toString()
   }
 
   const createRoom = async () => {
@@ -20,14 +21,15 @@
     const roomId = generateRoomId()
     const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
     const roomNameRef = dbRef(db, `rooms/${roomId}/name`)
+    const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
 
     try {
       // Sla speler op
-      await set(playerRef, { name: username.value, vote: null })
+      await set(playerRef, { name: username.value, estimate: null })
       // Sla kamernaam op
-      await set(roomNameRef, `Kamer van ${username.value}`)
-
-      console.log(`✅ Testkamer succesvol aangemaakt met ID: ${roomId}`)
+      await set(roomNameRef, `Room ${roomId}`)
+      // Zet standaard revealEstimates op false
+      await set(revealRef, false)
 
       // Navigeer naar room
       router.push(`/room/${roomId}?user=${username.value}`)
