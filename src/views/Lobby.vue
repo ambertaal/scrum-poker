@@ -78,9 +78,9 @@
   <div class="lobby">
     <h1>Scrum Poker</h1>
 
-    <label for="name">Your name displayed name:</label>
+    <label for="name">Your displayed name:</label>
     <input v-model="username" name="name" placeholder="Display Name" />
-    <button @click="createRoom">Nieuwe kamer maken</button>
+    <button @click="createRoom">Create a new room</button>
 
     <hr />
 
@@ -110,10 +110,12 @@
   flex-direction: column;
   gap: 1rem;
 }
+
 label {
   width: 100%;
   display: block;
 }
+
 input {
   padding: 0.5rem;
   font-size: 1rem;
@@ -121,6 +123,7 @@ input {
   border-width: 1px;
   border-color: darkgray;
 }
+
 button {
   padding: 0.5rem;
   font-weight: bold;

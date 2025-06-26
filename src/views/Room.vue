@@ -113,19 +113,6 @@
   <div class="room">
     <h1>{{ roomName }}</h1>
 
-    <section class="estimate-section">
-      <h2>Provide an effort estimate - choose one of the cards</h2>
-      <p>Each team member should estimate the complexity of the task (user story) to be completed.</p>
-      <div class="buttons">
-        <button v-for="option in estimateOptions" :key="option" @click="castEstimate(option)">
-          {{ option }}
-        </button>
-      </div>
-    </section>
-
-    <h2>Reveal the cards</h2>
-    <p>Once everyone has submitted their effort estimates, the organizer reveals the cards.</p>
-
     <section class="results-section">
       <div class="button-bar">
         <div class="header">
@@ -134,16 +121,25 @@
         <div class="buttons">
           <button @click="resetEstimates">Delete estimates</button>
           <button @click="toggleRevealEstimates">
-            {{ revealEstimates ? 'Hide' : 'Show' }}
+            {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
           </button>
         </div>
       </div>
 
       <ul class="player-list">
         <li v-for="(player, index) in players" :key="index">
-          {{ player.name }} {{ revealEstimates ? (player.estimate ?? '-') : '🔒 verborgen' }}
+          {{ player.name }} {{ revealEstimates ? (player.estimate ?? '-') : '🔒 hidden' }}
         </li>
       </ul>
+
+      <section class="estimate-section">
+        <div class="card-buttons">
+          <p>Pick your card &#128073;</p>
+          <button v-for="option in estimateOptions" :key="option" class="card-button" @click="castEstimate(option)">
+            {{ option }}
+          </button>
+        </div>
+      </section>
     </section>
   </div>
 
@@ -162,7 +158,7 @@
 
 <style scoped>
 .room {
-  max-width: 600px;
+  width: 1000px;
   margin: 2rem auto;
   font-family: sans-serif;
 }
@@ -214,9 +210,42 @@ button:disabled {
   border-radius: 8px;
   width: 300px;
 }
+
 .actions {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.estimate-section {
+  margin-top: 3rem;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-button {
+  color: black;
+  background-color: white;
+  border-style: solid;
+  border-color: darkgray;
+  height: 5rem;
+  width: 3.5rem;
+  border-radius: 10%;
+
+
+}
+.card-button:hover,
+.card-button:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
+
+.card-button:hover {
+  background-color: darkgray;
+  color: white;
 }
 </style>
