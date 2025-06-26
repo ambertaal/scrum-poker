@@ -13,7 +13,7 @@
   const username = ref<string>((route.query.user as string) || '')
 
   // Reactive state
-  const players = ref<{ name: string; estimate: string | null }[]>([])
+  const players = ref<{ name: string; estimate: string }[]>([])
   const roomName = ref<string>(roomId)
   const revealEstimates = ref<boolean>(false)
   const showNameDialog = ref<boolean>(false)
@@ -21,6 +21,9 @@
 
   // Available estimations
   const estimateOptions = ['?','☕','0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']
+
+  // Computed: bestaan er schattingen?
+  const hasEstimates = computed(() => players.value.some(p => p.estimate != null))
 
   // Open name dialog
   const openNameDialog = () => {
@@ -46,6 +49,7 @@
   }
 
   onMounted(() => {
+    console.log('hasEstimates: ',hasEstimates)
     // Get people in room
     const playersRef = dbRef(db, `rooms/${roomId}/players`)
     onValue(playersRef, snapshot => {
@@ -111,36 +115,42 @@
 
 <template>
   <div class="room">
-    <h1>{{ roomName }}</h1>
+    <p>Room: {{ roomName }}</p>
 
     <section class="results-section">
-      <div class="button-bar">
-        <div class="header">
-          <h2>Name:</h2>
-        </div>
-        <div class="buttons">
-          <button @click="resetEstimates">Delete estimates</button>
-          <button @click="toggleRevealEstimates">
-            {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
-          </button>
-        </div>
-      </div>
-
-      <ul class="player-list">
-        <li v-for="(player, index) in players" :key="index">
-          {{ player.name }} {{ revealEstimates ? (player.estimate ?? '-') : '🔒 hidden' }}
-        </li>
-      </ul>
-
-      <section class="estimate-section">
-        <div class="card-buttons">
-          <p>Pick your card &#128073;</p>
-          <button v-for="option in estimateOptions" :key="option" class="card-button" @click="castEstimate(option)">
-            {{ option }}
-          </button>
+      <section class="cards-section">
+        <div v-for="(player, index) in players" :key="index" class="card" :class="{ flipped: revealEstimates }">
+          <div class="card-inner">
+            <div v-if="!player.estimate" class="card-front-empty">
+            </div>
+            <div v-if="player.estimate" class="card-front">
+            </div>
+            <div class="card-back">
+              <!-- Estimation number -->
+              {{ player.estimate }}
+            </div>
+          </div>
+          <div class="card-name">{{ player.name }}</div>
         </div>
       </section>
+
+      <div class="button-bar">
+        <button class="secondary-button" :disabled="!hasEstimates" @click="resetEstimates">Delete estimates</button>
+        <button class="primary-button" @click="toggleRevealEstimates">
+          {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
+        </button>
+      </div>
     </section>
+
+    <section class="estimate-section">
+      <div class="card-buttons">
+        <p>Pick your card &#128073;</p>
+        <button v-for="option in estimateOptions" :key="option" class="card-button" @click="castEstimate(option)">
+          {{ option }}
+        </button>
+      </div>
+    </section>
+
   </div>
 
   <div v-if="showNameDialog" class="overlay">
@@ -157,7 +167,11 @@
 </template>
 
 <style scoped>
+
 .room {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 1000px;
   margin: 2rem auto;
   font-family: sans-serif;
@@ -176,6 +190,27 @@ button {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 8px;
+}
+
+.primary-button {
+  background-color: lightseagreen;
+  color: white;
+  border-radius: 5%;
+  width: 10rem;
+}
+
+.secondary-button {
+  background-color:lightgray;
+  color:black;
+  border-radius: 5%;
+  width: 10rem;
+}
+
+.secondary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color:lightgray;
+  color: darkgray;
 }
 
 button:disabled {
@@ -217,6 +252,75 @@ button:disabled {
   justify-content: space-between;
 }
 
+.cards-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.card {
+  width: 100px;
+  perspective: 1000px;
+}
+
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border-radius: 8px;
+}
+
+.card-front-empty {
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.card-front {
+  background-color: cadetblue;
+  color: white;
+}
+
+.card-back {
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  transform: rotateY(180deg);
+}
+
+.estimations {
+  display: flex;
+  margin: 2rem;
+}
+
 .estimate-section {
   margin-top: 3rem;
 }
@@ -235,17 +339,17 @@ button:disabled {
   height: 5rem;
   width: 3.5rem;
   border-radius: 10%;
-
-
 }
+
 .card-button:hover,
 .card-button:focus {
   box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
   transform: translateY(-0.25em);
-}
-
-.card-button:hover {
   background-color: darkgray;
   color: white;
+}
+
+.card-name {
+  margin: 1rem 0 0 0;
 }
 </style>

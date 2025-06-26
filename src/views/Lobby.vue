@@ -35,7 +35,7 @@
       // Save person
       await set(playerRef, { name: username.value, estimate: null })
       // Save roomName
-      await set(roomNameRef, `Room ${roomId}`)
+      await set(roomNameRef, roomId)
       // Set revealEstimates by default to false
       await set(revealRef, false)
 
