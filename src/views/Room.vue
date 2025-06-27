@@ -235,10 +235,6 @@
   background-color: #121212;
 }
 
-.dark .v-btn__content {
-  color: #ffffff !important;
-}
-
 .flip-card {
   perspective: 1000px;
 }
@@ -288,9 +284,5 @@
   background-color: #424242; /* donkergrijs */
   color: white !important;
   transform: translateY(-5px);
-}
-
-.dark .secondary {
-  color: white;
 }
 </style>

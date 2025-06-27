@@ -141,8 +141,14 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn color="deep-purple-accent-4" @click="submitName">Submit</v-btn>
-              <v-btn text @click="cancelName">Cancel</v-btn>
+              <v-btn color="deep-purple-accent-4" variant="flat" @click="submitName">Submit</v-btn>
+              <v-btn
+                class="secondary"
+                color="deep-purple-accent-4"
+                text
+                variant="outlined"
+                @click="cancelName"
+              >Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -194,5 +200,17 @@ h3 {
 
 .v-dialog .v-card {
   border-radius: 12px;
+}
+
+.dark .v-card {
+  background-color: #121212;
+}
+
+.dark .v-card-title {
+  color: #ffffff;
+}
+
+.dark .v-card-text {
+  color: #ffffff;
 }
 </style>
