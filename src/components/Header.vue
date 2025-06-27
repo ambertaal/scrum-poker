@@ -9,7 +9,7 @@
 <template>
   <header class="app-header">
     <div class="left">
-      <span class="title">Planning poker</span>
+      <router-link class="title" to="/">Planning poker</router-link>
     </div>
     <div class="right">
       <DarkModeToggle />
@@ -34,6 +34,13 @@
 .left .title {
   font-size: 1.5rem;
   font-weight: bold;
+  color: inherit;
+  text-decoration: none;
+}
+
+.left .title:hover {
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .right {

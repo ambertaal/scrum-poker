@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { useDarkMode } from '@/composables/useDarkMode'
 
-  const { toggleDark } = useDarkMode()
+  const { isDark, toggleDark } = useDarkMode()
 </script>
 
 <template>
   <label class="switch">
-    <input type="checkbox" @click="toggleDark()">
+    <input :checked="isDark" type="checkbox" @click="toggleDark()">
     <span class="slider round"></span>
   </label>
 </template>
