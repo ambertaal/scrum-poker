@@ -95,10 +95,10 @@
 
 <template>
   <Header />
-  <v-container class="py-10" fluid>
+  <v-container class="fill-height" fluid>
     <v-row justify="center">
       <v-col class="text-center" cols="12" md="10">
-        <v-card class="pa-4" elevation="0">
+        <v-card class="pa-4 estimation-cards" elevation="0">
 
           <v-card-title class="text-h6">Room: {{ roomName }}</v-card-title>
 
@@ -112,7 +112,7 @@
               <div class="flip-card" :class="{ flipped: revealEstimates }">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    <v-card class="d-flex align-center justify-center" color="grey-lighten-4" height="140" width="100">
+                    <v-card class="d-flex align-center justify-center" color="blue-lighten-4" height="140" width="100">
                       <span v-if="!player.estimate">?</span>
                       <v-icon v-else>mdi-cards</v-icon>
                     </v-card>
@@ -217,9 +217,16 @@
   background-color: #121212;
 }
 
+.v-row,
+.v-col,
+.v-card {
+  background-color: #f9f9f9;
+}
+
 .dark .v-row {
   background-color: #121212;
 }
+
 .dark .v-col {
   background-color: #121212;
 }
@@ -248,6 +255,9 @@
   transform: rotateY(180deg);
 }
 
+/* .flip-card-front {
+  background-color: yellow;
+} */
 .flip-card-front,
 .flip-card-back {
   position: absolute;
