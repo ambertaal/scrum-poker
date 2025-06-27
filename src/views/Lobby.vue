@@ -3,9 +3,13 @@
   import { useRouter } from 'vue-router'
   import { db } from '@/firebase'
   import { ref } from 'vue'
+  import { usePlayerStore } from '@/stores/player'
+  import { storeToRefs } from 'pinia'
+
+  const playerStore = usePlayerStore()
+  const { username } = storeToRefs(playerStore)
 
   const router = useRouter()
-  const username = ref('')
   const joinRoomId = ref('')
 
   // temporary saves where the user wants to navigate to
@@ -62,7 +66,7 @@
 
   const submitName = () => {
     if (!tempName.value.trim()) return
-    username.value = tempName.value.trim()
+    playerStore.setUsername(tempName.value)
     showNameDialog.value = false
     router.push(`/room/${pendingRoomId.value}?user=${username.value}`)
   }

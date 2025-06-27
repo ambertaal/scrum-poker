@@ -3,6 +3,11 @@
   import { onMounted, ref } from 'vue'
   import { db } from '@/firebase'
   import { ref as dbRef, get, onValue, set, update } from 'firebase/database'
+  import { usePlayerStore } from '@/stores/player'
+  import { storeToRefs } from 'pinia'
+
+  const playerStore = usePlayerStore()
+  const { username } = storeToRefs(playerStore)
 
   // Router & route
   const route = useRoute()
@@ -10,10 +15,9 @@
 
   // Route param & query
   const roomId = (route.params as { roomId: string }).roomId
-  const username = ref<string>((route.query.user as string) || '')
 
   // Reactive state
-  const players = ref<{ name: string; estimate: string }[]>([])
+  const players = ref<{ name: string; estimate: string | null }[]>([])
   const roomName = ref<string>(roomId)
   const revealEstimates = ref<boolean>(false)
   const showNameDialog = ref<boolean>(false)
@@ -32,10 +36,17 @@
   }
 
   // Submit name and replace URL
-  const submitName = () => {
+  const submitName = async () => {
     if (!tempName.value.trim()) return
-    username.value = tempName.value.trim()
+
+    playerStore.setUsername(tempName.value)
     showNameDialog.value = false
+
+    // Add player to Firebase
+    const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
+    await set(playerRef, { name: username.value, estimate: null })
+
+
     // Replace URL so the future estimations get this name
     router.replace({
       path: `/room/${roomId}`,
@@ -49,7 +60,15 @@
   }
 
   onMounted(() => {
-    console.log('hasEstimates: ',hasEstimates)
+    if (!username.value) {
+      const userFromQuery = route.query.user as string
+      if (userFromQuery) {
+        playerStore.setUsername(userFromQuery)
+      } else {
+        openNameDialog()
+      }
+    }
+
     // Get people in room
     const playersRef = dbRef(db, `rooms/${roomId}/players`)
     onValue(playersRef, snapshot => {
@@ -244,6 +263,19 @@ button:disabled {
   padding: 2rem;
   border-radius: 8px;
   width: 300px;
+}
+
+label {
+  width: 100%;
+  display: block;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-style: solid;
+  border-width: 1px;
+  border-color: darkgray;
 }
 
 .actions {
