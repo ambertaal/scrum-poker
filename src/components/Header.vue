@@ -7,52 +7,39 @@
 </script>
 
 <template>
-  <header class="app-header">
-    <div class="left">
-      <router-link class="title" to="/">Planning poker</router-link>
-    </div>
-    <div class="right">
-      <DarkModeToggle />
-      <button class="menu-button" @click="toggleMenu">
-        ☰
-      </button>
-    </div>
-  </header>
+  <v-app-bar color="grey-darken-3" density="comfortable" flat>
+    <v-container fluid>
+      <v-row align="center" justify="space-between" no-gutters>
+
+        <!-- Logo / Titel -->
+        <v-col class="d-flex align-center">
+          <router-link class="text-white text-decoration-none text-h6 font-weight-bold" to="/">
+            Planning poker
+          </router-link>
+        </v-col>
+
+        <!-- Rechterkant: darkmode toggle + menu knop -->
+        <v-col class="d-flex justify-end align-center" cols="auto">
+          <DarkModeToggle class="mr-2" />
+          <v-btn icon variant="text" @click="toggleMenu">
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </v-col>
+
+      </v-row>
+    </v-container>
+  </v-app-bar>
 </template>
 
 <style scoped>
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 5vh;
-  padding-right: 5vh;
-  border-bottom: 1px solid #ddd;
-  background-color: var(--header-background, #fff);
+.text-decoration-none {
+  text-decoration: none;
 }
-
-.left .title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: inherit;
+.text-decoration-none:hover {
   text-decoration: none;
 }
 
-.left .title:hover {
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.menu-button {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
+.v-app-bar {
+  border-bottom: 1px solid #444;
 }
 </style>

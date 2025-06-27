@@ -80,7 +80,75 @@
 
 <template>
   <Header />
-  <div class="page-layout">
+  <v-container class="fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col
+        class="text-center"
+        cols="12"
+        lg="4"
+        md="6"
+        sm="8"
+      >
+
+        <!-- Icon -->
+        <v-icon class="mb-4" size="64">mdi-cards-playing-outline</v-icon>
+
+        <!-- Titel -->
+        <h2 class="font-weight-bold mb-6">Create a new room</h2>
+
+        <!-- Display Name Input -->
+        <v-text-field
+          v-model="username"
+          class="mb-4"
+          dense
+          label="Display Name"
+          outlined
+          placeholder="e.g. Dreplay Room"
+        />
+
+        <v-btn block color="deep-purple-accent-4" large @click="createRoom">
+          Create Room
+        </v-btn>
+
+        <v-divider class="my-6">
+          <span class="text-caption">or</span>
+        </v-divider>
+
+        <!-- Join Existing Room Section -->
+        <h3 class="text-subtitle-1 font-weight-bold mb-2">Enter existing room</h3>
+
+        <v-text-field
+          v-model="joinRoomId"
+          class="mb-4"
+          dense
+          label="Room number"
+          outlined
+          placeholder="e.g. 123456"
+        />
+
+        <v-btn block color="deep-purple-accent-4" variant="outlined" @click="enterRoom">
+          Join Room
+        </v-btn>
+
+        <!-- Name Dialog -->
+        <v-dialog v-model="showNameDialog" max-width="400px" persistent>
+          <v-card>
+            <v-card-title class="text-h6">Provide your name to enter</v-card-title>
+            <v-card-text>
+              <v-text-field v-model="tempName" label="Display Name" outlined />
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn color="deep-purple-accent-4" @click="submitName">Submit</v-btn>
+              <v-btn text @click="cancelName">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+      </v-col>
+    </v-row>
+  </v-container>
+  <!-- <div class="page-layout">
 
     <div class="lobby">
 
@@ -97,7 +165,6 @@
       <button @click="enterRoom">Enter</button>
     </div>
   </div>
-  <!-- Name dialog -->
   <div v-if="showNameDialog" class="overlay">
     <div class="dialog">
       <h3>Provide your name to enter</h3>
@@ -107,63 +174,81 @@
         <button @click="cancelName">Cancel</button>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>
-.page-layout {
-  position: relative;
-  min-height: 100vh;
-  padding: 1rem;
+h2 {
+  font-size: 1.5rem;
 }
 
-.lobby {
-  max-width: 1100px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 60px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+h3 {
+  font-size: 1.125rem;
 }
 
-label {
-  width: 100%;
-  display: block;
+h2,
+h3 {
+  color: #1a1a1a;
 }
 
-input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid darkgray;
+.dark h2,
+.dark h3 {
+  color: #ffffff;
 }
 
-.dark input {
-  background-color: #222;
-  color: white;
-  border-color: #888;
+.v-container {
+  background-color: #f9f9f9;
 }
 
-button {
-  padding: 0.5rem;
-  font-weight: bold;
-  color: white;
-  background-color: blue;
+.dark .v-container {
+  background-color: #121212;
 }
 
-.overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center;
-}
-.dialog {
-  background: var(--dialog-background, white);
-  color: inherit;
-  padding: 2rem; border-radius: 8px; width: 300px;
-}
-.actions {
-  margin-top: 1rem; display: flex; justify-content: space-between;
+.v-label,
+.v-field-label {
+  color: rgba(0, 0, 0, 0.7) !important;
 }
 
+.dark .v-label,
+.dark .v-field-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.v-text-field input {
+  color: #1a1a1a !important;
+}
+
+.dark .v-text-field input {
+  color: #ffffff !important;
+}
+
+.v-text-field input::placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.dark .v-text-field input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.v-icon {
+  color: #424242;
+}
+
+.dark .v-icon {
+  color: #ffffff;
+}
+
+.v-divider span {
+  background-color: #f9f9f9;
+  padding: 0 0.5rem;
+}
+
+.dark .v-divider span {
+  background-color: #121212;
+  color: #eee;
+}
+
+.v-dialog .v-card {
+  border-radius: 12px;
+}
 </style>
