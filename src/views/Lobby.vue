@@ -86,15 +86,15 @@
 
     <div class="lobby">
 
-      <h1>Scrum Poker</h1>
+      <h1>Start a new Planning Poker session</h1>
 
-      <label for="name">Your displayed name:</label>
+      <label for="name">Display name:</label>
       <input v-model="username" name="name" placeholder="Display Name" />
       <button @click="createRoom">Create a new room</button>
 
       <hr />
-
-      <label>Enter room number:</label>
+      <h2>Already have a room?</h2>
+      <label>Room number:</label>
       <input v-model="joinRoomId" placeholder="bv. 123456" />
       <button @click="enterRoom">Enter</button>
     </div>
