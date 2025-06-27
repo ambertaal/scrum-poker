@@ -133,11 +133,9 @@
 </script>
 
 <template>
-  <div class="page-layout">
-    <div class="darkmode-toggle">
-      <DarkModeToggle />
-    </div>
+  <Header />
 
+  <div class="page-layout">
     <div class="room">
       <p>Room: {{ roomName }}</p>
 
@@ -196,15 +194,6 @@
   position: relative;
   min-height: 100vh;
   padding: 1rem;
-}
-
-.darkmode-toggle {
-  width: 60px;
-  height: 34px;
-  position: absolute;
-  top: 4rem;
-  right: 10rem;
-  z-index: 10;
 }
 
 .room {

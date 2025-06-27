@@ -79,10 +79,8 @@
 </script>
 
 <template>
+  <Header />
   <div class="page-layout">
-    <div class="darkmode-toggle">
-      <DarkModeToggle />
-    </div>
 
     <div class="lobby">
 
@@ -119,17 +117,11 @@
   padding: 1rem;
 }
 
-.darkmode-toggle {
-  width: 60px;
-  height: 34px;
-  position: absolute;
-  top: 4rem;
-  right: 10rem;
-  z-index: 10;
-}
-
 .lobby {
-  max-width: 400px;
+  max-width: 1100px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 60px;
   width: 100%;
   display: flex;
   flex-direction: column;
