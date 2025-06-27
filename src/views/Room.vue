@@ -133,43 +133,47 @@
 </script>
 
 <template>
-  <div class="room">
-    <p>Room: {{ roomName }}</p>
+  <div class="page-layout">
+    <div class="room">
+      <DarkModeToggle />
 
-    <section class="results-section">
-      <section class="cards-section">
-        <div v-for="(player, index) in players" :key="index" class="card" :class="{ flipped: revealEstimates }">
-          <div class="card-inner">
-            <div v-if="!player.estimate" class="card-front-empty">
+      <p>Room: {{ roomName }}</p>
+
+      <section class="results-section">
+        <section class="cards-section">
+          <div v-for="(player, index) in players" :key="index" class="card" :class="{ flipped: revealEstimates }">
+            <div class="card-inner">
+              <div v-if="!player.estimate" class="card-front-empty">
+              </div>
+              <div v-if="player.estimate" class="card-front">
+              </div>
+              <div class="card-back">
+                <!-- Estimation number -->
+                {{ player.estimate }}
+              </div>
             </div>
-            <div v-if="player.estimate" class="card-front">
-            </div>
-            <div class="card-back">
-              <!-- Estimation number -->
-              {{ player.estimate }}
-            </div>
+            <div class="card-name">{{ player.name }}</div>
           </div>
-          <div class="card-name">{{ player.name }}</div>
+        </section>
+
+        <div class="button-bar">
+          <button class="secondary-button" :disabled="!hasEstimates" @click="resetEstimates">Delete estimates</button>
+          <button class="primary-button" @click="toggleRevealEstimates">
+            {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
+          </button>
         </div>
       </section>
 
-      <div class="button-bar">
-        <button class="secondary-button" :disabled="!hasEstimates" @click="resetEstimates">Delete estimates</button>
-        <button class="primary-button" @click="toggleRevealEstimates">
-          {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
-        </button>
-      </div>
-    </section>
+      <section class="estimate-section">
+        <div class="card-buttons">
+          <p>Pick your card &#128073;</p>
+          <button v-for="option in estimateOptions" :key="option" class="card-button" @click="castEstimate(option)">
+            {{ option }}
+          </button>
+        </div>
+      </section>
 
-    <section class="estimate-section">
-      <div class="card-buttons">
-        <p>Pick your card &#128073;</p>
-        <button v-for="option in estimateOptions" :key="option" class="card-button" @click="castEstimate(option)">
-          {{ option }}
-        </button>
-      </div>
-    </section>
-
+    </div>
   </div>
 
   <div v-if="showNameDialog" class="overlay">
@@ -186,7 +190,6 @@
 </template>
 
 <style scoped>
-
 .room {
   display: flex;
   flex-direction: column;

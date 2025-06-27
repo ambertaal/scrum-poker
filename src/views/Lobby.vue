@@ -79,20 +79,23 @@
 </script>
 
 <template>
-  <div class="lobby">
-    <h1>Scrum Poker</h1>
+  <div class="page-layout">
+    <div class="lobby">
+      <DarkModeToggle />
 
-    <label for="name">Your displayed name:</label>
-    <input v-model="username" name="name" placeholder="Display Name" />
-    <button @click="createRoom">Create a new room</button>
+      <h1>Scrum Poker</h1>
 
-    <hr />
+      <label for="name">Your displayed name:</label>
+      <input v-model="username" name="name" placeholder="Display Name" />
+      <button @click="createRoom">Create a new room</button>
 
-    <label>Enter room number:</label>
-    <input v-model="joinRoomId" placeholder="bv. 123456" />
-    <button @click="enterRoom">Enter</button>
+      <hr />
+
+      <label>Enter room number:</label>
+      <input v-model="joinRoomId" placeholder="bv. 123456" />
+      <button @click="enterRoom">Enter</button>
+    </div>
   </div>
-
   <!-- Name dialog -->
   <div v-if="showNameDialog" class="overlay">
     <div class="dialog">
@@ -109,7 +112,7 @@
 <style scoped>
 .lobby {
   max-width: 400px;
-  margin: 100px auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -141,9 +144,12 @@ button {
   display: flex; align-items: center; justify-content: center;
 }
 .dialog {
-  background: white; padding: 2rem; border-radius: 8px; width: 300px;
+  background: var(--dialog-background, white);
+  color: inherit;
+  padding: 2rem; border-radius: 8px; width: 300px;
 }
 .actions {
   margin-top: 1rem; display: flex; justify-content: space-between;
 }
+
 </style>

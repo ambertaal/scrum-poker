@@ -1,10 +1,23 @@
-/**
- * src/styles/settings.scss
- *
- * Configures SASS variables and Vuetify overwrites
- */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
 
-// https://vuetifyjs.com/features/sass-variables/`
-// @use 'vuetify/settings' with (
-//   $color-pack: false
-// );
+.page-layout {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  color: inherit;
+}
+
+html.dark .page-layout {
+  background-color: #121212;
+  color: white;
+}
+
+html.light .page-layout {
+  background-color: white;
+  color: black;
+}

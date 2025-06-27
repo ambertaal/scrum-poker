@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import { registerPlugins } from '@/plugins'
 import 'unfonts.css'
+import './styles/settings.scss'
 
 const app = createApp(App)
 app.use(router)
