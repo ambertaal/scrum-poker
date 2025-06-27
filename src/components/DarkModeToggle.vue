@@ -19,7 +19,7 @@
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -39,13 +39,31 @@
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: "light_mode";
+  font-family: 'Material Icons';
+  font-size: 18px;
   height: 26px;
   width: 26px;
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 4px;
+  transition: .4s;
+}
+
+.slider::after {
+  content: "dark_mode";
+  font-family: "Material Icons";
+  font-size: 18px;
+  color: white;
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  pointer-events: none;
   transition: .4s;
 }
 
@@ -58,9 +76,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
+  content: "dark_mode";
+  color: black;
+}
+
+input:checked + .slider::after {
+  transform: translateX(-26px);
+  content: "light_mode";
 }
 
 /* Rounded sliders */

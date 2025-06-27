@@ -80,8 +80,11 @@
 
 <template>
   <div class="page-layout">
-    <div class="lobby">
+    <div class="darkmode-toggle">
       <DarkModeToggle />
+    </div>
+
+    <div class="lobby">
 
       <h1>Scrum Poker</h1>
 
@@ -110,6 +113,21 @@
 </template>
 
 <style scoped>
+.page-layout {
+  position: relative;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.darkmode-toggle {
+  width: 60px;
+  height: 34px;
+  position: absolute;
+  top: 4rem;
+  right: 10rem;
+  z-index: 10;
+}
+
 .lobby {
   max-width: 400px;
   width: 100%;
@@ -126,9 +144,13 @@ label {
 input {
   padding: 0.5rem;
   font-size: 1rem;
-  border-style: solid;
-  border-width: 1px;
-  border-color: darkgray;
+  border: 1px solid darkgray;
+}
+
+.dark input {
+  background-color: #222;
+  color: white;
+  border-color: #888;
 }
 
 button {

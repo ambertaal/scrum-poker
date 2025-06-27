@@ -134,9 +134,11 @@
 
 <template>
   <div class="page-layout">
-    <div class="room">
+    <div class="darkmode-toggle">
       <DarkModeToggle />
+    </div>
 
+    <div class="room">
       <p>Room: {{ roomName }}</p>
 
       <section class="results-section">
@@ -190,6 +192,21 @@
 </template>
 
 <style scoped>
+.page-layout {
+  position: relative;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.darkmode-toggle {
+  width: 60px;
+  height: 34px;
+  position: absolute;
+  top: 4rem;
+  right: 10rem;
+  z-index: 10;
+}
+
 .room {
   display: flex;
   flex-direction: column;
@@ -197,6 +214,11 @@
   width: 1000px;
   margin: 2rem auto;
   font-family: sans-serif;
+}
+
+.darkmode-toggle {
+  width: 60px;
+  height: 34px;
 }
 
 button {
@@ -276,9 +298,13 @@ label {
 input {
   padding: 0.5rem;
   font-size: 1rem;
-  border-style: solid;
-  border-width: 1px;
-  border-color: darkgray;
+  border: 1px solid darkgray;
+}
+
+.dark input {
+  background-color: #222;
+  color: white;
+  border-color: #888;
 }
 
 .actions {
