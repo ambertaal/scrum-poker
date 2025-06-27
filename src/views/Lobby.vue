@@ -99,11 +99,12 @@
         <!-- Display Name Input -->
         <v-text-field
           v-model="username"
-          class="mb-4"
+          class="mb-4 name-input"
           dense
           label="Display Name"
           outlined
           placeholder="e.g. Dreplay Room"
+          @keydown.enter="createRoom"
         />
 
         <v-btn block color="deep-purple-accent-4" large @click="createRoom">
@@ -119,11 +120,12 @@
 
         <v-text-field
           v-model="joinRoomId"
-          class="mb-4"
+          class="mb-4 roomnumber-input"
           dense
           label="Room number"
           outlined
           placeholder="e.g. 123456"
+          @keydown.enter="enterRoom"
         />
 
         <v-btn block color="deep-purple-accent-4" variant="outlined" @click="enterRoom">
@@ -135,7 +137,7 @@
           <v-card>
             <v-card-title class="text-h6">Provide your name to enter</v-card-title>
             <v-card-text>
-              <v-text-field v-model="tempName" label="Display Name" outlined />
+              <v-text-field v-model="tempName" label="Display Name" outlined @keydown.enter="submitName" />
             </v-card-text>
             <v-card-actions>
               <v-spacer />
@@ -148,33 +150,6 @@
       </v-col>
     </v-row>
   </v-container>
-  <!-- <div class="page-layout">
-
-    <div class="lobby">
-
-      <h1>Start a new Planning Poker session</h1>
-
-      <label for="name">Display name:</label>
-      <input v-model="username" name="name" placeholder="Display Name" />
-      <button @click="createRoom">Create a new room</button>
-
-      <hr />
-      <h2>Already have a room?</h2>
-      <label>Room number:</label>
-      <input v-model="joinRoomId" placeholder="bv. 123456" />
-      <button @click="enterRoom">Enter</button>
-    </div>
-  </div>
-  <div v-if="showNameDialog" class="overlay">
-    <div class="dialog">
-      <h3>Provide your name to enter</h3>
-      <input v-model="tempName" placeholder="Display Name" />
-      <div class="actions">
-        <button @click="submitName">Submit</button>
-        <button @click="cancelName">Cancel</button>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <style scoped>
@@ -204,32 +179,6 @@ h3 {
   background-color: #121212;
 }
 
-.v-label,
-.v-field-label {
-  color: rgba(0, 0, 0, 0.7) !important;
-}
-
-.dark .v-label,
-.dark .v-field-label {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-
-.v-text-field input {
-  color: #1a1a1a !important;
-}
-
-.dark .v-text-field input {
-  color: #ffffff !important;
-}
-
-.v-text-field input::placeholder {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-.dark .v-text-field input::placeholder {
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-
 .v-icon {
   color: #424242;
 }
@@ -238,14 +187,9 @@ h3 {
   color: #ffffff;
 }
 
-.v-divider span {
-  background-color: #f9f9f9;
-  padding: 0 0.5rem;
-}
-
-.dark .v-divider span {
-  background-color: #121212;
-  color: #eee;
+.dark .name-input,
+.dark .roomnumber-input {
+  color: #ffffff;
 }
 
 .v-dialog .v-card {

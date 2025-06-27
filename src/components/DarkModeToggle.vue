@@ -47,6 +47,7 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
+  color: black;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -68,16 +69,17 @@
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #7C4DFF;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #7C4DFF;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
   content: "dark_mode";
+  background-color: white;
   color: black;
 }
 
