@@ -5,6 +5,7 @@
   import { ref } from 'vue'
   import { usePlayerStore } from '@/stores/player'
   import { storeToRefs } from 'pinia'
+  import { generateRoomId } from '@/utils/generateRoomid'
 
   const playerStore = usePlayerStore()
   const { username } = storeToRefs(playerStore)
@@ -18,11 +19,6 @@
   const showNameDialog = ref(false)
   // buffer for the new name in the DisplayName dialog
   const tempName = ref('')
-
-  const generateRoomId = (): string => {
-    const id = Math.floor(100000 + Math.random() * 900000)
-    return id.toString()
-  }
 
   const createRoom = async () => {
     if (!username.value) {

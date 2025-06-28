@@ -47,7 +47,6 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="deep-purple-accent-4" variant="flat" @click="handleSubmit">Submit</v-btn>
         <v-btn
           class="secondary"
           color="deep-purple-accent-4"
@@ -55,6 +54,7 @@
           variant="outlined"
           @click="handleCancel"
         >Cancel</v-btn>
+        <v-btn color="deep-purple-accent-4" variant="flat" @click="handleSubmit">Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
