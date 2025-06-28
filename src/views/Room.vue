@@ -129,24 +129,7 @@
             </v-col>
           </v-row>
 
-          <section class="mt-8">
-            <p class="text-subtitle-1 font-weight-bold mb-4">Pick your card 👉</p>
-            <v-row align="center" dense justify="center">
-              <v-col v-for="option in estimateOptions" :key="option" class="my-1" cols="auto">
-                <v-btn
-                  class="hover-effect text-h6 font-weight-bold"
-                  color="black"
-                  height="80"
-                  variant="outlined"
-                  width="60"
-                  @click="castEstimate(option)"
-                >
-                  {{ option }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </section>
-
+          <EstimateOptions :options="estimateOptions" @select="castEstimate" />
         </v-card>
       </v-col>
     </v-row>
@@ -164,71 +147,5 @@
 <style scoped>
 .dark p {
   color: #ffffff;
-}
-
-.player-name {
-  color: black;
-}
-
-.dark .player-name {
-  color: white;
-}
-
-.player-estimate {
-  color: black !important;
-  font-weight: bold;
-}
-
-.dark .v-card-title {
-  color: #ffffff;
-}
-
-.dark .v-card-text {
-  color: #ffffff;
-}
-
-.v-container {
-  background-color: #f9f9f9;
-}
-
-.dark .v-container {
-  background-color: #121212;
-}
-
-.v-row,
-.v-col,
-.v-card {
-  background-color: #f9f9f9;
-}
-
-.dark .v-row {
-  background-color: #121212;
-}
-
-.dark .v-col {
-  background-color: #121212;
-}
-
-.dark .v-card {
-  background-color: #121212;
-}
-
-:deep(.contrast-fix.v-btn.v-btn--disabled) {
-  opacity: 0.7 !important;
-  border-color: #b39ddb !important; /* lichtere purple */
-  color: #b39ddb !important;
-}
-
-.hover-effect {
-  transition: transform 0.2s, background-color 0.2s, color 0.2s;
-  background-color: white;
-  color: black;
-  border: 1px solid darkgray;
-}
-
-.hover-effect:hover {
-  background-color: #424242; /* donkergrijs */
-  color: white !important;
-  transform: translateY(-5px);
 }
 </style>
