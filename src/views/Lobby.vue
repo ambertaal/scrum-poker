@@ -80,107 +80,31 @@
 
 <template>
   <Header />
-  <v-container class="fill-height" fluid>
-    <v-row align="center" justify="center">
-      <v-col
-        class="text-center"
-        cols="12"
-        lg="4"
-        md="6"
-        sm="8"
-      >
+  <LobbyLayout>
+    <AppIcon />
 
-        <!-- Icon -->
-        <v-icon class="mb-4" size="64">mdi-cards-playing-outline</v-icon>
+    <CreateRoomForm
+      :name="username"
+      @submit="createRoom"
+      @update:name="val => username = val"
+    />
 
-        <!-- Titel -->
-        <h2 class="font-weight-bold mb-6">Create a new room</h2>
+    <v-divider class="my-6">
+      <span class="text-caption">or</span>
+    </v-divider>
 
-        <CreateRoomForm
-          :name="username"
-          @submit="createRoom"
-          @update:name="val => username = val"
-        />
+    <JoinRoomForm
+      :id="joinRoomId"
+      @submit="enterRoom"
+      @update:id="val => joinRoomId = val"
+    />
 
-        <v-divider class="my-6">
-          <span class="text-caption">or</span>
-        </v-divider>
-
-        <!-- Join Existing Room Section -->
-        <h3 class="text-subtitle-1 font-weight-bold mb-2">Enter existing room</h3>
-
-        <JoinRoomForm
-          :id="joinRoomId"
-          @submit="enterRoom"
-          @update:id="val => joinRoomId = val"
-        />
-
-        <NameDialog
-          v-model="showNameDialog"
-          :name="tempName"
-          @cancel="cancelName"
-          @submit="submitName"
-          @update:name="val => tempName = val"
-        />
-
-      </v-col>
-    </v-row>
-  </v-container>
+    <NameDialog
+      v-model="showNameDialog"
+      :name="tempName"
+      @cancel="cancelName"
+      @submit="submitName"
+      @update:name="val => tempName = val"
+    />
+  </LobbyLayout>
 </template>
-
-<style scoped>
-h2 {
-  font-size: 1.5rem;
-}
-
-h3 {
-  font-size: 1.125rem;
-}
-
-h2,
-h3 {
-  color: #1a1a1a;
-}
-
-.dark h2,
-.dark h3 {
-  color: #ffffff;
-}
-
-.v-container {
-  background-color: #f9f9f9;
-}
-
-.dark .v-container {
-  background-color: #121212;
-}
-
-.v-icon {
-  color: #424242;
-}
-
-.dark .v-icon {
-  color: #ffffff;
-}
-
-.dark .name-input,
-.dark .roomnumber-input {
-  color: #ffffff;
-}
-
-.v-dialog .v-card {
-  border-radius: 12px;
-}
-
-.dark .v-card {
-  background-color: #121212;
-}
-
-.dark .v-card-title {
-  color: #ffffff;
-}
-
-.dark .v-card-text {
-  color: #ffffff;
-}
-</style>

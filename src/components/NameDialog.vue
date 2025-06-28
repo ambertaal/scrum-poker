@@ -59,3 +59,21 @@
     </v-card>
   </v-dialog>
 </template>
+
+<style scoped>
+.v-card {
+  border-radius: 12px;
+}
+
+.dark .v-card {
+  background-color: #121212;
+}
+
+.dark .v-card-title {
+  color: #ffffff;
+}
+
+.dark .v-card-text {
+  color: #ffffff;
+}
+</style>
