@@ -95,14 +95,14 @@
 
 <template>
   <Header />
-  <v-container class="fill-height" fluid>
+  <v-container class="fill-height pt-12" fluid>
     <v-row justify="center">
       <v-col class="text-center" cols="12" md="10">
         <v-card class="pa-4 estimation-cards" elevation="0">
 
           <v-card-title class="text-h6">Room: {{ roomName }}</v-card-title>
 
-          <v-row align="center" class="my-4" justify="center" no-gutters>
+          <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
             <v-col
               v-for="(player, index) in players"
               :key="index"
@@ -128,9 +128,15 @@
             </v-col>
           </v-row>
 
-          <v-row class="my-4" justify="space-between">
+          <v-row class="my-4" justify="center">
             <v-col cols="auto">
-              <v-btn class="contrast-fix" color="deep-purple-accent-4" :disabled="!hasEstimates" variant="outlined" @click="resetEstimates">Delete estimates</v-btn>
+              <v-btn
+                class="contrast-fix"
+                color="deep-purple-accent-4"
+                :disabled="!hasEstimates"
+                variant="outlined"
+                @click="resetEstimates"
+              >Delete estimates</v-btn>
             </v-col>
             <v-col cols="auto">
               <v-btn color="deep-purple-accent-4" @click="toggleRevealEstimates">
@@ -162,7 +168,7 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="showNameDialog" max-width="400px" persistent>
+  <!-- <v-dialog v-model="showNameDialog" max-width="400px" persistent>
     <v-card>
       <v-card-title class="text-h6">Provide your name to enter</v-card-title>
       <v-card-text>
@@ -180,7 +186,15 @@
         >Cancel</v-btn>
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
+
+  <NameDialog
+    v-model="showNameDialog"
+    :name="tempName"
+    @cancel="cancelName"
+    @submit="submitName"
+    @update:name="val => tempName = val"
+  />
 </template>
 
 <style scoped>
