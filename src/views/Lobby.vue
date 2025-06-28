@@ -96,20 +96,11 @@
         <!-- Titel -->
         <h2 class="font-weight-bold mb-6">Create a new room</h2>
 
-        <!-- Display Name Input -->
-        <v-text-field
-          v-model="username"
-          class="mb-4 name-input"
-          dense
-          label="Display Name"
-          outlined
-          placeholder="e.g. Dreplay Room"
-          @keydown.enter="createRoom"
+        <CreateRoomForm
+          :name="username"
+          @submit="createRoom"
+          @update:name="val => username = val"
         />
-
-        <v-btn block color="deep-purple-accent-4" large @click="createRoom">
-          Create Room
-        </v-btn>
 
         <v-divider class="my-6">
           <span class="text-caption">or</span>

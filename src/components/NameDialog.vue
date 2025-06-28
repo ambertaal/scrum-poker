@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
 
-  const props = defineProps<{
+  const { modelValue, name } = defineProps<{
     modelValue: boolean
     name: string
   }>()
@@ -14,12 +14,12 @@
   }>()
 
   const showNameDialog = computed({
-    get: () => props.modelValue,
+    get: () => modelValue,
     set: (val: boolean) => emit('update:modelValue', val),
   })
 
   const tempName = computed({
-    get: () => props.name,
+    get: () => name,
     set: (val: string) => emit('update:name', val),
   })
 

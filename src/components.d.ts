@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     Darkmodeswitch: typeof import('./components/DarkModeToggle.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
