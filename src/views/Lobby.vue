@@ -109,19 +109,11 @@
         <!-- Join Existing Room Section -->
         <h3 class="text-subtitle-1 font-weight-bold mb-2">Enter existing room</h3>
 
-        <v-text-field
-          v-model="joinRoomId"
-          class="mb-4 roomnumber-input"
-          dense
-          label="Room number"
-          outlined
-          placeholder="e.g. 123456"
-          @keydown.enter="enterRoom"
+        <JoinRoomForm
+          :id="joinRoomId"
+          @submit="enterRoom"
+          @update:id="val => joinRoomId = val"
         />
-
-        <v-btn block color="deep-purple-accent-4" variant="outlined" @click="enterRoom">
-          Join Room
-        </v-btn>
 
         <NameDialog
           v-model="showNameDialog"

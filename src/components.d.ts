@@ -14,6 +14,7 @@ declare module 'vue' {
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
     NameDialog: typeof import('./components/NameDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
