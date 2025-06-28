@@ -19,6 +19,7 @@ declare module 'vue' {
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
     LobbyLayout: typeof import('./components/LobbyLayout.vue')['default']
     NameDialog: typeof import('./components/NameDialog.vue')['default']
+    PlayerCard: typeof import('./components/PlayerCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
