@@ -168,26 +168,6 @@
     </v-row>
   </v-container>
 
-  <!-- <v-dialog v-model="showNameDialog" max-width="400px" persistent>
-    <v-card>
-      <v-card-title class="text-h6">Provide your name to enter</v-card-title>
-      <v-card-text>
-        <v-text-field v-model="tempName" label="Display Name" outlined @keydown.enter="submitName" />
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn color="deep-purple-accent-4" variant="flat" @click="submitName">Submit</v-btn>
-        <v-btn
-          class="secondary"
-          color="deep-purple-accent-4"
-          text
-          variant="outlined"
-          @click="cancelName"
-        >Cancel</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog> -->
-
   <NameDialog
     v-model="showNameDialog"
     :name="tempName"

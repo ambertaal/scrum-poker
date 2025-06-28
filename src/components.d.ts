@@ -13,6 +13,7 @@ declare module 'vue' {
     CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     Darkmodeswitch: typeof import('./components/DarkModeToggle.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
+    DividerWithLabel: typeof import('./components/DividerWithLabel.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']

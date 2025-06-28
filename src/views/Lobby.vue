@@ -89,9 +89,7 @@
       @update:name="val => username = val"
     />
 
-    <v-divider class="my-6">
-      <span class="text-caption">or</span>
-    </v-divider>
+    <DividerWithLabel>or</DividerWithLabel>
 
     <JoinRoomForm
       :id="joinRoomId"
