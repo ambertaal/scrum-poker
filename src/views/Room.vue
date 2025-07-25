@@ -95,45 +95,41 @@
 
 <template>
   <Header />
-  <v-container class="fill-height pt-12" fluid>
-    <v-row justify="center">
-      <v-col class="text-center" cols="12" md="10">
-        <v-card class="pa-4 estimation-cards" elevation="0">
+  <PageLayout>
+    <v-card class="pa-4 estimation-cards" elevation="0">
 
-          <v-card-title class="text-h6">Room: {{ roomName }}</v-card-title>
+      <v-card-title class="text-h6">Room: {{ roomName }}</v-card-title>
 
-          <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
-            <PlayerCard
-              v-for="(player, index) in players"
-              :key="index"
-              :estimate="player.estimate"
-              :name="player.name"
-              :reveal="revealEstimates"
-            />
-          </v-row>
+      <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
+        <PlayerCard
+          v-for="(player, index) in players"
+          :key="index"
+          :estimate="player.estimate"
+          :name="player.name"
+          :reveal="revealEstimates"
+        />
+      </v-row>
 
-          <v-row class="my-4" justify="center">
-            <v-col cols="auto">
-              <v-btn
-                class="contrast-fix"
-                color="deep-purple-accent-4"
-                :disabled="!hasEstimates"
-                variant="outlined"
-                @click="resetEstimates"
-              >Delete estimates</v-btn>
-            </v-col>
-            <v-col cols="auto">
-              <v-btn color="deep-purple-accent-4" @click="toggleRevealEstimates">
-                {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
-              </v-btn>
-            </v-col>
-          </v-row>
+      <v-row class="my-4" justify="center">
+        <v-col cols="auto">
+          <v-btn
+            class="contrast-fix"
+            color="deep-purple-accent-4"
+            :disabled="!hasEstimates"
+            variant="outlined"
+            @click="resetEstimates"
+          >Delete estimates</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn color="deep-purple-accent-4" @click="toggleRevealEstimates">
+            {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
+          </v-btn>
+        </v-col>
+      </v-row>
 
-          <EstimateOptions :options="estimateOptions" @select="castEstimate" />
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+      <EstimateOptions :options="estimateOptions" @select="castEstimate" />
+    </v-card>
+</PageLayout>
 
   <NameDialog
     v-model="showNameDialog"

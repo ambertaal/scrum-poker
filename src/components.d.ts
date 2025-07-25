@@ -8,18 +8,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/AppFooter.vue')['default']
     AppIcon: typeof import('./components/AppIcon.vue')['default']
     CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     Darkmodeswitch: typeof import('./components/DarkModeToggle.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
     DividerWithLabel: typeof import('./components/DividerWithLabel.vue')['default']
     EstimateOptions: typeof import('./components/EstimateOptions.vue')['default']
-    EstimationOptions: typeof import('./components/EstimationOptions.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
-    LobbyLayout: typeof import('./components/LobbyLayout.vue')['default']
+    PageLayout: typeof import('./com./components/PageLayout.vue')['default']
     NameDialog: typeof import('./components/NameDialog.vue')['default']
     PlayerCard: typeof import('./components/PlayerCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

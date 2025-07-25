@@ -76,7 +76,7 @@
 
 <template>
   <Header />
-  <LobbyLayout>
+  <PageLayout>
     <AppIcon />
 
     <CreateRoomForm
@@ -100,5 +100,5 @@
       @submit="submitName"
       @update:name="val => tempName = val"
     />
-  </LobbyLayout>
+  </PageLayout>
 </template>
