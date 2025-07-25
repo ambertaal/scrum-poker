@@ -27,7 +27,7 @@
     dense
     label="Display Name"
     outlined
-    placeholder="e.g. Dreplay Room"
+    placeholder="e.g. Display Room"
     @keydown.enter="handleSubmit"
   />
 

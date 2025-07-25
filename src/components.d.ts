@@ -17,7 +17,7 @@ declare module 'vue' {
     Header: typeof import('./components/Header.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
     NameDialog: typeof import('./components/NameDialog.vue')['default']
-    PageLayout: typeof import('./components/PageLayout.vue')['default']
+    PageLayout: typeof import('./layouts/PageLayout.vue')['default']
     PlayerCard: typeof import('./components/PlayerCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

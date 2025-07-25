@@ -52,6 +52,10 @@
 </template>
 
 <style scoped>
+.dark .text-subtitle-1 {
+  color: #ffffff;
+}
+
 .hover-effect {
   transition: transform 0.2s, background-color 0.2s, color 0.2s;
   background-color: white;

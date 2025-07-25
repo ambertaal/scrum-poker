@@ -52,4 +52,8 @@
 .flip-card-back {
   transform: rotateY(180deg);
 }
+
+.dark .player-name {
+  color: #ffffff;
+}
 </style>

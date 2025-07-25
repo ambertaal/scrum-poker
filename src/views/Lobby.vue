@@ -6,6 +6,7 @@
   import { usePlayerStore } from '@/stores/player'
   import { storeToRefs } from 'pinia'
   import { generateRoomId } from '@/utils/generateRoomid'
+  import PageLayout from '@/layouts/PageLayout.vue'
 
   const playerStore = usePlayerStore()
   const { username } = storeToRefs(playerStore)

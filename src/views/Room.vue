@@ -5,6 +5,7 @@
   import { ref as dbRef, get, onValue, set, update } from 'firebase/database'
   import { usePlayerStore } from '@/stores/player'
   import { storeToRefs } from 'pinia'
+import PageLayout from '@/layouts/PageLayout.vue'
 
   const playerStore = usePlayerStore()
   const { username } = storeToRefs(playerStore)
@@ -129,7 +130,7 @@
 
       <EstimateOptions :options="estimateOptions" @select="castEstimate" />
     </v-card>
-</PageLayout>
+  </PageLayout>
 
   <NameDialog
     v-model="showNameDialog"
@@ -141,7 +142,17 @@
 </template>
 
 <style scoped>
+.dark .text-h6 {
+  color: #ffffff;
+}
+
 .dark p {
   color: #ffffff;
+}
+.estimation-cards {
+  background-color: #f9f9f9;
+}
+.dark .estimation-cards {
+  background-color: #121212;
 }
 </style>
