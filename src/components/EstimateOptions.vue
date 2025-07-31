@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+  import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
   defineProps<{
     options: readonly string[]

@@ -39,9 +39,6 @@
 <style scoped>
 h2 {
   font-size: 1.5rem;
-}
-
-h2 {
   color: #1a1a1a;
 }
 
