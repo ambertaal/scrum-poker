@@ -20,6 +20,7 @@
   const revealEstimates = ref<boolean>(false)
   const showNameDialog = ref<boolean>(false)
   const tempName = ref<string>('')
+  const showDeleteDialog = ref(false)
 
   const estimateOptions = ['?','☕','0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']
 
@@ -68,6 +69,16 @@
     onValue(revealRef, snapshot => revealEstimates.value = snapshot.val() ?? false)
   })
 
+  const onClickDelete = () => {
+    showDeleteDialog.value = true
+  }
+
+  const confirmDelete = async () => {
+    const playersRef = dbRef(db, `rooms/${roomId}/players`)
+    await set(playersRef, null)
+    showDeleteDialog.value = false
+  }
+
   const castEstimate = async (estimate: string) => {
     if (!username.value) {
       openNameDialog()
@@ -99,7 +110,14 @@
   <PageLayout>
     <v-card class="pa-4 estimation-cards" elevation="0">
 
-      <v-card-title class="text-h6">Room: {{ roomName }}</v-card-title>
+      <v-card-title class="text-h6">
+        Room: {{ roomName }}
+        <v-tooltip location="top" text="Verwijderen iedereen in deze kamer">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-delete" variant="plain" @click="onClickDelete"/>
+          </template>
+        </v-tooltip>
+      </v-card-title>
 
       <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
         <PlayerCard
@@ -139,6 +157,18 @@
     @submit="submitName"
     @update:name="val => tempName = val"
   />
+
+  <v-dialog v-model="showDeleteDialog" max-width="400">
+    <v-card>
+      <v-card-title class="text-h6">Clear room</v-card-title>
+      <v-card-text>Are you sure you want to delete all participants in the room?</v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn variant="text" @click="showDeleteDialog = false">Cancel</v-btn>
+        <v-btn color="red" variant="text" @click="confirmDelete">Delete</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>
@@ -149,9 +179,11 @@
 .dark p {
   color: #ffffff;
 }
+
 .estimation-cards {
   background-color: #f9f9f9;
 }
+
 .dark .estimation-cards {
   background-color: #121212;
 }
