@@ -1,12 +1,14 @@
+/// <reference types="vitest" />
+
 // Plugins
-import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import Fonts from 'unplugin-fonts/vite'
-import Layouts from 'vite-plugin-vue-layouts-next'
 import Vue from '@vitejs/plugin-vue'
+import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import Fonts from 'unplugin-fonts/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Layouts from 'vite-plugin-vue-layouts-next'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
-import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -15,6 +17,30 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    Vue({
+      template: { transformAssetUrls },
+    }),
+    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
+    Vuetify({
+      autoImport: true,
+      styles: {
+        configFile: 'src/styles/settings.scss',
+      },
+    }),
+    Components({
+      dts: 'src/components.d.ts',
+    }),
+    Fonts({
+      fontsource: {
+        families: [
+          {
+            name: 'Roboto',
+            weights: [100, 300, 400, 500, 700, 900],
+            styles: ['normal', 'italic'],
+          },
+        ],
+      },
+    }),
     VueRouter({
       dts: 'src/typed-router.d.ts',
     }),
@@ -32,30 +58,6 @@ export default defineConfig({
         enabled: true,
       },
       vueTemplate: true,
-    }),
-    Components({
-      dts: 'src/components.d.ts',
-    }),
-    Vue({
-      template: { transformAssetUrls },
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
-    Vuetify({
-      autoImport: true,
-      styles: {
-        configFile: 'src/styles/settings.scss',
-      },
-    }),
-    Fonts({
-      fontsource: {
-        families: [
-          {
-            name: 'Roboto',
-            weights: [100, 300, 400, 500, 700, 900],
-            styles: ['normal', 'italic'],
-          },
-        ],
-      },
     }),
   ],
   optimizeDeps: {
@@ -85,13 +87,13 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  css: {
-    preprocessorOptions: {
-      sass: {
-        api: 'modern-compiler',
-      },
-      scss: {
-        api: 'modern-compiler',
+  test: {
+    // ...
+    globals: true,
+    environment: 'jsdom',
+    server: {
+      deps: {
+        inline: ['vuetify'],
       },
     },
   },

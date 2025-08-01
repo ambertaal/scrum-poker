@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
 
-  const props = defineProps<{ name: string }>()
+  const { name } = defineProps<{ name: string }>()
 
   const emit = defineEmits<{
     (e: 'update:name', value: string): void
@@ -9,7 +9,7 @@
   }>()
 
   const username = computed({
-    get: () => props.name,
+    get: () => name,
     set: (val: string) => emit('update:name', val),
   })
 
