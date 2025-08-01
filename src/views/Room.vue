@@ -5,7 +5,7 @@
   import { ref as dbRef, get, onValue, set, update } from 'firebase/database'
   import { usePlayerStore } from '@/stores/player'
   import { storeToRefs } from 'pinia'
-import PageLayout from '@/layouts/PageLayout.vue'
+  import PageLayout from '@/layouts/PageLayout.vue'
 
   const playerStore = usePlayerStore()
   const { username } = storeToRefs(playerStore)
