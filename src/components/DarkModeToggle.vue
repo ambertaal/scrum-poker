@@ -7,7 +7,7 @@
 <template>
   <label class="switch">
     <input :checked="isDark" type="checkbox" @click="toggleDark()">
-    <span class="slider round"></span>
+    <span class="slider round" />
   </label>
 </template>
 
