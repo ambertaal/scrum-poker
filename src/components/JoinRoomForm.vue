@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
 
-  const props = defineProps<{ id: string }>()
+  const { id } = defineProps<{ id: string }>()
 
   const emit = defineEmits<{
     (e: 'update:id', value: string): void
@@ -9,7 +9,7 @@
   }>()
 
   const joinRoomId = computed({
-    get: () => props.id,
+    get: () => id,
     set: (val: string) => emit('update:id', val),
   })
 
