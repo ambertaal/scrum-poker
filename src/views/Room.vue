@@ -103,18 +103,28 @@
     })
     await update(dbRef(db), updates)
   }
+
+  const handleDelete = () => {
+    showDeleteDialog.value = false
+    confirmDelete()
+  }
+
+  const handleCancel = () => {
+    showDeleteDialog.value = false
+  }
+
 </script>
 
 <template>
   <Header />
   <PageLayout>
-    <v-card class="pa-4 estimation-cards" elevation="0">
+    <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
 
       <v-card-title class="text-h6">
         Room: {{ roomName }}
-        <v-tooltip location="top" text="Verwijderen iedereen in deze kamer">
-          <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-delete" variant="plain" @click="onClickDelete"/>
+        <v-tooltip location="top" text="Delete everyone in this room">
+          <template #activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-delete" variant="plain" @click="onClickDelete" />
           </template>
         </v-tooltip>
       </v-card-title>
@@ -158,17 +168,12 @@
     @update:name="val => tempName = val"
   />
 
-  <v-dialog v-model="showDeleteDialog" max-width="400">
-    <v-card>
-      <v-card-title class="text-h6">Clear room</v-card-title>
-      <v-card-text>Are you sure you want to delete all participants in the room?</v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="showDeleteDialog = false">Cancel</v-btn>
-        <v-btn color="red" variant="text" @click="confirmDelete">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <DeleteDialog
+    v-model="showDeleteDialog"
+    @cancel="handleCancel"
+    @submit="handleDelete"
+  />
+
 </template>
 
 <style scoped>

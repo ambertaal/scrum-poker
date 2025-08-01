@@ -3,7 +3,12 @@
 </script>
 
 <template>
-  <v-app-bar color="grey-darken-3" density="comfortable" flat>
+  <v-app-bar
+    color="grey-darken-3"
+    density="comfortable"
+    location="top"
+    scroll-behavior="hide"
+  >
     <v-container fluid>
       <v-row align="center" justify="space-between" no-gutters>
 
