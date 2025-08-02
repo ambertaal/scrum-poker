@@ -6,6 +6,8 @@
   import { usePlayerStore } from '@/stores/player'
   import { storeToRefs } from 'pinia'
   import PageLayout from '@/layouts/PageLayout.vue'
+  import ConfettiCanvas from '@/components/ConfettiCanvas.vue'
+  import { watch } from 'vue'
 
   const playerStore = usePlayerStore()
   const { username } = storeToRefs(playerStore)
@@ -21,6 +23,7 @@
   const showNameDialog = ref<boolean>(false)
   const tempName = ref<string>('')
   const showDeleteDialog = ref(false)
+  const showConfetti = ref(false);
 
   const estimateOptions = ['?','☕','0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']
 
@@ -104,6 +107,7 @@
     await update(dbRef(db), updates)
   }
 
+  // Delete dialog logic
   const handleDelete = () => {
     showDeleteDialog.value = false
     confirmDelete()
@@ -113,9 +117,29 @@
     showDeleteDialog.value = false
   }
 
+  // Confetti logic: show when revealed + all estimates match
+  watch([players, revealEstimates], ([newPlayers, shouldRevealEstimates]) => {
+    if (!shouldRevealEstimates) {
+      showConfetti.value = false;
+      return;
+    }
+
+    const allPlayersHaveEstimated = newPlayers.every(player => player.estimate != null);
+    const uniqueEstimates = [...new Set(newPlayers.map(player => player.estimate))];
+
+    showConfetti.value = allPlayersHaveEstimated && uniqueEstimates.length === 1;
+  });
+
+  // Hide confetti after 4 seconds
+  watch(showConfetti, isConfettiVisible => {
+    if (isConfettiVisible) {
+      setTimeout(() => showConfetti.value = false, 4000);
+    }
+  });
 </script>
 
 <template>
+  <ConfettiCanvas v-if="showConfetti" />
   <Header />
   <PageLayout>
     <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
@@ -165,7 +189,7 @@
     :name="tempName"
     @cancel="cancelName"
     @submit="submitName"
-    @update:name="val => tempName = val"
+    @update:name="(newPlayerName: string) => tempName = newPlayerName"
   />
 
   <DeleteDialog

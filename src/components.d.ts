@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppIcon: typeof import('./components/AppIcon.vue')['default']
+    ConfettiCanvas: typeof import('./components/ConfettiCanvas.vue')['default']
     CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     Darkmodeswitch: typeof import('./components/DarkModeToggle.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
