@@ -145,12 +145,22 @@
     <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
 
       <v-card-title class="text-h6">
-        Room: {{ roomName }}
-        <v-tooltip location="top" text="Delete everyone in this room">
-          <template #activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-delete" variant="plain" @click="onClickDelete" />
-          </template>
-        </v-tooltip>
+        <div class="text-center">
+          <v-btn
+            prepend-icon="mdi-share-variant"
+            variant="text"
+          >
+            <template #prepend>
+              <v-icon color="success" />
+            </template>
+            <h3>Room: {{ roomName }}</h3>
+          </v-btn>
+          <v-tooltip location="top" text="Delete everyone in this room">
+            <template #activator="{ props }">
+              <v-btn v-bind="props" icon="mdi-delete" variant="text" @click="onClickDelete" />
+            </template>
+          </v-tooltip>
+        </div>
       </v-card-title>
 
       <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
