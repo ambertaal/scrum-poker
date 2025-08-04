@@ -23,6 +23,7 @@
   const showNameDialog = ref<boolean>(false)
   const tempName = ref<string>('')
   const showDeleteDialog = ref(false)
+  const showShareDialog = ref(false);
   const showConfetti = ref(false);
 
   const estimateOptions = ['?','☕','0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']
@@ -72,16 +73,6 @@
     onValue(revealRef, snapshot => revealEstimates.value = snapshot.val() ?? false)
   })
 
-  const onClickDelete = () => {
-    showDeleteDialog.value = true
-  }
-
-  const confirmDelete = async () => {
-    const playersRef = dbRef(db, `rooms/${roomId}/players`)
-    await set(playersRef, null)
-    showDeleteDialog.value = false
-  }
-
   const castEstimate = async (estimate: string) => {
     if (!username.value) {
       openNameDialog()
@@ -113,8 +104,27 @@
     confirmDelete()
   }
 
+  const confirmDelete = async () => {
+    const playersRef = dbRef(db, `rooms/${roomId}/players`)
+    await set(playersRef, null)
+    showDeleteDialog.value = false
+  }
+
   const handleCancel = () => {
     showDeleteDialog.value = false
+  }
+
+  const onClickDelete = () => {
+    showDeleteDialog.value = true
+  }
+
+  // Handle Share button click
+  const onClickShare = () => {
+    showShareDialog.value = true;
+  }
+
+  const handleShareDone = () => {
+    showShareDialog.value = false;
   }
 
   // Confetti logic: show when revealed + all estimates match
@@ -149,6 +159,7 @@
           <v-btn
             prepend-icon="mdi-share-variant"
             variant="text"
+            @click="onClickShare"
           >
             <template #prepend>
               <v-icon color="success" />
@@ -206,6 +217,12 @@
     v-model="showDeleteDialog"
     @cancel="handleCancel"
     @submit="handleDelete"
+  />
+
+  <ShareDialog
+    v-model="showShareDialog"
+    :room-name="roomName"
+    @done="handleShareDone"
   />
 
 </template>

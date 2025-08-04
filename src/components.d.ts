@@ -23,5 +23,6 @@ declare module 'vue' {
     PlayerCard: typeof import('./components/PlayerCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShareDialog: typeof import('./components/ShareDialog.vue')['default']
   }
 }
