@@ -246,6 +246,30 @@
   border: none;
 }
 
+.v-btn.v-btn--variant-outlined:focus-visible {
+  outline: 2px solid #0000ff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .v-btn.v-btn--variant-outlined:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.v-btn:focus-visible {
+  outline: 2px solid #0000ff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .v-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
 .estimation-cards {
   background-color: #f9f9f9;
 }

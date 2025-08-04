@@ -17,6 +17,8 @@
     emit('submit')
   }
 
+  const isDisabled = computed(() => joinRoomId.value.trim().length < 6)
+
 </script>
 
 <template>
@@ -29,10 +31,11 @@
     label="Room number"
     outlined
     placeholder="e.g. 123456"
+    :rules="[v => v.length >= 6 || 'Room number must be at least 6 characters']"
     @keydown.enter="handleSubmit"
   />
 
-  <v-btn block variant="outlined" @click="handleSubmit">
+  <v-btn block :disabled="isDisabled" variant="outlined" @click="handleSubmit">
     Join Room
   </v-btn>
 </template>
@@ -59,5 +62,23 @@ h3 {
   color: rgb(255, 255, 255) !important;
   background-color: rgba(255, 255, 255, 0.379);
   border: none;
+}
+
+.dark .v-btn.v-btn--variant-outlined:disabled {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
+}
+
+.v-btn.v-btn--variant-outlined:focus-visible {
+  outline: 2px solid #0000ff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .v-btn.v-btn--variant-outlined:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 8px;
 }
 </style>

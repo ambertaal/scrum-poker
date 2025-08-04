@@ -16,6 +16,12 @@
   const handleSubmit = () => {
     emit('submit')
   }
+
+  const nameRules = [
+    (v: string) => !!v.trim() || 'Please enter at least one letter',
+  ]
+
+  const isDisabled = computed(() => username.value.trim().length === 0)
 </script>
 
 <template>
@@ -28,10 +34,17 @@
     label="Display Name"
     outlined
     placeholder="e.g. Display Room"
+    :rules="nameRules"
     @keydown.enter="handleSubmit"
   />
 
-  <v-btn block color="deep-purple-accent-4" large @click="handleSubmit">
+  <v-btn
+    block
+    color="deep-purple-accent-4"
+    :disabled="isDisabled"
+    large
+    @click="handleSubmit"
+  >
     Create Room
   </v-btn>
 </template>
@@ -46,11 +59,30 @@ h2 {
   color: #ffffff;
 }
 
+
 .name-input {
   color: #1a1a1a;
 }
 
 .dark .name-input {
   color: #ffffff;
+}
+
+.dark .v-btn:disabled {
+  color: rgb(255, 255, 255) !important;
+  background-color: #7C4DFF !important;
+  border: none;
+}
+
+.v-btn:focus-visible {
+  outline: 2px solid #0000ff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .v-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 8px;
 }
 </style>
