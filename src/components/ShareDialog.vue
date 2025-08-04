@@ -39,20 +39,21 @@
     <v-card>
       <v-card-title class="text-h6">Share room</v-card-title>
       <v-card-text>
-        Invite people to join the room <strong>{{ roomName }}</strong><br />
-        <p class="mt-4">{{ roomUrl }}</p>
-        <v-btn
+        Invite people to join the room.<br />
+        <v-text-field
+          append-icon="mdi-content-copy"
+          :append-inner-icon="copied ? 'mdi-check' : ''"
           class="mt-4"
-          prepend-icon="mdi-content-copy"
-          variant="text"
-          @click="copyUrl"
-        >
-          {{ copied ? 'Copied!' : 'Copy URL to clipboard' }}
-        </v-btn>
+          hide-details
+          :model-value="roomUrl"
+          readonly
+          variant="outlined"
+          @click:append="copyUrl"
+        />
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="deep-purple-accent-4" variant="flat" @click="handleShareDone">Done</v-btn>
+        <v-btn color="deep-purple-accent-4" variant="flat" @click="handleShareDone">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
