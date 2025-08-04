@@ -32,7 +32,7 @@
     @keydown.enter="handleSubmit"
   />
 
-  <v-btn block color="deep-purple-accent-4" variant="outlined" @click="handleSubmit">
+  <v-btn block variant="outlined" @click="handleSubmit">
     Join Room
   </v-btn>
 </template>
@@ -53,5 +53,11 @@ h3 {
 
 .dark .roomnumber-input {
   color: #ffffff;
+}
+
+.dark .v-btn.v-btn--variant-outlined {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
 }
 </style>

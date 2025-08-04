@@ -187,8 +187,6 @@
       <v-row class="my-4" justify="center">
         <v-col cols="auto">
           <v-btn
-            class="contrast-fix"
-            color="deep-purple-accent-4"
             :disabled="!hasEstimates"
             variant="outlined"
             @click="resetEstimates"
@@ -234,6 +232,18 @@
 
 .dark p {
   color: #ffffff;
+}
+
+.dark .v-btn.v-btn--variant-outlined {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
+}
+
+.dark .v-btn.v-btn--variant-outlined:disabled {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
 }
 
 .estimation-cards {
