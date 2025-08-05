@@ -26,7 +26,7 @@
   const showShareDialog = ref(false);
   const showConfetti = ref(false);
 
-  const estimateOptions = ['?','☕','0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100']
+  const estimateOptions = ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?','☕']
 
   const hasEstimates = computed(() => players.value.some(p => p.estimate != null))
 
@@ -193,7 +193,7 @@
           >Delete estimates</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn color="deep-purple-accent-4" @click="toggleRevealEstimates">
+          <v-btn color="deep-purple-accent-4" :disabled="!hasEstimates" @click="toggleRevealEstimates">
             {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
           </v-btn>
         </v-col>

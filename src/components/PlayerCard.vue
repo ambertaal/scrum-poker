@@ -8,8 +8,8 @@
       <div class="flip-card-inner">
         <div class="flip-card-front">
           <v-card class="d-flex align-center justify-center" color="blue-lighten-4" height="140" width="100">
-            <span v-if="!estimate">?</span>
-            <v-icon v-else>mdi-cards</v-icon>
+            <span v-if="!estimate">🤔</span>
+            <span v-if="estimate">✅</span>
           </v-card>
         </div>
         <div class="flip-card-back">
