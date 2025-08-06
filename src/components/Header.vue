@@ -4,8 +4,9 @@
 
 <template>
   <v-app-bar
-    color="grey-darken-3"
+    class="gradient-header text-white"
     density="comfortable"
+    :elevation="0"
     location="top"
     scroll-behavior="hide"
   >
@@ -15,7 +16,10 @@
         <!-- Logo / Title -->
         <v-col class="d-flex align-center">
           <router-link class="text-white text-decoration-none text-h6 font-weight-bold" to="/">
-            Planning poker
+            <div class="d-flex align-center">
+              <AppIcon class="mr-2" />
+              <h2 class="mb-0">Planning poker</h2>
+            </div>
           </router-link>
         </v-col>
 
@@ -30,14 +34,13 @@
 </template>
 
 <style scoped>
+.gradient-header {
+  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+}
 .text-decoration-none {
   text-decoration: none;
 }
 .text-decoration-none:hover {
   text-decoration: none;
-}
-
-.v-app-bar {
-  border-bottom: 1px solid #444;
 }
 </style>

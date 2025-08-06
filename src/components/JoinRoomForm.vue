@@ -35,7 +35,13 @@
     @keydown.enter="handleSubmit"
   />
 
-  <v-btn block :disabled="isDisabled" variant="outlined" @click="handleSubmit">
+  <v-btn
+    block
+    class="secondary-btn"
+    :disabled="isDisabled"
+    variant="outlined"
+    @click="handleSubmit"
+  >
     Join Room
   </v-btn>
 </template>
@@ -80,5 +86,9 @@ h3 {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
   border-radius: 8px;
+}
+
+.secondary-btn {
+  border-radius: 9999px;
 }
 </style>

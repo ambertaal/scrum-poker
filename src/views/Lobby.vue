@@ -78,8 +78,6 @@
 <template>
   <Header />
   <PageLayout>
-    <AppIcon />
-
     <CreateRoomForm
       :name="username"
       @submit="createRoom"

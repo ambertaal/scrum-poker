@@ -1,10 +1,10 @@
 <template>
-  <v-icon class="mb-4" size="64">mdi-cards-playing-outline</v-icon>
+  <v-icon size="32">mdi-cards-playing-outline</v-icon>
 </template>
 
 <style scoped>
 .v-icon {
-  color: #424242;
+  color: #ffffff;
 }
 .dark .v-icon {
   color: #ffffff;
