@@ -10,7 +10,7 @@
 
   const username = computed({
     get: () => name,
-    set: (val: string) => emit('update:name', val),
+    set: (newName: string) => emit('update:name', newName),
   })
 
   const handleSubmit = () => {
@@ -18,7 +18,7 @@
   }
 
   const nameRules = [
-    (v: string) => !!v.trim() || 'Please enter at least one letter',
+    (input: string) => !!input.trim() || 'Please enter at least one letter',
   ]
 
   const isDisabled = computed(() => username.value.trim().length === 0)

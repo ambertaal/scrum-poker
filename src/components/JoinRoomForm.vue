@@ -10,7 +10,7 @@
 
   const joinRoomId = computed({
     get: () => id,
-    set: (val: string) => emit('update:id', val),
+    set: (newRoomId: string) => emit('update:id', newRoomId),
   })
 
   const handleSubmit = () => {

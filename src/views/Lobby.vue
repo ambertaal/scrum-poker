@@ -81,7 +81,7 @@
     <CreateRoomForm
       :name="username"
       @submit="createRoom"
-      @update:name="val => username = val"
+      @update:name="newName => username = newName"
     />
 
     <DividerWithLabel>or</DividerWithLabel>
@@ -89,7 +89,7 @@
     <JoinRoomForm
       :id="joinRoomId"
       @submit="enterRoom"
-      @update:id="val => joinRoomId = val"
+      @update:id="newRoomId => joinRoomId = newRoomId"
     />
 
     <NameDialog
@@ -97,7 +97,7 @@
       :name="tempName"
       @cancel="cancelName"
       @submit="submitName"
-      @update:name="val => tempName = val"
+      @update:name="newTempName => tempName = newTempName"
     />
   </PageLayout>
 </template>

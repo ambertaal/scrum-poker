@@ -15,12 +15,12 @@
 
   const showNameDialog = computed({
     get: () => modelValue,
-    set: (val: boolean) => emit('update:modelValue', val),
+    set: (isVisible: boolean) => emit('update:modelValue', isVisible),
   })
 
   const tempName = computed({
     get: () => name,
-    set: (val: string) => emit('update:name', val),
+    set: (newTempName: string) => emit('update:name', newTempName),
   })
 
   const handleSubmit = () => {
