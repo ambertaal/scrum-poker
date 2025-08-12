@@ -34,6 +34,10 @@
 </template>
 
 <style scoped>
+h2 {
+  color: #ffffff;
+}
+
 .gradient-header {
   background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
 }
@@ -43,4 +47,5 @@
 .text-decoration-none:hover {
   text-decoration: none;
 }
+
 </style>

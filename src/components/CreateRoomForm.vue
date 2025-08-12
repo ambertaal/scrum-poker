@@ -51,40 +51,7 @@
 
 <style scoped>
 h2 {
-  font-size: 1.5rem;
   color: #1a1a1a;
-}
-
-.dark h2 {
-  color: #ffffff;
-}
-
-
-.name-input {
-  color: #1a1a1a;
-}
-
-.dark .name-input {
-  color: #ffffff;
-}
-
-.primary-btn {
-  background-image: linear-gradient(40deg, #4c1f82, #8c1d82 14%, #cf0220 50%, #ffb15c);
-  border-radius: 9999px;
-  box-shadow: 0 2px 6px #0000004d;
-  color: white;
-  font-weight: 500;
-  text-transform: none;
-}
-
-.primary-btn:hover {
-  filter: brightness(1.1);
-}
-
-.primary-btn:disabled {
-  filter: grayscale(0.5);
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 .dark .v-btn:disabled {

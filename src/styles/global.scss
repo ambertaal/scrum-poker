@@ -3,12 +3,44 @@ html, body, #app {
   margin: 0;
 }
 
-/* Card styles */
-.v-card {
-  border-radius: 12px;
+/* Titels */
+h2 {
+  font-size: 1.5rem;
 }
 
-.dark .v-card {
+h3 {
+  font-size: 1.125rem;
+}
+
+h2, h3 {
+  color: #1a1a1a;
+}
+
+.dark h2,
+.dark h3 {
+  color: #ffffff;
+}
+
+/* Algemeen voor input veld teksten */
+.name-input,
+.roomnumber-input {
+  color: #1a1a1a;
+}
+
+.dark .name-input,
+.dark .roomnumber-input {
+  color: #ffffff;
+}
+
+/* Card styles */
+.v-card,
+.estimation-cards {
+  border-radius: 12px;
+  background-color: #f9f9f9;
+}
+
+.dark .v-card,
+.dark .estimation-cards {
   background-color: #121212;
 }
 
@@ -39,4 +71,30 @@ html, body, #app {
 
 .secondary-btn {
   border-radius: 9999px;
+}
+
+.dark .v-btn.v-btn--variant-outlined {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
+}
+
+.dark .v-btn.v-btn--variant-outlined:disabled {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgba(255, 255, 255, 0.379);
+  border: none;
+}
+
+.v-btn.v-btn--variant-outlined:focus-visible,
+.v-btn:focus-visible {
+  outline: 2px solid #0000ff;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.dark .v-btn.v-btn--variant-outlined:focus-visible,
+.dark .v-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  border-radius: 8px;
 }
