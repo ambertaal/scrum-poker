@@ -20,6 +20,7 @@ declare module 'vue' {
     Header: typeof import('./components/Header.vue')['default']
     HeaderV2: typeof import('./components/HeaderV2.vue')['default']
     Hero: typeof import('./components/Hero.vue')['default']
+    ImageContent: typeof import('./components/ImageContent.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
     NameDialog: typeof import('./components/NameDialog.vue')['default']
     PageLayout: typeof import('./layouts/PageLayout.vue')['default']

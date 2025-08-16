@@ -22,7 +22,6 @@
   const joinDialog = ref(false)
   const displayNameField = ref()
 
-  // UI demo data
   const featureImg = ref('../public/landscape-placeholder.svg')
 
   const focusName = () => {
@@ -145,29 +144,11 @@
       </v-row>
     </v-container>
 
-    <!-- Feature: Real-Time voting -->
-    <v-container class="mt-14">
-      <v-row class="align-center" no-gutters>
-        <v-col class="pr-md-8 mt-6 mt-md-0" cols="12" md="6">
-          <v-img
-            alt="Real-time estimation"
-            class="rounded-lg elevation-6"
-            cover
-            height="320"
-            :src="featureImg"
-          />
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-sheet class="rounded-xl pa-8 glass">
-            <h3 class="text-h5 text-sm-h4">Real-Time voting and estimation</h3>
-            <p class="text-body-1 text-medium-emphasis mt-2">
-              Use our user-friendly interface to create rooms, invite teammates, and estimate with Fibonacci. Votes stay hidden until reveal, making planning sessions quick and fair.
-            </p>
-          </v-sheet>
-        </v-col>
-      </v-row>
-    </v-container>
-
+    <ImageContent
+      description="Use our user-friendly interface to create rooms, invite teammates, and estimate with Fibonacci"  
+      :image="featureImg"
+      title="Real-Time voting and estimation"
+    />
     <Footer />
   </div>
 </template>
