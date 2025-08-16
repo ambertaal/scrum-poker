@@ -21,6 +21,13 @@ h2, h3 {
   color: #ffffff;
 }
 
+p {
+  color:#1a1a1a;
+}
+
+.dark p {
+  color: #ffffff !important;
+}
 /* Algemeen voor input veld teksten */
 .name-input,
 .roomnumber-input {
@@ -97,4 +104,8 @@ h2, h3 {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
   border-radius: 8px;
+}
+
+.v-footer {
+  padding: 0 !important
 }

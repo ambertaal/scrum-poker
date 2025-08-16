@@ -37,11 +37,19 @@
 
   <v-btn
     block
-    class="secondary-btn"
+    class="gradient-btn"
     :disabled="isDisabled"
+    rounded="pill"
     variant="outlined"
     @click="handleSubmit"
   >
     Join Room
   </v-btn>
 </template>
+
+<style scoped>
+.gradient-btn {
+  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  color: white !important;
+}
+</style>

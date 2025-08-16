@@ -150,7 +150,7 @@
 
 <template>
   <ConfettiCanvas v-if="showConfetti" />
-  <Header />
+  <HeaderV2 />
   <PageLayout>
     <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
 
@@ -224,6 +224,7 @@
     @done="handleShareDone"
   />
 
+  <Footer />
 </template>
 
 <style scoped>
