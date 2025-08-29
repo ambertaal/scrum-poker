@@ -149,82 +149,80 @@
 </script>
 
 <template>
-  <ConfettiCanvas v-if="showConfetti" />
-  <HeaderV2 />
-  <PageLayout>
-    <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
+  <div class="main-content">
+    <ConfettiCanvas v-if="showConfetti" />
+    <PageLayout>
+      <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
+        <v-card-title class="text-h6">
+          <div class="text-center">
+            <v-btn
+              prepend-icon="mdi-share-variant"
+              variant="text"
+              @click="onClickShare"
+            >
+              <template #prepend>
+                <v-icon color="success" />
+              </template>
+              <h3>Room: {{ roomName }}</h3>
+            </v-btn>
+            <v-tooltip location="top" text="Delete everyone in this room">
+              <template #activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-delete" variant="text" @click="onClickDelete" />
+              </template>
+            </v-tooltip>
+          </div>
+        </v-card-title>
+        <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
+          <PlayerCard
+            v-for="(player, index) in players"
+            :key="index"
+            :estimate="player.estimate"
+            :name="player.name"
+            :reveal="revealEstimates"
+          />
+        </v-row>
 
-      <v-card-title class="text-h6">
-        <div class="text-center">
-          <v-btn
-            prepend-icon="mdi-share-variant"
-            variant="text"
-            @click="onClickShare"
-          >
-            <template #prepend>
-              <v-icon color="success" />
-            </template>
-            <h3>Room: {{ roomName }}</h3>
-          </v-btn>
-          <v-tooltip location="top" text="Delete everyone in this room">
-            <template #activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-delete" variant="text" @click="onClickDelete" />
-            </template>
-          </v-tooltip>
-        </div>
-      </v-card-title>
+        <v-row class="my-4" justify="center">
+          <v-col cols="auto">
+            <v-btn
+              class="secondary-btn"
+              :disabled="!hasEstimates"
+              variant="outlined"
+              @click="resetEstimates"
+            >Delete estimates</v-btn>
+          </v-col>
+          <v-col cols="auto">
+            <v-btn class="primary-btn" :disabled="!hasEstimates" @click="toggleRevealEstimates">
+              {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
+            </v-btn>
+          </v-col>
+        </v-row>
 
-      <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
-        <PlayerCard
-          v-for="(player, index) in players"
-          :key="index"
-          :estimate="player.estimate"
-          :name="player.name"
-          :reveal="revealEstimates"
-        />
-      </v-row>
+        <EstimateOptions :options="estimateOptions" @select="castEstimate" />
+      </v-card>
 
-      <v-row class="my-4" justify="center">
-        <v-col cols="auto">
-          <v-btn
-            class="secondary-btn"
-            :disabled="!hasEstimates"
-            variant="outlined"
-            @click="resetEstimates"
-          >Delete estimates</v-btn>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn class="primary-btn" :disabled="!hasEstimates" @click="toggleRevealEstimates">
-            {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
-          </v-btn>
-        </v-col>
-      </v-row>
 
-      <EstimateOptions :options="estimateOptions" @select="castEstimate" />
-    </v-card>
-  </PageLayout>
+      <NameDialog
+        v-model="showNameDialog"
+        :name="tempName"
+        @cancel="cancelName"
+        @submit="submitName"
+        @update:name="(newPlayerName: string) => tempName = newPlayerName"
+      />
 
-  <NameDialog
-    v-model="showNameDialog"
-    :name="tempName"
-    @cancel="cancelName"
-    @submit="submitName"
-    @update:name="(newPlayerName: string) => tempName = newPlayerName"
-  />
+      <DeleteDialog
+        v-model="showDeleteDialog"
+        @cancel="handleCancel"
+        @submit="handleDelete"
+      />
 
-  <DeleteDialog
-    v-model="showDeleteDialog"
-    @cancel="handleCancel"
-    @submit="handleDelete"
-  />
-
-  <ShareDialog
-    v-model="showShareDialog"
-    :room-name="roomName"
-    @done="handleShareDone"
-  />
-
-  <Footer />
+      <ShareDialog
+        v-model="showShareDialog"
+        :room-name="roomName"
+        @done="handleShareDone"
+      />
+    </PageLayout>
+  </div>
 </template>
 
 <style scoped>
@@ -235,5 +233,6 @@
 .dark p {
   color: #ffffff;
 }
+
 
 </style>

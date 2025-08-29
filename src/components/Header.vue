@@ -3,49 +3,76 @@
 </script>
 
 <template>
-  <v-app-bar
-    class="gradient-header text-white"
-    density="comfortable"
-    :elevation="0"
-    location="top"
-    scroll-behavior="hide"
-  >
-    <v-container fluid>
-      <v-row align="center" justify="space-between" no-gutters>
+  <!-- Top gradient bar -->
+  <div class="top-gradient" />
 
-        <!-- Logo / Title -->
-        <v-col class="d-flex align-center">
-          <router-link class="text-white text-decoration-none text-h6 font-weight-bold" to="/">
-            <div class="d-flex align-center">
-              <AppIcon class="mr-2" />
-              <h2 class="mb-0">Planning poker</h2>
-            </div>
-          </router-link>
-        </v-col>
+  <!-- Header -->
+  <v-container class="pt-8">
+    <v-row align="center" justify="space-between">
+      <v-col class="d-flex align-center" cols="auto">
+        <router-link class="d-flex align-center text-decoration-none" to="/">
+          <div class="logo-chip mr-3">
+            <v-icon color="white" icon="mdi-cards-playing-outline" size="20" />
+          </div>
+          <h2 class="mb-0">Planning Poker</h2>
+        </router-link>
+      </v-col>
 
-        <!-- Right side: dark mode toggle -->
-        <v-col class="d-flex justify-end align-center" cols="auto">
-          <DarkModeToggle class="mr-2" />
-        </v-col>
-
-      </v-row>
-    </v-container>
-  </v-app-bar>
+      <v-col class="d-flex align-center ga-2" cols="auto">
+        <DarkModeToggle />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style scoped>
-h2 {
+.main-content {
+  background-color: #f9f9f9;
+}
+
+.dark .main-content {
+  background-color: #121212;
+}
+
+.dark h2 {
   color: #ffffff;
 }
 
-.gradient-header {
+.top-gradient {
+  height: 4px;
+  background: linear-gradient(90deg, #f43f5e, #a855f7, #f59e0b);
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+}
+
+.logo-chip {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.25);
+}
+
+.gradient-btn {
+  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  color: white !important;
+}
+.gradient-slab {
   background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
 }
-.text-decoration-none {
-  text-decoration: none;
+.footer-gradient {
+  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
 }
-.text-decoration-none:hover {
+.max-w-400{ max-width: 400px; }
+
+:deep(a.text-white) {
   text-decoration: none;
 }
 
+:deep(a.text-white:hover) {
+  text-decoration: none;
+}
 </style>

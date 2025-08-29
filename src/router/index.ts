@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import Home from '@/views/Home.vue'
-import Lobby from '@/views/Lobby.vue'
 import Room from '@/views/Room.vue'
 
 const routes = [
@@ -8,11 +7,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-  },
-  {
-    path: '/lobby',
-    name: 'Lobby',
-    component: Lobby,
   },
   {
     path: '/room/:roomId',

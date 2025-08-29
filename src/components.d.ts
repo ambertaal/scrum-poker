@@ -18,7 +18,7 @@ declare module 'vue' {
     EstimateOptions: typeof import('./components/EstimateOptions.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
-    HeaderV2: typeof import('./components/HeaderV2.vue')['default']
+    HeaderV2: typeof import('./components/Header.vue')['default']
     Hero: typeof import('./components/Hero.vue')['default']
     ImageContent: typeof import('./components/ImageContent.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']

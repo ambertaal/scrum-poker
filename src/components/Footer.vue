@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="mt-16">
+  <v-footer app>
     <v-sheet class="footer-gradient py-10" width="100%">
       <v-container>
         <v-row class="mb-2">
