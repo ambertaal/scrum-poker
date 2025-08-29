@@ -3,13 +3,13 @@
     <Header />
 
     <v-main class="page-content">
-      <v-container fluid>
+      <v-container class="py-0">
         <v-row align="center" justify="center">
           <v-col
             class="text-center"
             cols="12"
             lg="12"
-            md="8"
+            md="12"
             sm="12"
           >
             <slot />
@@ -26,11 +26,13 @@
 .page-layout {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .page-content {
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .v-container {
@@ -38,6 +40,6 @@
 }
 
 .dark .v-container {
-  background-color: #121212;
+  background-color: #1e2341;
 }
 </style>

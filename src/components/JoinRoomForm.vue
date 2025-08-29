@@ -46,5 +46,3 @@
     Join Room
   </v-btn>
 </template>
-
-

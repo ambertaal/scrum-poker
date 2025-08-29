@@ -18,6 +18,7 @@ declare module 'vue' {
     EstimateOptions: typeof import('./components/EstimateOptions.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    Headerv2: typeof import('./components/Header.vue')['default']
     HeaderV2: typeof import('./components/Header.vue')['default']
     Hero: typeof import('./components/Hero.vue')['default']
     ImageContent: typeof import('./components/ImageContent.vue')['default']
@@ -28,5 +29,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShareDialog: typeof import('./components/ShareDialog.vue')['default']
+    TextWithImage: typeof import('./components/textWithImage.vue')['default']
   }
 }

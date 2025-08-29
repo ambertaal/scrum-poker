@@ -1,5 +1,5 @@
 <template>
-  <v-footer app>
+  <v-footer class="pa-0">
     <v-sheet class="footer-gradient py-10" width="100%">
       <v-container>
         <v-row class="mb-2">
@@ -44,4 +44,7 @@
 :deep(a.text-white:hover) {
   text-decoration: none;
 }
+
+.v-footer { margin: 0 !important; }
+
 </style>

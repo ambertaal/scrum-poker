@@ -233,6 +233,4 @@
 .dark p {
   color: #ffffff;
 }
-
-
 </style>

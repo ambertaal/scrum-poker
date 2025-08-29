@@ -3,13 +3,15 @@ html, body, #app {
   margin: 0;
 }
 
+body { margin: 0}
+
 /* Main content */
 .main-content {
   background-color: #f9f9f9;
 }
 
 .dark .main-content {
-  background-color: #121212;
+  background-color: #1e2341;
 }
 
 /* Titels */
@@ -49,15 +51,13 @@ p {
 }
 
 /* Card styles */
-.v-card,
-.estimation-cards {
+.v-card {
   border-radius: 12px;
   background-color: #f9f9f9;
 }
 
-.dark .v-card,
-.dark .estimation-cards {
-  background-color: #121212;
+.dark .v-card {
+  background-color: #1e2341;
 }
 
 .dark .v-card-title,
@@ -92,13 +92,11 @@ p {
 .dark .v-btn.v-btn--variant-outlined {
   color: rgb(255, 255, 255) !important;
   background-color: rgba(255, 255, 255, 0.379);
-  border: none;
 }
 
 .dark .v-btn.v-btn--variant-outlined:disabled {
   color: rgb(255, 255, 255) !important;
   background-color: rgba(255, 255, 255, 0);
-  border: none;
 }
 
 .v-btn.v-btn--variant-outlined:focus-visible,
