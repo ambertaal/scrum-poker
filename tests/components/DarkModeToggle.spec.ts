@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import DarkModeToggle from '../src/components/DarkModeToggle.vue'
+import DarkModeToggle from '../../src/components/DarkModeToggle.vue'
 
 describe('DarkModeToggle component', () => {
   let wrapper: VueWrapper;

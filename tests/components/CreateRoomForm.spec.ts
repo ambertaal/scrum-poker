@@ -1,31 +1,31 @@
 import { afterEach, describe, expect, it, test } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import JoinRoomForm from '../src/components/JoinRoomForm.vue'
+import CreateRoomForm from '../../src/components/CreateRoomForm.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { ComponentPublicInstance } from 'vue'
 
-interface JoinRoomFormProps {
-  id: string
+interface CreateRoomFormProps {
+  name: string
 }
 
-type JoinRoomFormComponent = ComponentPublicInstance<JoinRoomFormProps>;
+type CreateRoomFormComponent = ComponentPublicInstance<CreateRoomFormProps>;
 
 const vuetify = createVuetify({
   components,
   directives,
 })
 
-describe('JoinRoomForm component', () => {
-  let wrapper: VueWrapper<JoinRoomFormComponent>
+describe('CreateRoomForm component', () => {
+  let wrapper: VueWrapper<CreateRoomFormComponent>
 
   const defaultProps = {
-    id: '123456',
+    name: 'amber',
   }
 
-  const mountJoinRoomForm = (props = {}) => {
-    return mount(JoinRoomForm, {
+  const mountCreateRoomForm = (props = {}) => {
+    return mount(CreateRoomForm, {
       props: { ...defaultProps, ...props },
       global: {
         plugins: [vuetify],
@@ -38,34 +38,34 @@ describe('JoinRoomForm component', () => {
   });
 
   test('renders the title', () => {
-    wrapper = mountJoinRoomForm()
-    expect(wrapper.find('h3').text()).toBe('Enter existing room')
+    wrapper = mountCreateRoomForm()
+    expect(wrapper.find('h2').text()).toBe('Create a new room')
   })
 
   test('binds the input value to the name prop', async () => {
-    wrapper = mountJoinRoomForm()
+    wrapper = mountCreateRoomForm()
 
     const input = wrapper.find('input')
-    expect((input.element as HTMLInputElement).value).toBe('123456')
+    expect((input.element as HTMLInputElement).value).toBe('amber')
   })
 
-  test('emits update:id when input changes', async () => {
-    wrapper = mountJoinRoomForm({ id: '' })
+  test('emits update:name when input changes', async () => {
+    wrapper = mountCreateRoomForm({ name: '' })
 
     const input = wrapper.find('input')
-    await input.setValue('654321')
-    expect(wrapper.emitted('update:id')).toBeTruthy()
-    expect(wrapper.emitted('update:id')![0]).toEqual(['654321'])
+    await input.setValue('Bob')
+    expect(wrapper.emitted('update:name')).toBeTruthy()
+    expect(wrapper.emitted('update:name')![0]).toEqual(['Bob'])
   })
 
   test('emits submit when button is clicked', async () => {
-    wrapper = mountJoinRoomForm({ id: '123456' })
+    wrapper = mountCreateRoomForm({ name: 'amber' }) // not disabled
     await wrapper.find('button').trigger('click')
     expect(wrapper.emitted('submit')).toBeTruthy()
   })
 
   it('emits submit when enter is pressed in input', async () => {
-    wrapper = mountJoinRoomForm({ id: '123456' })
+    wrapper = mountCreateRoomForm({ name: '' })
 
     const input = wrapper.find('input')
     await input.trigger('keydown.enter')

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import PlayerCard from '../src/components/PlayerCard.vue'
+import PlayerCard from '../../src/components/PlayerCard.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'

@@ -143,7 +143,7 @@
         </v-row>
       </v-container>
 
-      <ImageContent
+      <ImageTextSection
         class="mb-8"
         description="Use our user-friendly interface to create rooms, invite teammates, and estimate with Fibonacci"
         :image="featureImg"

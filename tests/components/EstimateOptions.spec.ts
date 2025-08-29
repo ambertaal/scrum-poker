@@ -4,7 +4,7 @@ import { ComponentPublicInstance } from 'vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import EstimateOptions from '../src/components/EstimateOptions.vue'
+import EstimateOptions from '../../src/components/EstimateOptions.vue'
 
 interface EstimateOptionsProps {
   options: readonly string[];
