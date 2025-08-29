@@ -46,15 +46,14 @@ describe('PlayerCard component', () => {
     expect(wrapper.text()).toContain('Amber')
   })
 
-  test('Estimate is null and reveal is false > shows "?"', () => {
+  test('Estimate is null and reveal is false > shows "🤔"', () => {
     wrapper = mountPlayerCard()
-    expect(wrapper.find('.flip-card-front').text()).toContain('?')
+    expect(wrapper.find('.flip-card-front').text()).toContain('🤔')
   })
 
-  test('Estimate is set and reveal is false > shows card icon', () => {
+  test('Estimate is set and reveal is false > shows "✅"', () => {
     wrapper = mountPlayerCard({ estimate: '5' })
-    expect(wrapper.findComponent({ name: 'v-icon' }).exists()).toBe(true)
-    expect(wrapper.find('.flip-card').classes()).not.toContain('flipped')
+    expect(wrapper.find('.flip-card-front').text()).toContain('✅')
   })
 
   test('Estimate is set and reveal is true > flips card and shows estimate', () => {

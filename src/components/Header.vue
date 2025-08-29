@@ -34,6 +34,8 @@
   border-radius: 12px;
   background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
   box-shadow: 0 8px 24px rgba(244, 63, 94, 0.25);
+}
+
 .main-content {
   background-color: #f9f9f9;
 }
@@ -52,14 +54,6 @@
 }
 .gradient-slab {
   background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
-}
-.footer-gradient {
-.top-gradient {
-  height: 4px;
-  background: linear-gradient(90deg, #f43f5e, #a855f7, #f59e0b);
-  position: fixed;
-  inset: 0 0 auto 0;
-  z-index: 10;
 }
 
 .logo-chip {
@@ -85,12 +79,10 @@
 .max-w-400{ max-width: 400px; }
 
 :deep(a.text-white) {
-.max-w-400{ max-width: 400px; }
-
-:deep(a.text-white) {
   text-decoration: none;
 }
 
 :deep(a.text-white:hover) {
   text-decoration: none;
-}</style>
+}
+</style>

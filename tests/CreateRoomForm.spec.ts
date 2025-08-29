@@ -59,8 +59,7 @@ describe('CreateRoomForm component', () => {
   })
 
   test('emits submit when button is clicked', async () => {
-    wrapper = mountCreateRoomForm({ name: '' })
-
+    wrapper = mountCreateRoomForm({ name: 'amber' }) // not disabled
     await wrapper.find('button').trigger('click')
     expect(wrapper.emitted('submit')).toBeTruthy()
   })

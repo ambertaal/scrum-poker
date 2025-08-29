@@ -59,14 +59,13 @@ describe('JoinRoomForm component', () => {
   })
 
   test('emits submit when button is clicked', async () => {
-    wrapper = mountJoinRoomForm({ id: '' })
-
+    wrapper = mountJoinRoomForm({ id: '123456' })
     await wrapper.find('button').trigger('click')
     expect(wrapper.emitted('submit')).toBeTruthy()
   })
 
   it('emits submit when enter is pressed in input', async () => {
-    wrapper = mountJoinRoomForm({ id: '' })
+    wrapper = mountJoinRoomForm({ id: '123456' })
 
     const input = wrapper.find('input')
     await input.trigger('keydown.enter')
