@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="pa-0">
+  <v-footer class="pa-0 footer-no-grow">
     <v-sheet class="footer-gradient py-10" width="100%">
       <v-container>
         <v-row class="mb-2">
@@ -23,6 +23,12 @@
 </template>
 
 <style scoped>
+.footer-no-grow {
+  flex: 0 0 auto !important;
+  align-items: stretch;
+  padding: 0 !important;
+}
+
 .logo-chip {
   width: 36px;
   height: 36px;
@@ -44,7 +50,4 @@
 :deep(a.text-white:hover) {
   text-decoration: none;
 }
-
-.v-footer { margin: 0 !important; }
-
 </style>
