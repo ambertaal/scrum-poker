@@ -22,9 +22,9 @@
   const revealEstimates = ref<boolean>(false)
   const showNameDialog = ref<boolean>(false)
   const tempName = ref<string>('')
-  const showDeleteDialog = ref(false)
-  const showShareDialog = ref(false);
-  const showConfetti = ref(false);
+  const showDeleteDialog = ref<boolean>(false)
+  const showShareDialog = ref<boolean>(false)
+  const showConfetti = ref<boolean>(false)
 
   const estimateOptions = ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?','☕']
 
@@ -201,25 +201,41 @@
         <EstimateOptions :options="estimateOptions" @select="castEstimate" />
       </v-card>
 
-
-      <NameDialog
+      <Dialog
         v-model="showNameDialog"
-        :name="tempName"
+        v-model:name="tempName"
+        cancel-text="Cancel"
+        confirm-text="Submit"
+        input-label="Display Name"
+        message=""
+        persistent
+        title="Provide your name to enter"
+        variant="nameDialog"
         @cancel="cancelName"
         @submit="submitName"
         @update:name="(newPlayerName: string) => tempName = newPlayerName"
       />
 
-      <DeleteDialog
+      <Dialog
         v-model="showDeleteDialog"
+        cancel-text="Cancel"
+        confirm-text="Delete"
+        message="Are you sure you want to delete all participants in the room?"
+        title="Clear room"
+        variant="deleteDialog"
         @cancel="handleCancel"
         @submit="handleDelete"
       />
 
-      <ShareDialog
+      <Dialog
         v-model="showShareDialog"
-        :room-name="roomName"
-        @done="handleShareDone"
+        confirm-text="Done"
+        hide-cancel
+        message="Invite people to join the room."
+        :room-id="roomId"
+        title="Share room"
+        variant="shareDialog"
+        @submit="handleShareDone"
       />
     </PageLayout>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app class="header-bar" density="comfortable" flat>
+  <v-app-bar class="header-bar" density="comfortable" flat>
     <v-container class="d-flex align-center justify-space-between">
       <router-link class="d-flex align-center text-decoration-none" to="/">
         <div class="logo-chip mr-3">

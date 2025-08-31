@@ -14,6 +14,7 @@ declare module 'vue' {
     Darkmodeswitch: typeof import('./components/DarkModeToggle.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
     DeleteDialog: typeof import('./components/DeleteDialog.vue')['default']
+    Dialog: typeof import('./components/Dialog.vue')['default']
     DividerWithLabel: typeof import('./components/DividerWithLabel.vue')['default']
     EstimateOptions: typeof import('./components/EstimateOptions.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
