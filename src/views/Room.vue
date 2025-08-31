@@ -134,10 +134,15 @@
       return;
     }
 
-    const allPlayersHaveEstimated = newPlayers.every(player => player.estimate != null);
-    const uniqueEstimates = [...new Set(newPlayers.map(player => player.estimate))];
+    const estimates = newPlayers
+      .map(player => player.estimate)
+      .filter((estimate): estimate is string => estimate != null); // laat null/undefined weg
 
-    showConfetti.value = allPlayersHaveEstimated && uniqueEstimates.length === 1;
+    const hasAtLeastTwoPlayers = newPlayers.length >= 2;
+    const everyoneHasEstimated = estimates.length === newPlayers.length;
+    const uniqueEstimates = new Set(estimates);
+
+    showConfetti.value = hasAtLeastTwoPlayers && everyoneHasEstimated && uniqueEstimates.size === 1;
   });
 
   // Hide confetti after 4 seconds
