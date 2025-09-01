@@ -3,7 +3,10 @@
 
   defineProps<{
     options: readonly string[]
+    counts?: Record<string, number>
+    reveal: boolean
   }>()
+
   const emit = defineEmits<(event: 'select', value: string) => void>()
   const handleClick = (option: string) => emit('select', option)
 
@@ -12,13 +15,16 @@
   const checkMobile = () => {
     isMobile.value = window.matchMedia('(max-width: 600px)').matches
   }
+
   onMounted(() => {
     checkMobile()
     window.addEventListener('resize', checkMobile)
   })
+
   onBeforeUnmount(() => {
     window.removeEventListener('resize', checkMobile)
   })
+
   const arrow = computed(() => (isMobile.value ? '👇' : '👉'))
 </script>
 
@@ -44,6 +50,13 @@
             >
               {{ option }}
             </v-btn>
+
+            <div
+              v-if="reveal && ((counts?.[option] ?? 0) > 0)"
+              class="estimate-count mt-1"
+            >
+              {{ counts?.[option] }}x
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -66,5 +79,11 @@
   background-color: #424242;
   color: white !important;
   transform: translateY(-5px);
+}
+
+.estimate-count {
+  color: white;
+  text-align: center;
+  font-size: 1rem;
 }
 </style>

@@ -30,6 +30,18 @@
 
   const hasEstimates = computed(() => players.value.some(p => p.estimate != null))
 
+  const estimateCounts = computed<Record<string, number>>(() => {
+    const counts: Record<string, number> = {}
+    estimateOptions.forEach(option => { counts[option] = 0 })
+
+    players.value.forEach(player => {
+      if (player.estimate != null && counts[player.estimate] != null) {
+        counts[player.estimate] += 1
+      }
+    })
+    return counts
+  })
+
   const openNameDialog = () => {
     tempName.value = ''
     showNameDialog.value = true
@@ -203,7 +215,12 @@
           </v-col>
         </v-row>
 
-        <EstimateOptions :options="estimateOptions" @select="castEstimate" />
+        <EstimateOptions
+          :counts="estimateCounts"
+          :options="estimateOptions"
+          :reveal="revealEstimates"
+          @select="castEstimate"
+        />
       </v-card>
 
       <Dialog
