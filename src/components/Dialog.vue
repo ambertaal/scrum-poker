@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
   import { useClipboard } from '@vueuse/core'
+  import { useRouter } from 'vue-router'
 
   const { title, message, modelValue, variant, persistent = false, maxWidth = 400 , confirmText = 'OK', cancelText = 'Cancel', inputLabel = 'Value', name, roomId } = defineProps<{
     modelValue: boolean,
@@ -17,6 +18,8 @@
     hideCancel?: boolean,
     hideConfirm?: boolean
   }>()
+
+  const router = useRouter()
 
   const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void
@@ -38,7 +41,8 @@
 
   /** shareDialog */
   const roomUrl = computed(() => {
-    return `${window.location.origin}/room/${roomId}`
+    const href = router.resolve({ name: 'room', params: { roomId } }).href
+    return `${window.location.origin}${href}`
   })
 
   const { copy, copied } = useClipboard()
@@ -86,6 +90,7 @@
           <template v-else-if="variant === 'shareDialog'">
             <p v-if="message" class="mb-2">{{ message }}</p>
             <v-text-field
+              append-icon="mdi-content-copy"
               :append-inner-icon="copied ? 'mdi-check' : ''"
               class="mt-4"
               hide-details

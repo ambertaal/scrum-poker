@@ -5,12 +5,12 @@ import Room from '@/views/Room.vue'
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home,
   },
   {
     path: '/room/:roomId',
-    name: 'Room',
+    name: 'room',
     component: Room,
   },
 ]
