@@ -5,6 +5,7 @@
     options: readonly string[]
     counts?: Record<string, number>
     reveal: boolean
+    myChoice?: string
   }>()
 
   const emit = defineEmits<(event: 'select', value: string) => void>()
@@ -37,11 +38,11 @@
         </p>
       </v-col>
       <v-col cols="auto">
-        <v-row align="center" dense>
+        <v-row align="start" dense>
           <v-col v-for="option in options" :key="option" class="my-1" cols="auto">
             <v-btn
               :aria-label="`Select ${option}`"
-              class="hover-effect text-h6 font-weight-bold"
+              :class="['hover-effect', 'text-h6', 'font-weight-bold', { 'is-selected': myChoice === option }]"
               color="black"
               height="80"
               variant="outlined"
@@ -75,10 +76,21 @@
   color: black;
   border: 1px solid darkgray;
 }
+
 .hover-effect:hover {
   background-color: #424242;
   color: white !important;
   transform: translateY(-5px);
+}
+
+.is-selected {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  border-color: #9e9e9e;
+}
+
+.is-selected:hover {
+  transform: translateY(-8px);
 }
 
 .estimate-count {

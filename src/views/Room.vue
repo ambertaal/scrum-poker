@@ -110,6 +110,11 @@
     await update(dbRef(db), updates)
   }
 
+  const myChoice = computed<string>(() => {
+    const me = players.value.find(p => p.name === username.value)
+    return me?.estimate ?? ''
+  })
+
   // Delete dialog logic
   const handleDelete = () => {
     showDeleteDialog.value = false
@@ -217,6 +222,7 @@
 
         <EstimateOptions
           :counts="estimateCounts"
+          :my-choice="myChoice"
           :options="estimateOptions"
           :reveal="revealEstimates"
           @select="castEstimate"
