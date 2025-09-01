@@ -16,6 +16,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/scrum-poker/',
   plugins: [
     Vue({
       template: { transformAssetUrls },
@@ -32,8 +33,9 @@ export default defineConfig({
         families: [
           {
             name: 'Roboto',
-            weights: [100, 300, 400, 500, 700, 900],
+            weights: [400, 500],
             styles: ['normal', 'italic'],
+            subset: 'latin',
           },
         ],
       },

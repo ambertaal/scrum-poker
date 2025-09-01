@@ -75,7 +75,7 @@
     const playersRef = dbRef(db, `rooms/${roomId}/players`)
     onValue(playersRef, snapshot => {
       const data = snapshot.val() as Record<string, { name: string; estimate: string | null }> | null
-      players.value = data ? Object.entries(data).map(([key, val]) => ({ name: key, estimate: val.estimate })) : []
+      players.value = data ? Object.entries(data).map(([key, val]: [string, { name: string; estimate: string | null }]) => ({ name: key, estimate: val.estimate })) : []
     })
 
     const roomNameRef = dbRef(db, `rooms/${roomId}/name`)

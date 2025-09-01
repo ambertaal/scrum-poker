@@ -4,7 +4,19 @@
   const canvas = ref<HTMLCanvasElement | null>(null);
   let ctx: CanvasRenderingContext2D | null = null;
   let animationFrame: number;
-  let confetti: any[] = [];
+
+  type Vec2 = { x: number; y: number };
+
+  interface ConfettiParticle {
+    color: string;
+    dimensions: Vec2;
+    position: Vec2;
+    rotation: number;
+    scale: Vec2;
+    velocity: Vec2;
+  }
+
+  let confetti: ConfettiParticle[] = [];
 
   const confettiCount = 150;
   const gravity = 0.5;
@@ -51,13 +63,15 @@
 
     ctx.clearRect(0, 0, width, height);
 
-    confetti.forEach((c) => {
+    confetti.forEach(c => {
       c.velocity.x -= c.velocity.x * drag;
       c.velocity.y = Math.min(c.velocity.y + gravity, terminalVelocity);
       c.position.x += c.velocity.x;
       c.position.y += c.velocity.y;
 
       c.rotation += c.velocity.x * 0.05;
+
+      if (!ctx) return;
 
       ctx.save();
       ctx.translate(c.position.x, c.position.y);

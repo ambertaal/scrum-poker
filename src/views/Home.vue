@@ -23,7 +23,7 @@
   const joinDialog = ref(false)
   const displayNameField = ref()
 
-  const featureImg = ref('../public/landscape-placeholder.svg')
+  const featureImg = ref('../landscape-placeholder.svg')
 
   const focusName = () => {
     requestAnimationFrame(() => displayNameField.value?.focus?.())

@@ -3,9 +3,9 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "target": "ES2015",                        
+    "target": "ES2020",                        
     "module": "ESNext",                        
-    "lib": ["DOM", "ES2015"],                  
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],                 
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "baseUrl": ".",
