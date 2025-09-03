@@ -32,7 +32,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: black;
+  background-color: #1e2341;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -47,7 +47,7 @@
   left: 4px;
   bottom: 4px;
   background-color: white;
-  color: black;
+  color: #1e2341;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -69,18 +69,18 @@
 }
 
 input:checked + .slider {
-  background-color: #7C4DFF;
+  background-color: #1e2341;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #7C4DFF;
+  box-shadow: 0 0 1px #1e2341;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
   content: "dark_mode";
   background-color: white;
-  color: black;
+  color: #1e2341;
 }
 
 input:checked + .slider::after {
