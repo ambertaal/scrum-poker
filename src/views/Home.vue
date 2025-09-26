@@ -10,15 +10,13 @@
   import PageLayout from '@/layouts/PageLayout.vue'
 
   const playerStore = usePlayerStore()
-  const { username } = storeToRefs(playerStore)
+  const { id, username } = storeToRefs(playerStore)
 
   const router = useRouter()
   const joinRoomId = ref('')
 
   // temporary saves where the user wants to navigate to
   const pendingRoomId = ref<string | null>(null)
-  // show the DisplayName dialog
-  const showNameDialog = ref(false)
 
   const joinDialog = ref(false)
   const displayNameField = ref()
@@ -38,35 +36,35 @@
 
     const roomId = generateRoomId()
     const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
-    const roomNameRef = dbRef(db, `rooms/${roomId}/name`)
+    const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
     const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
 
     try {
       // Save person
-      await set(playerRef, { name: username.value, estimate: null })
+      await set(playerRef, { id: id.value, name: username.value, estimate: null })
       // Save roomName
       await set(roomNameRef, roomId)
       // Set revealEstimates by default to false
       await set(revealRef, false)
       // Navigate to room
-      router.push(`/room/${roomId}?user=${username.value}`)
+      await router.push(`/room/${roomId}?user=${username.value}`)
     } catch (e) {
       console.error('❌ Error creating room:', e)
       alert('Something went wrong while creating the room.')
     }
   }
 
-  const enterRoom = () => {
+  const enterRoom = async () => {
     if (!joinRoomId.value.trim()) {
       alert('Enter Room Number please')
       return
     }
     pendingRoomId.value = joinRoomId.value
-    if (!username.value?.trim()) {
-      showNameDialog.value = true
-    } else {
-      router.push(`/room/${joinRoomId.value}?user=${username.value}`)
-    }
+
+    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${username.value}`)
+    await set(playerRef, { id: id.value, name: username.value, estimate: null })
+
+    await router.push(`/room/${joinRoomId.value}?user=${username.value}`)
   }
 </script>
 

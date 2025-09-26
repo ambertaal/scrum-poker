@@ -1,23 +1,22 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from 'vue-router'
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import { db } from '@/firebase'
   import { ref as dbRef, get, onValue, set, update } from 'firebase/database'
-  import { usePlayerStore } from '@/stores/player'
+  import { usePlayerStore, type UUID } from '@/stores/player'
   import { storeToRefs } from 'pinia'
   import PageLayout from '@/layouts/PageLayout.vue'
   import ConfettiCanvas from '@/components/ConfettiCanvas.vue'
-  import { watch } from 'vue'
 
   const playerStore = usePlayerStore()
-  const { username } = storeToRefs(playerStore)
+  const { id, username } = storeToRefs(playerStore)
 
   const route = useRoute()
   const router = useRouter()
 
   const roomId = (route.params as { roomId: string }).roomId
 
-  const players = ref<{ name: string; estimate: string | null }[]>([])
+  const players = ref<{ id: UUID; name: string; estimate: string | null }[]>([])
   const roomName = ref<string>(roomId)
   const revealEstimates = ref<boolean>(false)
   const showNameDialog = ref<boolean>(false)
@@ -53,9 +52,9 @@
     showNameDialog.value = false
 
     const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
-    await set(playerRef, { name: username.value, estimate: null })
+    await set(playerRef, { id: id.value, name: username.value, estimate: null })
 
-    router.replace({ path: `/room/${roomId}`, query: { user: username.value } })
+    await router.replace({ path: `/room/${roomId}`, query: { user: username.value } })
   }
 
   const cancelName = () => {
@@ -74,8 +73,14 @@
 
     const playersRef = dbRef(db, `rooms/${roomId}/players`)
     onValue(playersRef, snapshot => {
-      const data = snapshot.val() as Record<string, { name: string; estimate: string | null }> | null
-      players.value = data ? Object.entries(data).map(([key, val]: [string, { name: string; estimate: string | null }]) => ({ name: key, estimate: val.estimate })) : []
+      const data = snapshot.val() as Record<string, { id: UUID; name: string; estimate: string | null }> | null
+      players.value = data
+        ? Object.entries(data).map(([key, val]) => ({
+          id: val.id,
+          name: val.name,
+          estimate: val.estimate,
+        }))
+        : []
     })
 
     const roomNameRef = dbRef(db, `rooms/${roomId}/name`)
