@@ -35,7 +35,7 @@
     }
 
     const roomId = generateRoomId()
-    const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
+    const playerRef = dbRef(db, `rooms/${roomId}/players/${id.value}`)
     const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
     const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
 
@@ -61,7 +61,7 @@
     }
     pendingRoomId.value = joinRoomId.value
 
-    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${username.value}`)
+    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${id.value}`)
     await set(playerRef, { id: id.value, name: username.value, estimate: null })
 
     await router.push(`/room/${joinRoomId.value}?user=${username.value}`)
@@ -93,14 +93,14 @@
               />
               <div class="d-flex flex-wrap ga-3">
                 <v-btn
-                  class="gradient-btn"
+                  class="primary-btn"
                   :disabled="!username.trim()"
                   rounded="pill"
                   size="large"
                   @click="createRoom"
                 >
+                  <v-icon icon="mdi-plus" start />
                   Create a room
-                  <v-icon end icon="mdi-arrow-right" />
                 </v-btn>
 
                 <v-dialog v-model="joinDialog" max-width="420">
@@ -161,14 +161,6 @@
   letter-spacing: -0.02em;
 }
 
-.gradient-btn {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
-  color: white !important;
-}
-
-.gradient-slab {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
-}
 
 .max-w-400{ max-width: 400px; }
 
