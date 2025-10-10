@@ -17,6 +17,7 @@ jobs:
       # Pick your own package manager and build script
       - run: npm install
       - run: npm run build
+      - run: cd dist && cp index.html 404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
