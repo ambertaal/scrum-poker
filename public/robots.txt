@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: /scrum-poker/room/
