@@ -10,7 +10,7 @@
   import PageLayout from '@/layouts/PageLayout.vue'
 
   const playerStore = usePlayerStore()
-  const { id, username } = storeToRefs(playerStore)
+  const { userId, username } = storeToRefs(playerStore)
 
   const router = useRouter()
   const joinRoomId = ref('')
@@ -35,13 +35,13 @@
     }
 
     const roomId = generateRoomId()
-    const playerRef = dbRef(db, `rooms/${roomId}/players/${id.value}`)
+    const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`)
     const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
     const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
 
     try {
       // Save person
-      await set(playerRef, { id: id.value, name: username.value, estimate: null })
+      await set(playerRef, { id: userId.value, name: username.value, estimate: null })
       // Save roomName
       await set(roomNameRef, roomId)
       // Set revealEstimates by default to false
@@ -61,8 +61,8 @@
     }
     pendingRoomId.value = joinRoomId.value
 
-    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${id.value}`)
-    await set(playerRef, { id: id.value, name: username.value, estimate: null })
+    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${userId.value}`)
+    await set(playerRef, { id: userId.value, name: username.value, estimate: null })
 
     await router.push(`/room/${joinRoomId.value}?user=${username.value}`)
   }

@@ -9,7 +9,7 @@
   import ConfettiCanvas from '@/components/ConfettiCanvas.vue'
 
   const playerStore = usePlayerStore()
-  const { id, username } = storeToRefs(playerStore)
+  const { userId, username } = storeToRefs(playerStore)
 
   const route = useRoute()
   const router = useRouter()
@@ -51,8 +51,8 @@
     playerStore.setUsername(tempName.value)
     showNameDialog.value = false
 
-    const playerRef = dbRef(db, `rooms/${roomId}/players/${username.value}`)
-    await set(playerRef, { id: id.value, name: username.value, estimate: null })
+    const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`)
+    await set(playerRef, { id: userId.value, name: username.value, estimate: null })
 
     await router.replace({ path: `/room/${roomId}`, query: { user: username.value } })
   }
@@ -73,10 +73,10 @@
 
     const playersRef = dbRef(db, `rooms/${roomId}/players`)
     onValue(playersRef, snapshot => {
-      const data = snapshot.val() as Record<string, { id: UUID; name: string; estimate: string | null }> | null
+      const data = snapshot.val() as Record<string, { userId: UUID; name: string; estimate: string | null }> | null
       players.value = data
         ? Object.entries(data).map(([key, val]) => ({
-          id: val.id,
+          id: val.userId,
           name: val.name,
           estimate: val.estimate,
         }))
@@ -91,11 +91,11 @@
   })
 
   const castEstimate = async (estimate: string) => {
-    if (!username.value) {
+    if (!userId.value) {
       openNameDialog()
       return
     }
-    const estimateRef = dbRef(db, `rooms/${roomId}/players/${username.value}/estimate`)
+    const estimateRef = dbRef(db, `rooms/${roomId}/players/${userId.value}/estimate`)
     await set(estimateRef, estimate)
   }
 
@@ -109,8 +109,8 @@
     const snapshot = await get(playersRef)
     if (!snapshot.exists()) return
     const updates: Record<string, null> = {}
-    Object.keys(snapshot.val()).forEach(playerName => {
-      updates[`rooms/${roomId}/players/${playerName}/estimate`] = null
+    Object.keys(snapshot.val()).forEach(playerId => {
+      updates[`rooms/${roomId}/players/${playerId}/estimate`] = null
     })
     await update(dbRef(db), updates)
   }
