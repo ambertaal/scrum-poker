@@ -66,6 +66,7 @@
 
     await router.push(`/room/${joinRoomId.value}?user=${username.value}`)
   }
+
 </script>
 
 <template>
