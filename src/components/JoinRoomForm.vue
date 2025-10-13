@@ -52,7 +52,7 @@
       } finally {
         checking.value = false
       }
-    }, 500)
+    }, 300)
   })
 
   onBeforeUnmount(() => {
@@ -60,11 +60,11 @@
   })
 
   const roomNumberRule = (roomNumber: string) => {
-    if (!isValidRoom(roomNumber) && roomExists.value === false) {
+    if (!isValidRoom(roomNumber)) {
       return 'Room number must be at least 6 digits and contain only digits'
     }
-    if (isValidRoom(roomNumber) && roomExists.value === false) {
-      return 'Room does not exist'
+    if (roomExists.value === false) {
+      return 'This room does not exist'
     }
     return true
   }
