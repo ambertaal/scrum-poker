@@ -5,8 +5,10 @@
         <v-row class="mb-2">
           <v-col cols="12" md="6">
             <div class="d-flex align-center">
-              <div class="logo-chip mr-3">
-                <v-icon color="white" icon="mdi-cards-playing-outline" size="20" />
+              <div class="mr-3">
+                <img alt="Planning Poker logo" class="logo-image" src="@/assets/logo.svg" >
+
+                <!-- <v-icon color="white" icon="mdi-cards-playing-outline" size="20" /> -->
               </div>
               <div class="text-h6 text-white">Planning Poker</div>
             </div>
@@ -27,16 +29,6 @@
   flex: 0 0 auto !important;
   align-items: stretch;
   padding: 0 !important;
-}
-
-.logo-chip {
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
-  box-shadow: 0 8px 24px rgba(244, 63, 94, 0.25);
 }
 
 .footer-gradient {

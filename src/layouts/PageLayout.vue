@@ -40,6 +40,6 @@
 }
 
 .dark .v-container {
-  background-color: #1e2341;
+  background-color: #2A1449;
 }
 </style>

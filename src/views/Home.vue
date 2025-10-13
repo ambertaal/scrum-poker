@@ -89,7 +89,7 @@
                 class="mb-3 max-w-400 name-input"
                 density="comfortable"
                 hide-details
-                label="Display Name"
+                label="Enter a display name"
                 variant="outlined"
               />
               <div class="d-flex flex-wrap ga-3">
@@ -129,25 +129,8 @@
               </div>
             </div>
           </v-col>
-
-          <v-col class="mt-6 mt-md-0" cols="12" md="6">
-            <v-img
-              alt="Real-time estimation"
-              class="rounded-lg elevation-4"
-              cover
-              height="320"
-              :src="featureImg"
-            />
-          </v-col>
         </v-row>
       </v-container>
-
-      <ImageTextSection
-        class="mb-8"
-        description="Use our user-friendly interface to create rooms, invite teammates, and estimate with Fibonacci"
-        :image="featureImg"
-        title="Real-Time voting and estimation"
-      />
     </PageLayout>
   </div>
 </template>
@@ -161,7 +144,6 @@
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-
 
 .max-w-400{ max-width: 400px; }
 

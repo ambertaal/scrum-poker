@@ -83,7 +83,7 @@
         : []
     })
 
-    const roomNameRef = dbRef(db, `rooms/${roomId}/name`)
+    const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
     onValue(roomNameRef, snapshot => roomName.value = snapshot.val())
 
     const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
@@ -182,21 +182,32 @@
       <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
         <v-card-title class="text-h6">
           <div class="text-center">
+            <h3>Room: {{ roomName }}</h3>
             <v-btn
               prepend-icon="mdi-share-variant"
               variant="text"
               @click="onClickShare"
             >
               <template #prepend>
-                <v-icon color="success" />
+                <v-icon color="share-icon" />
               </template>
-              <h3>Room: {{ roomName }}</h3>
+              <span>Share room</span>
             </v-btn>
-            <v-tooltip location="top" text="Delete everyone in this room">
+            <!-- <v-tooltip location="top" text="Delete everyone in this room">
               <template #activator="{ props }">
                 <v-btn v-bind="props" icon="mdi-delete" variant="text" @click="onClickDelete" />
               </template>
-            </v-tooltip>
+            </v-tooltip> -->
+            <v-btn
+              prepend-icon="mdi-delete"
+              variant="text"
+              @click="onClickDelete"
+            >
+              <template #prepend>
+                <v-icon color="delete-icon" />
+              </template>
+              <span>Delete room</span>
+            </v-btn>
           </div>
         </v-card-title>
         <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
@@ -281,5 +292,21 @@
 
 .dark p {
   color: #ffffff;
+}
+
+.share-icon {
+  color: #2A1449;
+}
+
+.dark .share-icon {
+  color: white;
+}
+
+.delete-icon {
+  color: #2A1449;
+}
+
+.dark .delete-icon {
+  color: white;
 }
 </style>
