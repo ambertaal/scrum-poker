@@ -9,6 +9,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Layouts from 'vite-plugin-vue-layouts-next'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
+import tailwindcss from '@tailwindcss/vite'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -21,7 +22,7 @@ export default defineConfig({
     Vue({
       template: { transformAssetUrls },
     }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
+    tailwindcss(),
     Vuetify({
       autoImport: true,
     }),

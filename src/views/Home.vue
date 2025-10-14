@@ -8,6 +8,8 @@
   import { generateRoomId } from '@/utils/generateRoomid'
   import JoinRoomForm from '@/components/JoinRoomForm.vue'
   import PageLayout from '@/layouts/PageLayout.vue'
+  import { Button } from '@/components/ui/button'
+  import { Plus } from 'lucide-vue-next'
 
   const playerStore = usePlayerStore()
   const { userId, username } = storeToRefs(playerStore)
@@ -20,8 +22,6 @@
 
   const joinDialog = ref(false)
   const displayNameField = ref()
-
-  const featureImg = ref('../landscape-placeholder.svg')
 
   const focusName = () => {
     requestAnimationFrame(() => displayNameField.value?.focus?.())
@@ -93,16 +93,22 @@
                 variant="outlined"
               />
               <div class="d-flex flex-wrap ga-3">
-                <v-btn
-                  class="primary-btn"
+                <Button
+                  class="
+                    h-11 px-6 py-3 rounded-full
+                    !bg-[#EC7F31] hover:!bg-[#CE2935]
+                    text-white text-[14px] leading-[18px] font-bold uppercase tracking-[0.1em]
+                    inline-flex items-center justify-center
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale
+                    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                    focus-visible:outline-blue-600 dark:focus-visible:outline-white
+                  "
                   :disabled="!username.trim()"
-                  rounded="pill"
-                  size="large"
                   @click="createRoom"
                 >
-                  <v-icon icon="mdi-plus" start />
+                  <Plus aria-hidden="true" class="mr-2 h-4 w-4" />
                   Create a room
-                </v-btn>
+                </Button>
 
                 <v-dialog v-model="joinDialog" max-width="420">
                   <template #activator="{ props }">
