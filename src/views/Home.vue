@@ -1,120 +1,143 @@
 <script setup lang="ts">
-  import { ref as dbRef, set } from 'firebase/database'
-  import { useRouter } from 'vue-router'
-  import { db } from '@/firebase'
-  import { ref } from 'vue'
-  import { usePlayerStore } from '@/stores/player'
-  import { storeToRefs } from 'pinia'
-  import { generateRoomId } from '@/utils/generateRoomid'
-  import JoinRoomForm from '@/components/JoinRoomForm.vue'
-  import PageLayout from '@/layouts/PageLayout.vue'
+import { ref as dbRef, set } from "firebase/database";
+import { useRouter } from "vue-router";
+import { db } from "@/firebase";
+import { ref } from "vue";
+import { usePlayerStore } from "@/stores/player";
+import { storeToRefs } from "pinia";
+import { generateRoomId } from "@/utils/generateRoomid";
+import JoinRoomForm from "@/components/JoinRoomForm.vue";
+import PageLayout from "@/layouts/PageLayout.vue";
 
-  // shadcn components
-  import { Button } from '@/components/ui/button'
-  import { Input } from '@/components/ui/input'
-  import { Label } from '@/components/ui/label'
-  import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from '@/components/ui/dialog'
+// shadcn components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
 
-  import { Plus } from 'lucide-vue-next'
+import { Plus } from "lucide-vue-next";
 
-  const playerStore = usePlayerStore()
-  const { userId, username } = storeToRefs(playerStore)
+const playerStore = usePlayerStore();
+const { userId, username } = storeToRefs(playerStore);
 
-  const router = useRouter()
-  const joinRoomId = ref('')
+const router = useRouter();
+const joinRoomId = ref("");
 
-  // temporary saves where the user wants to navigate to
-  const pendingRoomId = ref<string | null>(null)
+// temporary saves where the user wants to navigate to
+const pendingRoomId = ref<string | null>(null);
 
-  const joinDialog = ref(false)
-  const displayNameField = ref()
+const joinDialog = ref(false);
+const displayNameField = ref();
 
-  const focusName = () => {
-    requestAnimationFrame(() => displayNameField.value?.focus?.())
+const focusName = () => {
+  requestAnimationFrame(() => displayNameField.value?.focus?.());
+};
+
+const createRoom = async () => {
+  if (!username.value) {
+    alert("Enter Display Name please");
+    focusName();
+    return;
   }
 
-  const createRoom = async () => {
-    if (!username.value) {
-      alert('Enter Display Name please')
-      focusName()
-      return
-    }
+  const roomId = generateRoomId();
+  const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`);
+  const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`);
+  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
 
-    const roomId = generateRoomId()
-    const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`)
-    const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
-    const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
-
-    try {
-      // Save person
-      await set(playerRef, { id: userId.value, name: username.value, estimate: null })
-      // Save roomName
-      await set(roomNameRef, roomId)
-      // Set revealEstimates by default to false
-      await set(revealRef, false)
-      // Navigate to room
-      await router.push(`/room/${roomId}?user=${username.value}`)
-    } catch (e) {
-      console.error('❌ Error creating room:', e)
-      alert('Something went wrong while creating the room.')
-    }
+  try {
+    // Save person
+    await set(playerRef, {
+      id: userId.value,
+      name: username.value,
+      estimate: null
+    });
+    // Save roomName
+    await set(roomNameRef, roomId);
+    // Set revealEstimates by default to false
+    await set(revealRef, false);
+    // Navigate to room
+    await router.push(`/room/${roomId}?user=${username.value}`);
+  } catch (e) {
+    console.error("❌ Error creating room:", e);
+    alert("Something went wrong while creating the room.");
   }
+};
 
-  const enterRoom = async () => {
-    if (!joinRoomId.value.trim()) {
-      alert('Enter Room Number please')
-      return
-    }
-    pendingRoomId.value = joinRoomId.value
-
-    const playerRef = dbRef(db, `rooms/${joinRoomId.value}/players/${userId.value}`)
-    await set(playerRef, { id: userId.value, name: username.value, estimate: null })
-
-    await router.push(`/room/${joinRoomId.value}?user=${username.value}`)
+const enterRoom = async () => {
+  if (!joinRoomId.value.trim()) {
+    alert("Enter Room Number please");
+    return;
   }
+  pendingRoomId.value = joinRoomId.value;
 
+  const playerRef = dbRef(
+    db,
+    `rooms/${joinRoomId.value}/players/${userId.value}`
+  );
+  await set(playerRef, {
+    id: userId.value,
+    name: username.value,
+    estimate: null
+  });
+
+  await router.push(`/room/${joinRoomId.value}?user=${username.value}`);
+};
 </script>
 
 <template>
   <div class="main-content">
     <PageLayout>
-      <section id="hero" class="container mx-auto px-4 py-12 min-h-[40vh] grid place-items-center">
-        <div class="w-full max-w-2xl text-center">
-          <div class="w-full md:w-1/2 md:pr-8">
-            <h2 class="text-[#2A1449] mt-3 dark:text-white">Free Online Scrum Poker tool</h2>
-            <p class="text-[#2A1449] dark:text-white mt-3">
-              Estimate stories with a clean, distraction‑free interface. Create a room in seconds, invite your team, and vote in real time.
+      <section
+        id="hero"
+        class="container mx-auto grid min-h-[40vh] place-items-center px-4 py-12"
+      >
+        <div class="w-full max-w-[428px] text-center">
+          <div class="w-full">
+            <h2
+              class="mt-3 max-w-[414px] text-4xl text-[#2A1449] uppercase dark:text-white"
+            >
+              Free Online
+            </h2>
+            <h2 class="mt-3 text-4xl font-bold uppercase">Scrum Poker tool</h2>
+            <p
+              class="mt-3 max-w-[414px] text-lg text-[#2A1449] dark:text-white"
+            >
+              Estimate stories with a clean, distraction‑free interface. Create
+              a room in seconds, invite your team, and vote in real time.
             </p>
 
-            <div id="get-started" class="mt-8 bg-[#EDE9F2] dark:bg-[#1F0B3D] rounded-3xl p-6 sm:p-8 mx-auto w-full max-w-md flex flex-col justify-center items-center min-h-[220px] gap-4">
+            <div
+              id="get-started"
+              class="mx-auto mt-8 flex min-h-[220px] w-full flex-col items-center justify-center gap-4 rounded-3xl bg-[#EDE9F2] p-6 sm:p-8 dark:bg-[#1F0B3D]"
+            >
               <div class="mb-4">
-                <Label class="text-[#2A1449] dark:text-white pt-16" for="displayName">What would you prefer to be called?</Label>
+                <Label
+                  class="mb-3 pt-16 text-base font-bold text-[#2A1449] dark:text-white"
+                  for="displayName"
+                >
+                  What would you prefer to be called?
+                </Label>
                 <Input
                   id="displayName"
                   ref="displayNameField"
                   v-model="username"
-                  class="name-input mt-2 bg-white rounded-lg w-full mx-auto"
+                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left [:placeholder-shown]:text-center placeholder:text-center""
                   placeholder="Enter a display name"
                 />
               </div>
 
-              <div class="flex flex-col items-center justify-center gap-3 pb-16">
+              <div
+                class="flex flex-col items-center justify-center gap-3 pb-16"
+              >
                 <Button
-                  class="
-                    h-11 px-6 py-3 rounded-full
-                    !bg-[#EC7F31] hover:!bg-[#CE2935]
-                    text-white text-[14px] leading-[18px] font-bold uppercase tracking-[0.1em]
-                    inline-flex items-center justify-center
-                    disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale
-                    focus-visible:outline focus-visible:outline-offset-2
-                    focus-visible:outline-blue-600 dark:focus-visible:outline-white
-                  "
+                  class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
                   :disabled="!username.trim()"
                   @click="createRoom"
                 >
@@ -122,18 +145,12 @@
                   Create a room
                 </Button>
 
-                <div class="text-[#2A1449] dark:text-white">or</div>
+                <div class=" text-lg text-[#2A1449] dark:text-white">or</div>
 
                 <Dialog v-model:open="joinDialog">
                   <DialogTrigger as-child>
                     <Button
-                      class="h-11 px-6 py-3 rounded-full hover:!bg-[#492D7B]
-                     !border-2 !border-[#2A1449]
-                    text-[#492D7B] text-[14px] hover:!text-white leading-[18px] font-bold uppercase tracking-[0.1em]
-                    inline-flex items-center justify-center
-                    disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale
-                    focus-visible:outline focus-visible:outline-offset-2
-                    focus-visible:outline-blue-600 dark:focus-visible:outline-white dark:!bg-transparent dark:disabled:!border-2 dark:disabled:!border-white dark:!text-white dark:!border-2 dark:!border-white"
+                      class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
                       :disabled="!username.trim()"
                       variant="outline"
                     >
@@ -146,10 +163,7 @@
                       <DialogTitle>Join room</DialogTitle>
                     </DialogHeader>
 
-                    <JoinRoomForm
-                      v-model:id="joinRoomId"
-                      @submit="enterRoom"
-                    />
+                    <JoinRoomForm v-model:id="joinRoomId" @submit="enterRoom" />
                   </DialogContent>
                 </Dialog>
               </div>
