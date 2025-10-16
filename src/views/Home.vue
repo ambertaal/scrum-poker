@@ -8,7 +8,19 @@
   import { generateRoomId } from '@/utils/generateRoomid'
   import JoinRoomForm from '@/components/JoinRoomForm.vue'
   import PageLayout from '@/layouts/PageLayout.vue'
+
+  // shadcn components
   import { Button } from '@/components/ui/button'
+  import { Input } from '@/components/ui/input'
+  import { Label } from '@/components/ui/label'
+  import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from '@/components/ui/dialog'
+
   import { Plus } from 'lucide-vue-next'
 
   const playerStore = usePlayerStore()
@@ -72,27 +84,27 @@
 <template>
   <div class="main-content">
     <PageLayout>
-      <!-- Hero -->
-      <v-container id="hero" class="mt-8 mt-sm-12">
-        <v-row class="align-center" no-gutters>
-          <v-col class="pr-md-8" cols="12" md="6">
-            <h2 class="display-2 mt-3">Free Online Scrum Poker tool</h2>
-            <p class="text-body-1 text-medium-emphasis mt-3">
+      <section id="hero" class="container mx-auto px-4 py-12 min-h-[40vh] grid place-items-center">
+        <div class="w-full max-w-2xl text-center">
+          <div class="w-full md:w-1/2 md:pr-8">
+            <h2 class="text-[#2A1449] mt-3 dark:text-white">Free Online Scrum Poker tool</h2>
+            <p class="text-[#2A1449] dark:text-white mt-3">
               Estimate stories with a clean, distraction‑free interface. Create a room in seconds, invite your team, and vote in real time.
             </p>
 
-            <!-- Inline forms: display name + actions -->
-            <div id="get-started" class="mt-6">
-              <v-text-field
-                ref="displayNameField"
-                v-model="username"
-                class="mb-3 max-w-400 name-input"
-                density="comfortable"
-                hide-details
-                label="Enter a display name"
-                variant="outlined"
-              />
-              <div class="d-flex flex-wrap ga-3">
+            <div id="get-started" class="mt-8 bg-[#EDE9F2] dark:bg-[#1F0B3D] rounded-3xl p-6 sm:p-8 mx-auto w-full max-w-md flex flex-col justify-center items-center min-h-[220px] gap-4">
+              <div class="mb-4">
+                <Label class="text-[#2A1449] dark:text-white pt-16" for="displayName">What would you prefer to be called?</Label>
+                <Input
+                  id="displayName"
+                  ref="displayNameField"
+                  v-model="username"
+                  class="name-input mt-2 bg-white rounded-lg w-full mx-auto"
+                  placeholder="Enter a display name"
+                />
+              </div>
+
+              <div class="flex flex-col items-center justify-center gap-3 pb-16">
                 <Button
                   class="
                     h-11 px-6 py-3 rounded-full
@@ -100,7 +112,7 @@
                     text-white text-[14px] leading-[18px] font-bold uppercase tracking-[0.1em]
                     inline-flex items-center justify-center
                     disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale
-                    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                    focus-visible:outline focus-visible:outline-offset-2
                     focus-visible:outline-blue-600 dark:focus-visible:outline-white
                   "
                   :disabled="!username.trim()"
@@ -110,42 +122,46 @@
                   Create a room
                 </Button>
 
-                <v-dialog v-model="joinDialog" max-width="420">
-                  <template #activator="{ props }">
-                    <v-btn
-                      v-bind="props"
+                <div class="text-[#2A1449] dark:text-white">or</div>
+
+                <Dialog v-model:open="joinDialog">
+                  <DialogTrigger as-child>
+                    <Button
+                      class="h-11 px-6 py-3 rounded-full hover:!bg-[#492D7B]
+                     !border-2 !border-[#2A1449]
+                    text-[#492D7B] text-[14px] hover:!text-white leading-[18px] font-bold uppercase tracking-[0.1em]
+                    inline-flex items-center justify-center
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale
+                    focus-visible:outline focus-visible:outline-offset-2
+                    focus-visible:outline-blue-600 dark:focus-visible:outline-white dark:!bg-transparent dark:disabled:!border-2 dark:disabled:!border-white dark:!text-white dark:!border-2 dark:!border-white"
                       :disabled="!username.trim()"
-                      rounded="pill"
-                      size="large"
-                      variant="outlined"
+                      variant="outline"
                     >
                       Join room
-                    </v-btn>
-                  </template>
+                    </Button>
+                  </DialogTrigger>
 
-                  <v-card>
-                    <v-card-text>
-                      <JoinRoomForm
-                        v-model:id="joinRoomId"
-                        @submit="enterRoom"
-                      />
-                    </v-card-text>
-                  </v-card>
-                </v-dialog>
+                  <DialogContent class="sm:max-w-[420px]">
+                    <DialogHeader>
+                      <DialogTitle>Join room</DialogTitle>
+                    </DialogHeader>
+
+                    <JoinRoomForm
+                      v-model:id="joinRoomId"
+                      @submit="enterRoom"
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
-          </v-col>
-        </v-row>
-      </v-container>
+          </div>
+        </div>
+      </section>
     </PageLayout>
   </div>
 </template>
 
-<style scoped>
-.dark h2 {
-  color: #ffffff;
-}
-
+<!-- <style scoped>
 .display-2 {
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -160,4 +176,4 @@
 :deep(a.text-white:hover) {
   text-decoration: none;
 }
-</style>
+</style> -->
