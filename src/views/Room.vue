@@ -10,6 +10,8 @@ import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
 
 // shadcn components
 import { Button } from "@/components/ui/button";
+import { Share2 } from "lucide-vue-next";
+import { Trash2 } from "lucide-vue-next";
 
 const playerStore = usePlayerStore();
 const { userId, username } = storeToRefs(playerStore);
@@ -217,53 +219,45 @@ watch(showConfetti, (isConfettiVisible) => {
   <div class="main-content">
     <ConfettiCanvas v-if="showConfetti" />
     <PageLayout>
-      <v-card
+      <section
         class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards"
         elevation="0"
       >
-        <v-card-title class="text-h6">
+        <header class="text-h6">
           <div class="text-center">
             <h3 class="!text-[32px] text-[#492D7B] dark:text-white">
               Room: {{ roomName }}
             </h3>
-            <v-btn
+            <Button
               prepend-icon="mdi-share-variant"
-              variant="text"
+              variant="link"
               @click="onClickShare"
             >
-              <template #prepend>
-                <v-icon
-                  class="text-[#492D7B] dark:text-white"
-                  color="share-icon"
-                />
-              </template>
+              <Share2
+                class="h-5 w-5 text-[#492D7B] dark:text-white"
+                aria-hidden="true"
+              />
               <span class="!text-lg text-[#492D7B] dark:text-white"
                 >Share room</span
               >
-            </v-btn>
-            <!-- <v-tooltip location="top" text="Delete everyone in this room">
-              <template #activator="{ props }">
-                <v-btn v-bind="props" icon="mdi-delete" variant="text" @click="onClickDelete" />
-              </template>
-            </v-tooltip> -->
-            <v-btn
+            </Button>
+
+            <Button
               prepend-icon="mdi-delete"
-              variant="text"
+              variant="link"
               @click="onClickDelete"
             >
-              <template #prepend>
-                <v-icon
-                  class="text-[#492D7B] dark:text-white"
-                  color="delete-icon"
-                />
-              </template>
+              <Trash2
+                class="h-5 w-5 text-[#492D7B] dark:text-white"
+                aria-hidden="true"
+              />
               <span class="!text-lg text-[#492D7B] dark:text-white"
                 >Delete room</span
               >
-            </v-btn>
+            </Button>
           </div>
-        </v-card-title>
-        <v-row align="center" class="ga-4 my-4" justify="center" no-gutters>
+        </header>
+        <div class="my-4 flex flex-wrap items-center justify-center gap-4">
           <PlayerCard
             v-for="(player, index) in players"
             :key="index"
@@ -271,30 +265,26 @@ watch(showConfetti, (isConfettiVisible) => {
             :name="player.name"
             :reveal="revealEstimates"
           />
-        </v-row>
+        </div>
 
-        <v-row class="my-4" justify="center">
-          <v-col cols="auto">
-            <Button
-              class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:hover:!bg-white dark:hover:!text-[#492D7B] dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
-              :disabled="!hasEstimates"
-              @click="resetEstimates"
-              variant="outline"
-              >Delete estimates
-            </Button>
-          </v-col>
+        <div class="flex flex-wrap justify-center gap-4">
+          <Button
+            class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:hover:!bg-white dark:hover:!text-[#492D7B] dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
+            :disabled="!hasEstimates"
+            @click="resetEstimates"
+            variant="outline"
+            >Delete estimates
+          </Button>
 
-          <v-col cols="auto">
-            <Button
-              aria-label="reveal cards"
-              class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
-              :disabled="!hasEstimates"
-              @click="toggleRevealEstimates"
-            >
-              {{ revealEstimates ? "Hide Cards" : "Reveal Cards" }}
-            </Button>
-          </v-col>
-        </v-row>
+          <Button
+            aria-label="reveal cards"
+            class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+            :disabled="!hasEstimates"
+            @click="toggleRevealEstimates"
+          >
+            {{ revealEstimates ? "Hide Cards" : "Reveal Cards" }}
+          </Button>
+        </div>
 
         <EstimateOptions
           :counts="estimateCounts"
@@ -303,7 +293,7 @@ watch(showConfetti, (isConfettiVisible) => {
           :reveal="revealEstimates"
           @select="castEstimate"
         />
-      </v-card>
+      </section>
 
       <Dialog
         v-model="showNameDialog"
@@ -344,29 +334,3 @@ watch(showConfetti, (isConfettiVisible) => {
     </PageLayout>
   </div>
 </template>
-
-<style scoped>
-.dark .text-h6 {
-  color: #ffffff;
-}
-
-.dark p {
-  color: #ffffff;
-}
-
-.share-icon {
-  color: #2a1449;
-}
-
-.dark .share-icon {
-  color: white;
-}
-
-.delete-icon {
-  color: #2a1449;
-}
-
-.dark .delete-icon {
-  color: white;
-}
-</style>
