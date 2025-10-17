@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "HurmeGeometricSans3W05-Rg";
+  src: url("/fonts/HurmeGeometricSans3W05-Rg.woff2") format("woff2"),
+       url("/fonts/HurmeGeometricSans3W05-Rg.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

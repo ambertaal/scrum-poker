@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { registerPlugins } from '@/plugins'
-import 'unfonts.css'
+import "./styles/fonts.css";
 import './styles/global.scss'
 import './styles/style.css'
 

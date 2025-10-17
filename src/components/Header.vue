@@ -1,9 +1,13 @@
 <template>
-  <v-app-bar class="header-bar" density="comfortable" flat>
+  <v-app-bar class="header-bar" density="default" flat>
     <v-container class="d-flex align-center justify-space-between">
       <router-link class="d-flex align-center text-decoration-none" to="/">
         <div class="mr-3">
-          <img alt="Planning Poker logo" class="logo-image" src="@/assets/logo.svg" />
+          <img
+            alt="Planning Poker logo"
+            class="logo-image"
+            src="@/assets/logo.svg"
+          />
         </div>
         <h2 class="mb-0">Planning Poker</h2>
       </router-link>
@@ -16,15 +20,26 @@
 <style scoped>
 .header-bar,
 .header-bar :deep(.v-toolbar__content) {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
 }
 
 .header-bar :deep(.v-toolbar__content) {
   padding-inline: 0;
 }
 
-.header-bar h2 { color: #fff; }
-.header-bar :deep(a) { color: #fff; text-decoration: none; }
+.header-bar h2 {
+  color: #fff;
+}
+.header-bar :deep(a) {
+  color: #fff;
+  text-decoration: none;
+}
 
 .main-content {
   background-color: #f9f9f9;
@@ -39,11 +54,23 @@
 }
 
 .gradient-btn {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
   color: white !important;
 }
 .gradient-slab {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
 }
 
 .logo-chip {
@@ -52,21 +79,47 @@
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
   box-shadow: 0 8px 24px rgba(244, 63, 94, 0.25);
 }
 
 .gradient-btn {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
   color: white !important;
 }
 .gradient-slab {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
 }
 .footer-gradient {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
+  background: linear-gradient(
+    40deg,
+    #4c1f82,
+    #8c1d82 14%,
+    #cf022b 50%,
+    #ffb15c
+  ) !important;
 }
-.max-w-400{ max-width: 400px; }
+.max-w-400 {
+  max-width: 400px;
+}
 
 :deep(a.text-white) {
   text-decoration: none;

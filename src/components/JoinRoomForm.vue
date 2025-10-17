@@ -1,126 +1,162 @@
 <script setup lang="ts">
-  import { computed, onBeforeUnmount, ref, watch } from 'vue'
-  import { ref as dbRef, get } from 'firebase/database'
-  import { db } from '@/firebase'
+import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { ref as dbRef, get } from "firebase/database";
+import { db } from "@/firebase";
 
-  const { id } = defineProps<{ id: string }>()
-  const emit = defineEmits<{
-    (e: 'update:id', value: string): void
-    (e: 'submit'): void
-  }>()
+// shadcn components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-  /**
-   * Local state: keep a raw field value so the user can type non-digits.
-   */
-  const rawRoomIdInput = ref<string>(id ?? '')
+const { id } = defineProps<{ id: string }>();
+const emit = defineEmits<{
+  (e: "update:id", value: string): void;
+  (e: "submit"): void;
+}>();
 
-  /**
-   * Keep local field in sync if parent changes id externally.
-   */
-  watch(
-    () => id,
-    newId => {
-      if (newId !== rawRoomIdInput.value) {
-        rawRoomIdInput.value = newId ?? ''
-      }
-    }
-  )
+/**
+ * Local state: keep a raw field value so the user can type non-digits.
+ */
+const rawRoomIdInput = ref<string>(id ?? "");
 
-  const isValidRoom = (roomNumber: string) => /^\d{6,}$/.test(roomNumber)
-
-  /** DB-existence state */
-  const roomExists = ref<boolean | null>(null)
-  const checking = ref(false)
-  let debounceTimer: ReturnType<typeof setTimeout> | null = null
-
-  /** Debounced watcher: only checks if room number has valid format */
-  watch(rawRoomIdInput, roomIdInput => {
-    roomExists.value = null
-
-    if (debounceTimer) clearTimeout(debounceTimer)
-    if (!isValidRoom(roomIdInput)) return
-
-    debounceTimer = setTimeout(async () => {
-      checking.value = true
-      try {
-        const roomNameRef = dbRef(db, `rooms/${roomIdInput}/roomId`)
-        const snap = await get(roomNameRef)
-        roomExists.value = snap.exists()
-      } catch (e) {
-        console.error('Error checking room existence:', e)
-        roomExists.value = false
-      } finally {
-        checking.value = false
-      }
-    }, 300)
-  })
-
-  onBeforeUnmount(() => {
-    if (debounceTimer) clearTimeout(debounceTimer)
-  })
-
-  const roomNumberRule = (roomNumber: string) => {
-    if (!isValidRoom(roomNumber)) {
-      return 'Room number must be at least 6 digits and contain only digits'
-    }
-    if (roomExists.value === false) {
-      return 'This room does not exist'
-    }
-    return true
-  }
-
-  /**
-   * Only propagate valid values to the parent; ignore invalid input.
-   */
-  watch(rawRoomIdInput, newRoomNumber => {
-    if (isValidRoom(newRoomNumber)) {
-      emit('update:id', newRoomNumber)
-    }
-  })
-
-  const isDisabled = computed(() => {
-    return !isValidRoom(rawRoomIdInput.value) || roomExists.value === false || checking.value
-  })
-
-  const handleSubmit = () => {
-    if (!isValidRoom(rawRoomIdInput.value)) return
-    if (roomExists.value === false) return
-    if (checking.value) return
-
-    if (isValidRoom(rawRoomIdInput.value)) {
-      emit('submit')
+/**
+ * Keep local field in sync if parent changes id externally.
+ */
+watch(
+  () => id,
+  (newId) => {
+    if (newId !== rawRoomIdInput.value) {
+      rawRoomIdInput.value = newId ?? "";
     }
   }
+);
+
+const isValidRoom = (roomNumber: string) => /^\d{6,}$/.test(roomNumber);
+
+/** DB-existence state */
+const roomExists = ref<boolean | null>(null);
+const checking = ref(false);
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+/** Debounced watcher: only checks if room number has valid format */
+watch(rawRoomIdInput, (roomIdInput) => {
+  roomExists.value = null;
+
+  if (debounceTimer) clearTimeout(debounceTimer);
+  if (!isValidRoom(roomIdInput)) return;
+
+  debounceTimer = setTimeout(async () => {
+    checking.value = true;
+    try {
+      const roomNameRef = dbRef(db, `rooms/${roomIdInput}/roomId`);
+      const snap = await get(roomNameRef);
+      roomExists.value = snap.exists();
+    } catch (e) {
+      console.error("Error checking room existence:", e);
+      roomExists.value = false;
+    } finally {
+      checking.value = false;
+    }
+  }, 300);
+});
+
+onBeforeUnmount(() => {
+  if (debounceTimer) clearTimeout(debounceTimer);
+});
+
+const roomNumberRule = (roomNumber: string) => {
+  if (!isValidRoom(roomNumber)) {
+    return "Room number must be at least 6 digits and contain only digits";
+  }
+  if (roomExists.value === false) {
+    return "This room number does not exist";
+  }
+  return true;
+};
+
+const validationMessage = computed(() => {
+  const result = roomNumberRule(rawRoomIdInput.value);
+  return result === true ? "" : result;
+});
+const isInvalid = computed(
+  () => !!validationMessage.value && rawRoomIdInput.value.length > 0
+);
+
+/**
+ * Only propagate valid values to the parent; ignore invalid input.
+ */
+watch(rawRoomIdInput, (newRoomNumber) => {
+  if (isValidRoom(newRoomNumber)) {
+    emit("update:id", newRoomNumber);
+  }
+});
+
+const isDisabled = computed(() => {
+  return (
+    !isValidRoom(rawRoomIdInput.value) ||
+    roomExists.value === false ||
+    checking.value
+  );
+});
+
+const handleSubmit = () => {
+  if (!isValidRoom(rawRoomIdInput.value)) return;
+  if (roomExists.value === false) return;
+  if (checking.value) return;
+
+  if (isValidRoom(rawRoomIdInput.value)) {
+    emit("submit");
+  }
+};
 </script>
 
 <template>
-  <h3 class="text-subtitle-1 font-weight-bold mb-2">Enter existing room</h3>
+  <div class="rounded-2xl bg-[#2A1449] p-6 text-white sm:p-8">
+    <div class="space-y-4">
+      <div class="space-y-2">
+        <Label
+          class="mb-3 block text-base font-bold text-[#2A1449] dark:text-white"
+          for="roomNumber"
+        >
+          Enter existing room number
+        </Label>
 
-  <v-text-field
-    v-model="rawRoomIdInput"
-    autocomplete="one-time-code"
-    class="mb-4 roomnumber-input"
-    dense
-    inputmode="numeric"
-    label="Room number"
-    outlined
-    placeholder="e.g. 123456"
-    :rules="[roomNumberRule]"
-    type="text"
-    validate-on="input"
-    @keydown.enter="handleSubmit"
-  />
+        <Input
+          v-model="rawRoomIdInput"
+          id="roomNumber"
+          name="roomNumber"
+          ref="displayNameField"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          placeholder="e.g. 123456"
+          :aria-invalid="isInvalid ? 'true' : 'false'"
+          :aria-describedby="isInvalid ? 'roomNumber-error' : undefined"
+          class="name-input mx-auto mt-2 w-full rounded-lg border border-neutral-300 bg-white text-left placeholder:text-center focus:ring-2 focus:ring-neutral-800 focus:ring-offset-2 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:focus:ring-neutral-200 [:placeholder-shown]:text-center"
+          @keydown.enter="handleSubmit"
+        />
 
-  <div v-if="checking" class="text-caption mb-3">Checking room…</div>
+        <p v-if="checking" class="mt-2 text-sm text-neutral-500">
+          Checking room…
+        </p>
+        <p
+          v-else-if="isInvalid"
+          id="roomNumber-error"
+          class="mt-2 text-sm !text-red-600"
+        >
+          {{ validationMessage }}
+        </p>
+      </div>
 
-  <v-btn
-    block
-    class="gradient-btn"
-    :disabled="isDisabled"
-    rounded="pill"
-    variant="outlined"
-    @click="handleSubmit"
-  >
-    Join Room
-  </v-btn>
+      <Button
+        :aria-busy="checking ? 'true' : 'false'"
+        :disabled="isDisabled"
+        class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 pr-6 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+        variant="outline"
+        @click="handleSubmit"
+      >
+        Join Room
+      </Button>
+    </div>
+  </div>
 </template>

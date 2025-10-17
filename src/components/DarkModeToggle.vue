@@ -1,12 +1,17 @@
 <script setup lang="ts">
-  import { useDarkMode } from '@/composables/useDarkMode'
+import { useDarkMode } from "@/composables/useDarkMode";
 
-  const { isDark, toggleDark } = useDarkMode()
+const { isDark, toggleDark } = useDarkMode();
 </script>
 
 <template>
   <label class="switch">
-    <input :checked="isDark" type="checkbox" @click="toggleDark()">
+    <input
+      :checked="isDark"
+      type="checkbox"
+      @click="toggleDark()"
+      aria-label="Toggle Dark mode"
+    />
     <span class="slider round" />
   </label>
 </template>
@@ -33,14 +38,14 @@
   right: 0;
   bottom: 0;
   background-color: #1e2341;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
   position: absolute;
   content: "light_mode";
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-size: 18px;
   height: 26px;
   width: 26px;
@@ -53,7 +58,7 @@
   align-items: center;
   justify-content: flex-start;
   padding-left: 4px;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider::after {
@@ -65,7 +70,7 @@
   right: 8px;
   top: 4px;
   pointer-events: none;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {

@@ -101,11 +101,11 @@ const enterRoom = async () => {
         <div class="w-full max-w-[428px] text-center">
           <div class="w-full">
             <h2
-              class="mt-3 max-w-[414px] text-4xl text-[#2A1449] uppercase dark:text-white"
+              class="mt-3 max-w-[414px] text-[#2A1449] uppercase text-[40px] dark:text-white"
             >
               Free Online
             </h2>
-            <h2 class="mt-3 text-4xl font-bold uppercase">Scrum Poker tool</h2>
+            <h2 class="mt-3 text-[40px] font-bold uppercase">Scrum Poker tool</h2>
             <p
               class="mt-3 max-w-[414px] text-lg text-[#2A1449] dark:text-white"
             >
@@ -125,9 +125,9 @@ const enterRoom = async () => {
                   What would you prefer to be called?
                 </Label>
                 <Input
+                  v-model="username"
                   id="displayName"
                   ref="displayNameField"
-                  v-model="username"
                   class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left [:placeholder-shown]:text-center placeholder:text-center""
                   placeholder="Enter a display name"
                 />
@@ -158,9 +158,9 @@ const enterRoom = async () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent class="sm:max-w-[420px]">
-                    <DialogHeader>
-                      <DialogTitle>Join room</DialogTitle>
+                  <DialogContent class="sm:max-w-[420px] rounded-2xl bg-[#2A1449] !p-6 sm:p-8 text-white">
+                    <DialogHeader class="mt-4">
+                      <DialogTitle class="text-[#2A1449] dark:text-white">Join room</DialogTitle>
                     </DialogHeader>
 
                     <JoinRoomForm v-model:id="joinRoomId" @submit="enterRoom" />
@@ -174,20 +174,3 @@ const enterRoom = async () => {
     </PageLayout>
   </div>
 </template>
-
-<!-- <style scoped>
-.display-2 {
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.max-w-400{ max-width: 400px; }
-
-:deep(a.text-white) {
-  text-decoration: none;
-}
-
-:deep(a.text-white:hover) {
-  text-decoration: none;
-}
-</style> -->
