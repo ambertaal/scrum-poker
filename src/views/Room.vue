@@ -1,197 +1,245 @@
 <script setup lang="ts">
-  import { useRoute, useRouter } from 'vue-router'
-  import { computed, onMounted, ref, watch } from 'vue'
-  import { db } from '@/firebase'
-  import { ref as dbRef, get, onValue, set, update } from 'firebase/database'
-  import { usePlayerStore, type UUID } from '@/stores/player'
-  import { storeToRefs } from 'pinia'
-  import PageLayout from '@/layouts/PageLayout.vue'
-  import ConfettiCanvas from '@/components/ConfettiCanvas.vue'
+import { useRoute, useRouter } from "vue-router";
+import { computed, onMounted, ref, watch } from "vue";
+import { db } from "@/firebase";
+import { ref as dbRef, get, onValue, set, update } from "firebase/database";
+import { usePlayerStore, type UUID } from "@/stores/player";
+import { storeToRefs } from "pinia";
+import PageLayout from "@/layouts/PageLayout.vue";
+import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
 
-  const playerStore = usePlayerStore()
-  const { userId, username } = storeToRefs(playerStore)
+// shadcn components
+import { Button } from "@/components/ui/button";
 
-  const route = useRoute()
-  const router = useRouter()
+const playerStore = usePlayerStore();
+const { userId, username } = storeToRefs(playerStore);
 
-  const roomId = (route.params as { roomId: string }).roomId
+const route = useRoute();
+const router = useRouter();
 
-  const players = ref<{ id: UUID; name: string; estimate: string | null }[]>([])
-  const roomName = ref<string>(roomId)
-  const revealEstimates = ref<boolean>(false)
-  const showNameDialog = ref<boolean>(false)
-  const tempName = ref<string>('')
-  const showDeleteDialog = ref<boolean>(false)
-  const showShareDialog = ref<boolean>(false)
-  const showConfetti = ref<boolean>(false)
+const roomId = (route.params as { roomId: string }).roomId;
 
-  const estimateOptions = ['0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?','☕']
+const players = ref<{ id: UUID; name: string; estimate: string | null }[]>([]);
+const roomName = ref<string>(roomId);
+const revealEstimates = ref<boolean>(false);
+const showNameDialog = ref<boolean>(false);
+const tempName = ref<string>("");
+const showDeleteDialog = ref<boolean>(false);
+const showShareDialog = ref<boolean>(false);
+const showConfetti = ref<boolean>(false);
 
-  const hasEstimates = computed(() => players.value.some(p => p.estimate != null))
+const estimateOptions = [
+  "0",
+  "0.5",
+  "1",
+  "2",
+  "3",
+  "5",
+  "8",
+  "13",
+  "20",
+  "40",
+  "100",
+  "?",
+  "☕"
+];
 
-  const estimateCounts = computed<Record<string, number>>(() => {
-    const counts: Record<string, number> = {}
-    estimateOptions.forEach(option => { counts[option] = 0 })
+const hasEstimates = computed(() =>
+  players.value.some((p) => p.estimate != null)
+);
 
-    players.value.forEach(player => {
-      if (player.estimate != null && counts[player.estimate] != null) {
-        counts[player.estimate] += 1
-      }
-    })
-    return counts
-  })
+const estimateCounts = computed<Record<string, number>>(() => {
+  const counts: Record<string, number> = {};
+  estimateOptions.forEach((option) => {
+    counts[option] = 0;
+  });
 
-  const openNameDialog = () => {
-    tempName.value = ''
-    showNameDialog.value = true
-  }
-
-  const submitName = async () => {
-    if (!tempName.value.trim()) return
-    playerStore.setUsername(tempName.value)
-    showNameDialog.value = false
-
-    const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`)
-    await set(playerRef, { id: userId.value, name: username.value, estimate: null })
-
-    await router.replace({ path: `/room/${roomId}`, query: { user: username.value } })
-  }
-
-  const cancelName = () => {
-    showNameDialog.value = false
-  }
-
-  onMounted(() => {
-    if (!username.value) {
-      const userFromQuery = route.query.user as string
-      if (userFromQuery) {
-        playerStore.setUsername(userFromQuery)
-      } else {
-        openNameDialog()
-      }
+  players.value.forEach((player) => {
+    if (player.estimate != null && counts[player.estimate] != null) {
+      counts[player.estimate] += 1;
     }
+  });
+  return counts;
+});
 
-    const playersRef = dbRef(db, `rooms/${roomId}/players`)
-    onValue(playersRef, snapshot => {
-      const data = snapshot.val() as Record<string, { userId: UUID; name: string; estimate: string | null }> | null
-      players.value = data
-        ? Object.entries(data).map(([key, val]) => ({
+const openNameDialog = () => {
+  tempName.value = "";
+  showNameDialog.value = true;
+};
+
+const submitName = async () => {
+  if (!tempName.value.trim()) return;
+  playerStore.setUsername(tempName.value);
+  showNameDialog.value = false;
+
+  const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`);
+  await set(playerRef, {
+    id: userId.value,
+    name: username.value,
+    estimate: null
+  });
+
+  await router.replace({
+    path: `/room/${roomId}`,
+    query: { user: username.value }
+  });
+};
+
+const cancelName = () => {
+  showNameDialog.value = false;
+};
+
+onMounted(() => {
+  if (!username.value) {
+    const userFromQuery = route.query.user as string;
+    if (userFromQuery) {
+      playerStore.setUsername(userFromQuery);
+    } else {
+      openNameDialog();
+    }
+  }
+
+  const playersRef = dbRef(db, `rooms/${roomId}/players`);
+  onValue(playersRef, (snapshot) => {
+    const data = snapshot.val() as Record<
+      string,
+      { userId: UUID; name: string; estimate: string | null }
+    > | null;
+    players.value = data
+      ? Object.entries(data).map(([key, val]) => ({
           id: val.userId,
           name: val.name,
-          estimate: val.estimate,
+          estimate: val.estimate
         }))
-        : []
-    })
-
-    const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`)
-    onValue(roomNameRef, snapshot => roomName.value = snapshot.val())
-
-    const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
-    onValue(revealRef, snapshot => revealEstimates.value = snapshot.val() ?? false)
-  })
-
-  const castEstimate = async (estimate: string) => {
-    if (!userId.value) {
-      openNameDialog()
-      return
-    }
-    const estimateRef = dbRef(db, `rooms/${roomId}/players/${userId.value}/estimate`)
-    await set(estimateRef, estimate)
-  }
-
-  const toggleRevealEstimates = async () => {
-    const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`)
-    await set(revealRef, !revealEstimates.value)
-  }
-
-  const resetEstimates = async () => {
-    const playersRef = dbRef(db, `rooms/${roomId}/players`)
-    const snapshot = await get(playersRef)
-    if (!snapshot.exists()) return
-    const updates: Record<string, null> = {}
-    Object.keys(snapshot.val()).forEach(playerId => {
-      updates[`rooms/${roomId}/players/${playerId}/estimate`] = null
-    })
-    await update(dbRef(db), updates)
-  }
-
-  const myChoice = computed<string>(() => {
-    const me = players.value.find(p => p.name === username.value)
-    return me?.estimate ?? ''
-  })
-
-  // Delete dialog logic
-  const handleDelete = () => {
-    showDeleteDialog.value = false
-    confirmDelete()
-  }
-
-  const confirmDelete = async () => {
-    const playersRef = dbRef(db, `rooms/${roomId}/players`)
-    await set(playersRef, null)
-    showDeleteDialog.value = false
-  }
-
-  const handleCancel = () => {
-    showDeleteDialog.value = false
-  }
-
-  const onClickDelete = () => {
-    showDeleteDialog.value = true
-  }
-
-  // Handle Share button click
-  const onClickShare = () => {
-    showShareDialog.value = true;
-  }
-
-  const handleShareDone = () => {
-    showShareDialog.value = false;
-  }
-
-  // Confetti logic: show when revealed + all estimates match
-  watch([players, revealEstimates], ([newPlayers, shouldRevealEstimates]) => {
-    if (!shouldRevealEstimates) {
-      showConfetti.value = false;
-      return;
-    }
-
-    const estimates = newPlayers
-      .map(player => player.estimate)
-      .filter((estimate): estimate is string => estimate != null); // laat null/undefined weg
-
-    const hasAtLeastTwoPlayers = newPlayers.length >= 2;
-    const everyoneHasEstimated = estimates.length === newPlayers.length;
-    const uniqueEstimates = new Set(estimates);
-
-    showConfetti.value = hasAtLeastTwoPlayers && everyoneHasEstimated && uniqueEstimates.size === 1;
+      : [];
   });
 
-  // Hide confetti after 4 seconds
-  watch(showConfetti, isConfettiVisible => {
-    if (isConfettiVisible) {
-      setTimeout(() => showConfetti.value = false, 4000);
-    }
+  const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`);
+  onValue(roomNameRef, (snapshot) => (roomName.value = snapshot.val()));
+
+  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
+  onValue(
+    revealRef,
+    (snapshot) => (revealEstimates.value = snapshot.val() ?? false)
+  );
+});
+
+const castEstimate = async (estimate: string) => {
+  if (!userId.value) {
+    openNameDialog();
+    return;
+  }
+  const estimateRef = dbRef(
+    db,
+    `rooms/${roomId}/players/${userId.value}/estimate`
+  );
+  await set(estimateRef, estimate);
+};
+
+const toggleRevealEstimates = async () => {
+  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
+  await set(revealRef, !revealEstimates.value);
+};
+
+const resetEstimates = async () => {
+  const playersRef = dbRef(db, `rooms/${roomId}/players`);
+  const snapshot = await get(playersRef);
+  if (!snapshot.exists()) return;
+  const updates: Record<string, null> = {};
+  Object.keys(snapshot.val()).forEach((playerId) => {
+    updates[`rooms/${roomId}/players/${playerId}/estimate`] = null;
   });
+  await update(dbRef(db), updates);
+};
+
+const myChoice = computed<string>(() => {
+  const me = players.value.find((p) => p.name === username.value);
+  return me?.estimate ?? "";
+});
+
+// Delete dialog logic
+const handleDelete = () => {
+  showDeleteDialog.value = false;
+  confirmDelete();
+};
+
+const confirmDelete = async () => {
+  const playersRef = dbRef(db, `rooms/${roomId}/players`);
+  await set(playersRef, null);
+  showDeleteDialog.value = false;
+};
+
+const handleCancel = () => {
+  showDeleteDialog.value = false;
+};
+
+const onClickDelete = () => {
+  showDeleteDialog.value = true;
+};
+
+// Handle Share button click
+const onClickShare = () => {
+  showShareDialog.value = true;
+};
+
+const handleShareDone = () => {
+  showShareDialog.value = false;
+};
+
+// Confetti logic: show when revealed + all estimates match
+watch([players, revealEstimates], ([newPlayers, shouldRevealEstimates]) => {
+  if (!shouldRevealEstimates) {
+    showConfetti.value = false;
+    return;
+  }
+
+  const estimates = newPlayers
+    .map((player) => player.estimate)
+    .filter((estimate): estimate is string => estimate != null); // laat null/undefined weg
+
+  const hasAtLeastTwoPlayers = newPlayers.length >= 2;
+  const everyoneHasEstimated = estimates.length === newPlayers.length;
+  const uniqueEstimates = new Set(estimates);
+
+  showConfetti.value =
+    hasAtLeastTwoPlayers && everyoneHasEstimated && uniqueEstimates.size === 1;
+});
+
+// Hide confetti after 4 seconds
+watch(showConfetti, (isConfettiVisible) => {
+  if (isConfettiVisible) {
+    setTimeout(() => (showConfetti.value = false), 4000);
+  }
+});
 </script>
 
 <template>
   <div class="main-content">
     <ConfettiCanvas v-if="showConfetti" />
     <PageLayout>
-      <v-card class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards" elevation="0">
+      <v-card
+        class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards"
+        elevation="0"
+      >
         <v-card-title class="text-h6">
           <div class="text-center">
-            <h3>Room: {{ roomName }}</h3>
+            <h3 class="!text-[32px] text-[#492D7B] dark:text-white">
+              Room: {{ roomName }}
+            </h3>
             <v-btn
               prepend-icon="mdi-share-variant"
               variant="text"
               @click="onClickShare"
             >
               <template #prepend>
-                <v-icon color="share-icon" />
+                <v-icon
+                  class="text-[#492D7B] dark:text-white"
+                  color="share-icon"
+                />
               </template>
-              <span>Share room</span>
+              <span class="!text-lg text-[#492D7B] dark:text-white"
+                >Share room</span
+              >
             </v-btn>
             <!-- <v-tooltip location="top" text="Delete everyone in this room">
               <template #activator="{ props }">
@@ -204,13 +252,18 @@
               @click="onClickDelete"
             >
               <template #prepend>
-                <v-icon color="delete-icon" />
+                <v-icon
+                  class="text-[#492D7B] dark:text-white"
+                  color="delete-icon"
+                />
               </template>
-              <span>Delete room</span>
+              <span class="!text-lg text-[#492D7B] dark:text-white"
+                >Delete room</span
+              >
             </v-btn>
           </div>
         </v-card-title>
-        <v-row align="center" class="my-4 ga-4" justify="center" no-gutters>
+        <v-row align="center" class="ga-4 my-4" justify="center" no-gutters>
           <PlayerCard
             v-for="(player, index) in players"
             :key="index"
@@ -222,17 +275,24 @@
 
         <v-row class="my-4" justify="center">
           <v-col cols="auto">
-            <v-btn
-              class="secondary-btn"
+            <Button
+              class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:hover:!bg-white dark:hover:!text-[#492D7B] dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
               :disabled="!hasEstimates"
-              variant="outlined"
               @click="resetEstimates"
-            >Delete estimates</v-btn>
+              variant="outline"
+              >Delete estimates
+            </Button>
           </v-col>
+
           <v-col cols="auto">
-            <v-btn class="primary-btn" :disabled="!hasEstimates" @click="toggleRevealEstimates">
-              {{ revealEstimates ? 'Hide Cards' : 'Reveal Cards' }}
-            </v-btn>
+            <Button
+              aria-label="reveal cards"
+              class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+              :disabled="!hasEstimates"
+              @click="toggleRevealEstimates"
+            >
+              {{ revealEstimates ? "Hide Cards" : "Reveal Cards" }}
+            </Button>
           </v-col>
         </v-row>
 
@@ -257,7 +317,7 @@
         variant="nameDialog"
         @cancel="cancelName"
         @submit="submitName"
-        @update:name="(newPlayerName: string) => tempName = newPlayerName"
+        @update:name="(newPlayerName: string) => (tempName = newPlayerName)"
       />
 
       <Dialog
@@ -295,7 +355,7 @@
 }
 
 .share-icon {
-  color: #2A1449;
+  color: #2a1449;
 }
 
 .dark .share-icon {
@@ -303,7 +363,7 @@
 }
 
 .delete-icon {
-  color: #2A1449;
+  color: #2a1449;
 }
 
 .dark .delete-icon {

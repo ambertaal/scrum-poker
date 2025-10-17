@@ -150,7 +150,7 @@ const enterRoom = async () => {
                 <Dialog v-model:open="joinDialog">
                   <DialogTrigger as-child>
                     <Button
-                      class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
+                      class="dark:hover:!bg-white dark:hover:!text-[#492D7B] inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
                       :disabled="!username.trim()"
                       variant="outline"
                     >
@@ -158,7 +158,7 @@ const enterRoom = async () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent class="sm:max-w-[420px] rounded-2xl bg-[#2A1449] !p-6 sm:p-8 text-white">
+                  <DialogContent class="sm:max-w-[420px] rounded-2xl dark:!bg-[#2A1449] bg-white !p-6 sm:p-8 text-white">
                     <DialogHeader class="mt-4">
                       <DialogTitle class="text-[#2A1449] dark:text-white">Join room</DialogTitle>
                     </DialogHeader>
