@@ -228,11 +228,7 @@ watch(showConfetti, (isConfettiVisible) => {
             <h3 class="!text-[32px] text-[#492D7B] uppercase dark:text-white">
               Room: {{ roomName }}
             </h3>
-            <Button
-              prepend-icon="mdi-share-variant"
-              variant="link"
-              @click="onClickShare"
-            >
+            <Button variant="link" @click="onClickShare">
               <Share2
                 class="h-5 w-5 text-[#492D7B] dark:text-white"
                 aria-hidden="true"
@@ -242,11 +238,7 @@ watch(showConfetti, (isConfettiVisible) => {
               >
             </Button>
 
-            <Button
-              prepend-icon="mdi-delete"
-              variant="link"
-              @click="onClickDelete"
-            >
+            <Button variant="link" @click="onClickDelete">
               <Trash2
                 class="h-5 w-5 text-[#492D7B] dark:text-white"
                 aria-hidden="true"

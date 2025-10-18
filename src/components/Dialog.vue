@@ -1,130 +1,177 @@
+<!-- Dialog.vue -->
 <script setup lang="ts">
-  import { computed } from 'vue'
-  import { useClipboard } from '@vueuse/core'
-  import { useRouter } from 'vue-router'
+import { computed } from "vue";
+import { useClipboard } from "@vueuse/core";
+import { useRouter } from "vue-router";
 
-  const { title, message, modelValue, variant, persistent = false, maxWidth = 400 , confirmText = 'OK', cancelText = 'Cancel', inputLabel = 'Value', name, roomId } = defineProps<{
-    modelValue: boolean,
-    title: string,
-    message?: string,
-    variant: 'nameDialog' | 'deleteDialog' | 'shareDialog',
-    persistent?: boolean,
-    maxWidth?: number | string,
-    confirmText?: string,
-    cancelText?: string,
-    name?: string,
-    inputLabel?: string,
-    roomId?: string
-    hideCancel?: boolean,
-    hideConfirm?: boolean
-  }>()
+// shadcn-vue
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-  const router = useRouter()
+const {
+  title,
+  message,
+  modelValue,
+  variant,
+  persistent = false,
+  confirmText = "OK",
+  cancelText = "Cancel",
+  inputLabel = "Value",
+  name,
+  roomId,
+  hideCancel = false,
+  hideConfirm = false
+} = defineProps<{
+  modelValue: boolean;
+  title: string;
+  message?: string;
+  variant: "nameDialog" | "deleteDialog" | "shareDialog";
+  persistent?: boolean;
+  maxWidth?: number | string;
+  confirmText?: string;
+  cancelText?: string;
+  name?: string;
+  inputLabel?: string;
+  roomId?: string;
+  hideCancel?: boolean;
+  hideConfirm?: boolean;
+}>();
 
-  const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void
-    (e: 'update:name', value: string): void
-    (e: 'submit', value?: string): void
-    (e: 'cancel'): void
-  }>()
+const emit = defineEmits<{
+  (e: "update:modelValue", value: boolean): void;
+  (e: "update:name", value: string): void;
+  (e: "submit", value?: string): void;
+  (e: "cancel"): void;
+}>();
 
-  const showDialog = computed({
-    get: () => modelValue,
-    set: (isVisible: boolean) => emit('update:modelValue', isVisible),
-  })
+const router = useRouter();
 
-  /** nameDialog */
-  const tempName = computed({
-    get: () => name ?? '',
-    set: (newTempName: string) => emit('update:name', newTempName),
-  })
+/** v-model bridge */
+const showDialog = computed({
+  get: () => modelValue,
+  set: (isVisible: boolean) => emit("update:modelValue", isVisible)
+});
 
-  /** shareDialog */
-  const roomUrl = computed(() => {
-    const href = router.resolve({ name: 'room', params: { roomId } }).href
-    return `${window.location.origin}${href}`
-  })
+/** Prevent closing when persistent=true (ignore overlay/escape) */
+const handleOpenChange = (nextOpen: boolean) => {
+  if (persistent && !nextOpen) return;
+  showDialog.value = nextOpen;
+};
 
-  const { copy, copied } = useClipboard()
+/** nameDialog */
+const tempName = computed({
+  get: () => name ?? "",
+  set: (val: string) => emit("update:name", val)
+});
 
-  const copyUrl = async () => {
-    await copy(roomUrl.value)
-  }
+/** shareDialog */
+const roomUrl = computed(() => {
+  if (!roomId) return window.location.origin;
+  const href = router.resolve({ name: "room", params: { roomId } }).href;
+  return `${window.location.origin}${href}`;
+});
 
-  const handleSubmit = () => {
-    emit('submit')
-  }
+const { copy, copied } = useClipboard();
+const copyUrl = async () => {
+  await copy(roomUrl.value);
+};
 
-  const handleCancel = () => {
-    emit('cancel')
-    showDialog.value = false
-  }
+/** actions */
+const handleSubmit = () => {
+  emit("submit");
+};
+
+const handleCancel = () => {
+  emit("cancel");
+  showDialog.value = false;
+};
 </script>
 
 <template>
-  <v-dialog v-model="showDialog" :max-width="maxWidth" :persistent="persistent">
-    <v-card>
-      <v-card-title class="text-h6">
-        <slot name="title">{{ title }}</slot>
-      </v-card-title>
+  <Dialog :open="showDialog" @update:open="handleOpenChange">
+    <DialogContent
+      class="rounded-2xl bg-white !p-6 text-white sm:max-w-[420px] sm:p-8 dark:!bg-[#2A1449]"
+      :aria-describedby="undefined"
+    >
+      <DialogHeader class="mt-4">
+        <DialogTitle class="text-[#2A1449] dark:text-white">
+          <slot name="title">{{ title }}</slot>
+        </DialogTitle>
+        <DialogDescription v-if="message && variant !== 'nameDialog'">
+          {{ message }}
+        </DialogDescription>
+      </DialogHeader>
 
-      <v-card-text>
-        <slot>
-          <!-- DeleteDialog -->
-          <template v-if="variant === 'deleteDialog' && message">
-            {{ message }}
-          </template>
-
-          <!-- NameDialog -->
-          <template v-else-if="variant === 'nameDialog'">
-            <p v-if="message" class="mb-2">{{ message }}</p>
-            <v-text-field
+      <!-- Body -->
+      <div class="mt-4 space-y-4">
+        <!-- NameDialog -->
+        <template v-if="variant === 'nameDialog'">
+          <div class="space-y-2">
+            <Label :for="inputLabel">{{ inputLabel }}</Label>
+            <Input
+              :id="inputLabel"
               v-model="tempName"
-              :label="inputLabel"
-              variant="outlined"
+              type="text"
+              autocomplete="off"
+              class="focus-visible:ring-2"
               @keydown.enter="handleSubmit"
             />
-          </template>
+            <p v-if="message" class="text-xs text-neutral-500">{{ message }}</p>
+          </div>
+        </template>
 
-          <!-- ShareDialog -->
-          <template v-else-if="variant === 'shareDialog'">
-            <p v-if="message" class="mb-2">{{ message }}</p>
-            <v-text-field
-              append-icon="mdi-content-copy"
-              :append-inner-icon="copied ? 'mdi-check' : ''"
-              class="mt-4"
-              hide-details
+        <!-- ShareDialog -->
+        <template v-else-if="variant === 'shareDialog'">
+          <div class="mt-2 flex items-center gap-2">
+            <Input
               :model-value="roomUrl"
               readonly
-              variant="outlined"
-              @click:append="copyUrl"
+              class="!text-[#492D7B] dark:!text-white"
             />
-          </template>
-        </slot>
-      </v-card-text>
+            <Button
+              type="button"
+              variant="secondary"
+              class="shrink-0"
+              :aria-live="copied ? 'polite' : 'off'"
+              @click="copyUrl"
+            >
+              {{ copied ? "Copied" : "Copy" }}
+            </Button>
+          </div>
+        </template>
+      </div>
 
-      <v-card-actions>
+      <!-- Footer / Actions -->
+      <DialogFooter class="flex w-full items-center justify-end gap-2">
         <slot name="actions">
-          <v-spacer />
-          <v-btn
+          <Button
             v-if="!hideCancel"
-            class="secondary-btn"
-            text
-            variant="outlined"
+            class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:hover:!bg-white dark:hover:!text-[#492D7B] dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
+            type="button"
+            variant="outline"
             @click="handleCancel"
           >
             {{ cancelText }}
-          </v-btn>
-          <v-btn
+          </Button>
+          <Button
             v-if="!hideConfirm"
-            class="primary-btn"
-            variant="flat"
+            type="button"
+            class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
             @click="handleSubmit"
           >
             {{ confirmText }}
-          </v-btn>
+          </Button>
         </slot>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
 </template>

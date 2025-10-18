@@ -34,5 +34,6 @@ declare module 'vue' {
     PlayerCard: typeof import('./components/PlayerCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Separator: typeof import('./components/ui/separator/Separator.vue')['default']
   }
 }
