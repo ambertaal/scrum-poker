@@ -1,45 +1,41 @@
+<!-- Footer.vue -->
 <template>
-  <v-footer class="pa-0 footer-no-grow">
-    <v-sheet class="footer-gradient py-10" width="100%">
-      <v-container>
-        <v-row class="mb-2">
-          <v-col cols="12" md="6">
-            <div class="d-flex align-center">
-              <div class="mr-3">
-                <img alt="Planning Poker logo" class="logo-image" src="@/assets/logo.svg" >
-
-                <!-- <v-icon color="white" icon="mdi-cards-playing-outline" size="20" /> -->
+  <footer class="mt-auto">
+    <section
+      class="w-full bg-[linear-gradient(40deg,#4c1f82,#8c1d82_14%,#cf022b_50%,#ffb15c)] py-10 text-white"
+    >
+      <div class="mx-auto max-w-screen-xl px-4">
+        <div class="mb-2 grid gap-6 md:grid-cols-2">
+          <div>
+            <div class="flex items-center gap-3">
+              <img
+                alt="Planning Poker logo"
+                src="@/assets/logo.svg"
+                class="h-9 w-9"
+              />
+              <div class="text-lg leading-none font-semibold">
+                Planning Poker
               </div>
-              <div class="text-h6 text-white">Planning Poker</div>
             </div>
-            <p class="text-body-2 mt-3 text-white">Lightweight, real‑time Scrum Poker to keep your planning fast and focused.</p>
-          </v-col>
-        </v-row>
-        <v-divider class="opacity-50" color="white" />
-        <div class="d-flex justify-space-between align-center mt-4 text-caption text-white">
-          <span>© {{ new Date().getFullYear() }} Planning Poker. All rights reserved.</span>
+            <p class="mt-3 max-w-prose text-sm text-white dark:text-white">
+              Lightweight, real-time Scrum Poker to keep your planning fast and
+              focused.
+            </p>
+          </div>
         </div>
-      </v-container>
-    </v-sheet>
-  </v-footer>
+
+        <div class="my-6 h-px w-full bg-white/50"></div>
+
+        <div
+          class="mt-4 flex items-center justify-between text-xs text-white dark:text-white"
+        >
+          <span>© {{ year }} Planning Poker. All rights reserved.</span>
+        </div>
+      </div>
+    </section>
+  </footer>
 </template>
 
-<style scoped>
-.footer-no-grow {
-  flex: 0 0 auto !important;
-  align-items: stretch;
-  padding: 0 !important;
-}
-
-.footer-gradient {
-  background: linear-gradient(40deg,#4c1f82,#8c1d82 14%,#cf022b 50%,#ffb15c) !important;
-}
-
-:deep(a.text-white) {
-  text-decoration: none;
-}
-
-:deep(a.text-white:hover) {
-  text-decoration: none;
-}
-</style>
+<script setup lang="ts">
+const year = new Date().getFullYear();
+</script>

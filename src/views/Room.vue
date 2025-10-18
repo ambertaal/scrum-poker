@@ -225,7 +225,7 @@ watch(showConfetti, (isConfettiVisible) => {
       >
         <header class="text-h6">
           <div class="text-center">
-            <h3 class="!text-[32px] text-[#492D7B] dark:text-white">
+            <h3 class="!text-[32px] text-[#492D7B] uppercase dark:text-white">
               Room: {{ roomName }}
             </h3>
             <Button

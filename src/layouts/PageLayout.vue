@@ -5,13 +5,7 @@
     <v-main class="page-content">
       <v-container class="py-0">
         <v-row align="center" justify="center">
-          <v-col
-            class="text-center"
-            cols="12"
-            lg="12"
-            md="12"
-            sm="12"
-          >
+          <v-col class="text-center" cols="12" lg="12" md="12" sm="12">
             <slot />
           </v-col>
         </v-row>
@@ -40,6 +34,6 @@
 }
 
 .dark .v-container {
-  background-color: #2A1449;
+  background-color: #2a1449;
 }
 </style>
