@@ -1,59 +1,46 @@
 <script setup lang="ts">
-  defineProps<{ name: string; estimate: string | null; reveal: boolean }>()
+import { Card, CardContent } from "@/components/ui/card";
+
+defineProps<{ name: string; estimate: string | null; reveal: boolean }>();
 </script>
 
 <template>
-  <v-col class="d-flex flex-column align-center" cols="auto">
-    <div class="flip-card" :class="{ flipped: reveal }">
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <v-card class="d-flex align-center justify-center" color="blue-lighten-4" height="140" width="100">
-            <span v-if="!estimate">🤔</span>
-            <span v-if="estimate">✅</span>
-          </v-card>
-        </div>
-        <div class="flip-card-back">
-          <v-card class="d-flex align-center justify-center" color="white" height="140" width="100">
-            <span class="text-h5 player-estimate">{{ estimate }}</span>
-          </v-card>
-        </div>
+  <div class="flex flex-col items-center">
+    <div class="relative [perspective:1000px]">
+      <div
+        class="relative h-[140px] w-[100px] transition-transform duration-500 ease-in-out will-change-transform [transform-style:preserve-3d]"
+        :class="reveal ? '[transform:rotateY(180deg)]' : ''"
+      >
+        <!-- Front -->
+        <Card
+          class="absolute inset-0 grid place-items-center rounded-lg border-0 bg-blue-100 [backface-visibility:hidden] dark:bg-indigo-900"
+        >
+          <CardContent
+            class="flex h-full w-full items-center justify-center p-0"
+          >
+            <span v-if="!estimate" class="text-2xl">🤔</span>
+            <span v-else class="text-2xl">✅</span>
+          </CardContent>
+        </Card>
+
+        <!-- Back -->
+        <Card
+          class="absolute inset-0 grid [transform:rotateY(180deg)] place-items-center rounded-lg border border-neutral-200 bg-white [backface-visibility:hidden] dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <CardContent
+            class="flex h-full w-full items-center justify-center p-0"
+          >
+            <span class="text-2xl font-semibold tracking-wide">
+              {{ estimate }}
+            </span>
+          </CardContent>
+        </Card>
       </div>
     </div>
-    <span class="mt-2 player-name">{{ name }}</span>
-  </v-col>
+
+    <!-- Player name -->
+    <span class="mt-2 text-sm font-medium text-[#492D7B] dark:text-white">
+      {{ name }}
+    </span>
+  </div>
 </template>
-
-<style scoped>
-.flip-card {
-  perspective: 1000px;
-}
-
-.flip-card-inner {
-  width: 100px;
-  height: 140px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-}
-
-.flipped .flip-card-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 8px;
-}
-
-.flip-card-back {
-  transform: rotateY(180deg);
-}
-
-.dark .player-name {
-  color: #ffffff;
-}
-</style>

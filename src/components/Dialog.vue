@@ -1,4 +1,3 @@
-<!-- Dialog.vue -->
 <script setup lang="ts">
 import { computed } from "vue";
 import { useClipboard } from "@vueuse/core";

@@ -10,6 +10,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppIcon: typeof import('./components/AppIcon.vue')['default']
     Button: typeof import('./components/ui/button/Button.vue')['default']
+    Card: typeof import('./components/ui/card/Card.vue')['default']
+    CardAction: typeof import('./components/ui/card/CardAction.vue')['default']
+    CardContent: typeof import('./components/ui/card/CardContent.vue')['default']
+    CardDescription: typeof import('./components/ui/card/CardDescription.vue')['default']
+    CardFooter: typeof import('./components/ui/card/CardFooter.vue')['default']
+    CardHeader: typeof import('./components/ui/card/CardHeader.vue')['default']
+    CardTitle: typeof import('./components/ui/card/CardTitle.vue')['default']
     ConfettiCanvas: typeof import('./components/ConfettiCanvas.vue')['default']
     CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
