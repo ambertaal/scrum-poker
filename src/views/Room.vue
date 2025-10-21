@@ -76,7 +76,7 @@ const submitName = async () => {
 
   const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`);
   await set(playerRef, {
-    id: userId.value,
+    userId: userId.value,
     name: username.value,
     estimate: null
   });
@@ -108,7 +108,7 @@ onMounted(() => {
       { userId: UUID; name: string; estimate: string | null }
     > | null;
     players.value = data
-      ? Object.entries(data).map(([key, val]) => ({
+      ? Object.entries(data).map(([_, val]) => ({
           id: val.userId,
           name: val.name,
           estimate: val.estimate
@@ -147,10 +147,15 @@ const resetEstimates = async () => {
   const playersRef = dbRef(db, `rooms/${roomId}/players`);
   const snapshot = await get(playersRef);
   if (!snapshot.exists()) return;
+
   const updates: Record<string, null> = {};
   Object.keys(snapshot.val()).forEach((playerId) => {
     updates[`rooms/${roomId}/players/${playerId}/estimate`] = null;
   });
+
+  // hide cards again
+  updates[`rooms/${roomId}/revealEstimates`] = false as unknown as null;
+
   await update(dbRef(db), updates);
 };
 
@@ -225,7 +230,7 @@ watch(showConfetti, (isConfettiVisible) => {
       >
         <header class="text-h6">
           <div class="text-center">
-            <h3 class="!text-[32px] text-[#492D7B] uppercase dark:text-white">
+            <h3 class="!text-[32px] !text-[#492D7B] uppercase dark:!text-white">
               Room: {{ roomName }}
             </h3>
             <Button variant="link" @click="onClickShare">
@@ -244,7 +249,7 @@ watch(showConfetti, (isConfettiVisible) => {
                 aria-hidden="true"
               />
               <span class="!text-lg text-[#492D7B] dark:text-white"
-                >Delete room</span
+                >Clear room</span
               >
             </Button>
           </div>
@@ -254,7 +259,7 @@ watch(showConfetti, (isConfettiVisible) => {
             v-for="(player, index) in players"
             :key="index"
             :estimate="player.estimate"
-            :name="player.name"
+            :playerName="player.name"
             :reveal="revealEstimates"
           />
         </div>
@@ -305,8 +310,8 @@ watch(showConfetti, (isConfettiVisible) => {
       <Dialog
         v-model="showDeleteDialog"
         cancel-text="Cancel"
-        confirm-text="Delete"
-        message="Are you sure you want to delete all participants in the room?"
+        confirm-text="Clear room"
+        message="Are you sure you want to clear the room of all participants?"
         title="Clear room"
         variant="deleteDialog"
         @cancel="handleCancel"

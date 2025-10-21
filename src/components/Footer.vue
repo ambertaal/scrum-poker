@@ -1,4 +1,7 @@
-<!-- Footer.vue -->
+<script setup lang="ts">
+const year = new Date().getFullYear();
+</script>
+
 <template>
   <footer class="mt-auto">
     <section
@@ -35,7 +38,3 @@
     </section>
   </footer>
 </template>
-
-<script setup lang="ts">
-const year = new Date().getFullYear();
-</script>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
+import { User } from "lucide-vue-next";
 
-defineProps<{ name: string; estimate: string | null; reveal: boolean }>();
+defineProps<{ playerName: string; estimate: string | null; reveal: boolean }>();
 </script>
 
 <template>
@@ -13,13 +14,15 @@ defineProps<{ name: string; estimate: string | null; reveal: boolean }>();
       >
         <!-- Front -->
         <Card
-          class="absolute inset-0 grid place-items-center rounded-lg border-0 bg-blue-100 [backface-visibility:hidden] dark:bg-indigo-900"
+          class="absolute inset-0 grid place-items-center rounded-lg border-0 bg-[#EDE9F2] [backface-visibility:hidden] dark:bg-white"
         >
           <CardContent
             class="flex h-full w-full items-center justify-center p-0"
           >
-            <span v-if="!estimate" class="text-2xl">🤔</span>
-            <span v-else class="text-2xl">✅</span>
+            <span v-if="!estimate" class="text-2xl"></span>
+            <span v-else class="text-2xl">
+              <User class="text-[#EC7F31]" />
+            </span>
           </CardContent>
         </Card>
 
@@ -30,7 +33,7 @@ defineProps<{ name: string; estimate: string | null; reveal: boolean }>();
           <CardContent
             class="flex h-full w-full items-center justify-center p-0"
           >
-            <span class="text-2xl font-semibold tracking-wide">
+            <span class="text-2xl font-semibold tracking-wide text-[#EC7F31]">
               {{ estimate }}
             </span>
           </CardContent>
@@ -40,7 +43,7 @@ defineProps<{ name: string; estimate: string | null; reveal: boolean }>();
 
     <!-- Player name -->
     <span class="mt-2 text-sm font-medium text-[#492D7B] dark:text-white">
-      {{ name }}
+      {{ playerName }}
     </span>
   </div>
 </template>

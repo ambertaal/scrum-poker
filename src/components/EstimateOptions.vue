@@ -1,101 +1,74 @@
 <script setup lang="ts">
-  import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { Button } from "@/components/ui/button";
 
-  defineProps<{
-    options: readonly string[]
-    counts?: Record<string, number>
-    reveal: boolean
-    myChoice?: string
-  }>()
+const props = defineProps<{
+  options: readonly string[];
+  counts?: Record<string, number>;
+  reveal: boolean;
+  myChoice?: string;
+}>();
 
-  const emit = defineEmits<(event: 'select', value: string) => void>()
-  const handleClick = (option: string) => emit('select', option)
+const emit = defineEmits<(event: "select", value: string) => void>();
+const handleClick = (option: string) => emit("select", option);
 
-  // Responsive arrow
-  const isMobile = ref(false)
-  const checkMobile = () => {
-    isMobile.value = window.matchMedia('(max-width: 600px)').matches
-  }
+// Responsive arrow
+const isMobile = ref(false);
+const checkMobile = () => {
+  isMobile.value = window.matchMedia("(max-width: 600px)").matches;
+};
 
-  onMounted(() => {
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-  })
+onMounted(() => {
+  checkMobile();
+  window.addEventListener("resize", checkMobile);
+});
 
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', checkMobile)
-  })
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", checkMobile);
+});
 
-  const arrow = computed(() => (isMobile.value ? '👇' : '👉'))
+const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
 </script>
 
 <template>
   <section class="mt-8">
-    <v-row align="center" dense justify="center">
-      <v-col cols="auto">
-        <p class="text-subtitle-1 font-weight-bold mb-4 mb-md-0">
-          Pick your card {{ arrow }}
-        </p>
-      </v-col>
-      <v-col cols="auto">
-        <v-row align="start" dense>
-          <v-col v-for="option in options" :key="option" class="my-1" cols="auto">
-            <v-btn
-              :aria-label="`Select ${option}`"
-              :class="['hover-effect', 'text-h6', 'font-weight-bold', { 'is-selected': myChoice === option }]"
-              color="black"
-              height="80"
-              variant="outlined"
-              width="60"
-              @click="handleClick(option)"
-            >
-              {{ option }}
-            </v-btn>
+    <div class="flex flex-col items-center justify-center gap-4 md:flex-row">
+      <p
+        class="text-base font-semibold !text-[#492D7B] md:text-lg dark:!text-white"
+      >
+        Pick your card {{ arrow }}
+      </p>
 
-            <div
-              v-if="reveal && ((counts?.[option] ?? 0) > 0)"
-              class="estimate-count mt-1"
-            >
-              {{ counts?.[option] }}x
-            </div>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+      <div
+        class="grid grid-cols-4 gap-2 sm:grid-cols-6 md:auto-cols-max md:grid-flow-col md:grid-cols-none"
+      >
+        <div
+          v-for="option in props.options"
+          :key="option"
+          class="flex flex-col items-center"
+        >
+          <Button
+            variant="outline"
+            :aria-label="`Select ${option}`"
+            @click="handleClick(option)"
+            :class="
+              props.myChoice === option
+                ? '-translate-y-1.5 shadow-lg ring-1 ring-neutral-400'
+                : ''
+            "
+            class="h-20 w-16 transform !bg-[#EDE9F2] text-lg font-semibold !text-[#492D7B] transition duration-200 select-none hover:-translate-y-1 dark:!bg-white dark:!text-[#2A1449]"
+          >
+            {{ option }}
+          </Button>
+
+          <div
+            v-if="props.reveal && (props.counts?.[option] ?? 0) > 0"
+            class="mt-1 text-center text-sm text-white"
+          >
+            {{ props.counts?.[option] }}x
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
-
-<style scoped>
-.dark .text-subtitle-1 {
-  color: #ffffff;
-}
-
-.hover-effect {
-  transition: transform 0.2s, background-color 0.2s, color 0.2s;
-  background-color: white;
-  color: black;
-  border: 1px solid darkgray;
-}
-
-.hover-effect:hover {
-  background-color: #424242;
-  color: white !important;
-  transform: translateY(-5px);
-}
-
-.is-selected {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-  border-color: #9e9e9e;
-}
-
-.is-selected:hover {
-  transform: translateY(-8px);
-}
-
-.estimate-count {
-  color: white;
-  text-align: center;
-  font-size: 1rem;
-}
-</style>
