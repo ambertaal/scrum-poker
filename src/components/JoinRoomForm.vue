@@ -143,7 +143,9 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div class="rounded-2xl bg-white p-6 text-white sm:p-8 dark:!bg-[#2A1449]">
+  <div
+    class="rounded-2xl bg-[#EDE9F2] p-6 text-white sm:p-8 dark:!bg-[#2A1449]"
+  >
     <div class="space-y-4">
       <div class="space-y-2">
         <Label

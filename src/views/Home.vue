@@ -158,7 +158,7 @@ const enterRoom = async () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent class="sm:max-w-[420px] rounded-2xl dark:!bg-[#2A1449] bg-white !p-6 sm:p-8 text-white">
+                  <DialogContent class="sm:max-w-[420px] rounded-2xl dark:!bg-[#2A1449] bg-[#EDE9F2] !p-6 sm:p-8 text-white">
                     <DialogHeader class="mt-4">
                       <DialogTitle class="text-[#2A1449] dark:text-white">Join room</DialogTitle>
                     </DialogHeader>
