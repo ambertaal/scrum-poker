@@ -295,13 +295,14 @@ watch(showConfetti, (isConfettiVisible) => {
       <Dialog
         v-model="showNameDialog"
         v-model:name="tempName"
+        title="Provide your name to enter"
+        message=""
+        input-label="What would you prefer to be called?"
         cancel-text="Cancel"
         confirm-text="Submit"
-        input-label="Display Name"
-        message=""
         persistent
-        title="Provide your name to enter"
         variant="nameDialog"
+        hide-done
         @cancel="cancelName"
         @submit="submitName"
         @update:name="(newPlayerName: string) => (tempName = newPlayerName)"
@@ -309,22 +310,23 @@ watch(showConfetti, (isConfettiVisible) => {
 
       <Dialog
         v-model="showDeleteDialog"
+        title="Clear room"
+        message="Are you sure you want to clear the room of all participants?"
         cancel-text="Cancel"
         confirm-text="Clear room"
-        message="Are you sure you want to clear the room of all participants?"
-        title="Clear room"
         variant="deleteDialog"
+        hide-done
         @cancel="handleCancel"
         @submit="handleDelete"
       />
 
       <Dialog
         v-model="showShareDialog"
-        confirm-text="Done"
-        hide-cancel
-        message="Invite people to join the room."
         :room-id="roomId"
         title="Share room"
+        message="Invite people to join the room."
+        confirm-text="Done"
+        hide-cancel
         variant="shareDialog"
         @submit="handleShareDone"
       />

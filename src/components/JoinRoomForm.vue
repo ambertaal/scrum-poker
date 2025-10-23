@@ -2,6 +2,8 @@
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { ref as dbRef, get } from "firebase/database";
 import { db } from "@/firebase";
+import { usePlayerStore } from "@/stores/player";
+import { storeToRefs } from "pinia";
 
 // shadcn components
 import { Button } from "@/components/ui/button";
@@ -13,6 +15,9 @@ const emit = defineEmits<{
   (e: "update:id", value: string): void;
   (e: "submit"): void;
 }>();
+
+const playerStore = usePlayerStore();
+const { username, userId } = storeToRefs(playerStore);
 
 /**
  * Local state: keep a raw field value so the user can type non-digits.
@@ -37,10 +42,12 @@ const isValidRoom = (roomNumber: string) => /^\d{6,}$/.test(roomNumber);
 const roomExists = ref<boolean | null>(null);
 const checking = ref(false);
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+const nameTaken = ref<boolean | null>(null);
 
 /** Debounced watcher: only checks if room number has valid format */
 watch(rawRoomIdInput, (roomIdInput) => {
   roomExists.value = null;
+  nameTaken.value = null;
 
   if (debounceTimer) clearTimeout(debounceTimer);
   if (!isValidRoom(roomIdInput)) return;
@@ -51,9 +58,30 @@ watch(rawRoomIdInput, (roomIdInput) => {
       const roomNameRef = dbRef(db, `rooms/${roomIdInput}/roomId`);
       const snap = await get(roomNameRef);
       roomExists.value = snap.exists();
+
+      // Only check name if room exists and we have a username
+      if (roomExists.value && username.value?.trim()) {
+        const playersRef = dbRef(db, `rooms/${roomIdInput}/players`);
+        const playersSnap = await get(playersRef);
+        const userName = username.value.trim().toLowerCase();
+        if (playersSnap.exists()) {
+          const players = playersSnap.val() as Record<
+            string,
+            { name?: string }
+          >;
+          nameTaken.value = Object.values(players).some(
+            (player) => player?.name?.trim()?.toLowerCase() === userName
+          );
+        } else {
+          nameTaken.value = false;
+        }
+      } else {
+        nameTaken.value = null;
+      }
     } catch (e) {
       console.error("Error checking room existence:", e);
       roomExists.value = false;
+      nameTaken.value = null;
     } finally {
       checking.value = false;
     }
@@ -70,6 +98,9 @@ const roomNumberRule = (roomNumber: string) => {
   }
   if (roomExists.value === false) {
     return "This room number does not exist";
+  }
+  if (nameTaken.value === true) {
+    return "This display name already exists in this room";
   }
   return true;
 };
@@ -95,7 +126,8 @@ const isDisabled = computed(() => {
   return (
     !isValidRoom(rawRoomIdInput.value) ||
     roomExists.value === false ||
-    checking.value
+    checking.value ||
+    nameTaken.value === true
   );
 });
 

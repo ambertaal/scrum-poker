@@ -28,7 +28,8 @@ const {
   name,
   roomId,
   hideCancel = false,
-  hideConfirm = false
+  hideConfirm = false,
+  hideDone = false
 } = defineProps<{
   modelValue: boolean;
   title: string;
@@ -43,6 +44,7 @@ const {
   roomId?: string;
   hideCancel?: boolean;
   hideConfirm?: boolean;
+  hideDone?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -98,7 +100,7 @@ const handleCancel = () => {
 <template>
   <Dialog :open="showDialog" @update:open="handleOpenChange">
     <DialogContent
-      class="rounded-2xl bg-white !p-6 text-white sm:max-w-[420px] sm:p-8 dark:!bg-[#2A1449]"
+      class="rounded-2xl bg-[#EDE9F2] !p-6 text-white sm:max-w-[420px] sm:p-8 dark:!bg-[#2A1449]"
       :aria-describedby="undefined"
     >
       <DialogHeader class="mt-4">
@@ -114,14 +116,20 @@ const handleCancel = () => {
       <div class="mt-4 space-y-4">
         <!-- NameDialog -->
         <template v-if="variant === 'nameDialog'">
-          <div class="space-y-2">
-            <Label :for="inputLabel">{{ inputLabel }}</Label>
+          <div class="space-y-2 flex flex-col items-center ">
+            <Label
+              class="mb-3 pt-4 text-base font-bold text-[#2A1449] dark:text-white"
+              for="inputLabel"
+              >{{ inputLabel }}</Label
+            >
             <Input
-              :id="inputLabel"
               v-model="tempName"
+              id="inputLabel"
               type="text"
+              inputmode="string"
               autocomplete="off"
-              class="focus-visible:ring-2"
+              placeholder="Enter a display name"
+              class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left [:placeholder-shown]:text-center placeholder:text-center""
               @keydown.enter="handleSubmit"
             />
             <p v-if="message" class="text-xs text-neutral-500">{{ message }}</p>
@@ -163,8 +171,8 @@ const handleCancel = () => {
           </Button>
           <Button
             v-if="!hideConfirm"
-            type="button"
             class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+            type="button"
             @click="handleSubmit"
           >
             {{ confirmText }}
