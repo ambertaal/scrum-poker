@@ -42,5 +42,9 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Separator: typeof import('./components/ui/separator/Separator.vue')['default']
+    Tooltip: typeof import('./components/ui/tooltip/Tooltip.vue')['default']
+    TooltipContent: typeof import('./components/ui/tooltip/TooltipContent.vue')['default']
+    TooltipProvider: typeof import('./components/ui/tooltip/TooltipProvider.vue')['default']
+    TooltipTrigger: typeof import('./components/ui/tooltip/TooltipTrigger.vue')['default']
   }
 }

@@ -258,7 +258,7 @@ watch(showConfetti, (isConfettiVisible) => {
           <PlayerCard
             v-for="(player, index) in players"
             :key="index"
-            :estimate="player.estimate"
+            :estimate="player.estimate ?? null"
             :playerName="player.name"
             :reveal="revealEstimates"
           />

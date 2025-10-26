@@ -101,7 +101,6 @@ const handleCancel = () => {
   <Dialog :open="showDialog" @update:open="handleOpenChange">
     <DialogContent
       class="rounded-2xl bg-[#EDE9F2] !p-6 text-white sm:max-w-[420px] sm:p-8 dark:!bg-[#2A1449]"
-      :aria-describedby="undefined"
     >
       <DialogHeader class="mt-4">
         <DialogTitle class="text-[#2A1449] dark:text-white">

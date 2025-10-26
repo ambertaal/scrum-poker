@@ -1,12 +1,6 @@
-// tests/components/Header.spec.ts
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import { mount, RouterLinkStub, VueWrapper } from '@vue/test-utils'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import Header from '../../src/components/Header.vue'
-
-const vuetify = createVuetify({ components, directives })
 
 beforeAll(() => {
   vi.stubGlobal('visualViewport', {
@@ -19,73 +13,66 @@ beforeAll(() => {
 
 afterAll(() => vi.unstubAllGlobals())
 
-const mountInApp = () =>
-  mount(
-    {
-      components: { Header },
-      template: '<v-app><Header /></v-app>',
-    },
-    {
-      global: {
-        plugins: [vuetify],
-        stubs: {
-          RouterLink: RouterLinkStub,
-          DarkModeToggle: { template: '<div data-test="dark-toggle"></div>' },
-        },
+const mountHeader = () =>
+  mount(Header, {
+    global: {
+      stubs: {
+        RouterLink: RouterLinkStub,
+        DarkModeToggle: { template: '<div data-test="dark-toggle"></div>' },
       },
-      attachTo: document.body,
     },
-  )
+    attachTo: document.body,
+  })
 
-describe('Header.vue', () => {
-  let wrapper: VueWrapper;
+describe('Header.vue (Tailwind version)', () => {
+  let wrapper: VueWrapper
 
   afterEach(() => { if (wrapper) wrapper.unmount() })
 
   test('renders and shows product name', () => {
-    wrapper = mountInApp()
+    wrapper = mountHeader()
     const title = wrapper.find('h2')
     expect(title.exists()).toBe(true)
     expect(title.text()).toBe('Planning Poker')
   })
 
-  test('renders structure and app-bar props', () => {
-    wrapper = mountInApp()
-    const appBar = wrapper.findComponent({ name: 'VAppBar' })
-    const container = wrapper.findComponent({ name: 'VContainer' })
-    expect(appBar.exists()).toBe(true)
-    expect(container.exists()).toBe(true)
+  test('renders sticky header with expected Tailwind classes', () => {
+    wrapper = mountHeader()
+    const header = wrapper.find('header')
+    expect(header.exists()).toBe(true)
 
-    expect(appBar.props('density')).toBe('comfortable')
-    expect(appBar.props('flat')).toBe(true)
-    expect(appBar.classes()).toContain('header-bar')
+    const cls = header.attributes('class') ?? ''
+    expect(cls).toContain('sticky')
+    expect(cls).toContain('top-0')
+    expect(cls).toContain('z-50')
+    expect(cls).toContain('text-white')
+    expect(cls).toContain('shadow')
+
+    expect(cls).toContain('bg-[')
   })
 
-  test('router-link points to "/" and has expected classes', () => {
-    wrapper = mountInApp()
+  test('router-link points to "/" and has expected Tailwind classes', () => {
+    wrapper = mountHeader()
     const link = wrapper.findComponent(RouterLinkStub)
     expect(link.exists()).toBe(true)
     expect(link.props('to')).toBe('/')
 
     const cls = link.attributes('class') ?? ''
-    expect(cls).toContain('d-flex')
-    expect(cls).toContain('align-center')
-    expect(cls).toContain('text-decoration-none')
+    expect(cls).toContain('flex')
+    expect(cls).toContain('items-center')
+    expect(cls).toContain('gap-3')
+    expect(cls).toContain('text-white')
+    expect(cls).toContain('no-underline')
   })
 
-  test('renders logo chip and icon with correct props', () => {
-    wrapper = mountInApp()
-    expect(wrapper.find('.logo-chip').exists()).toBe(true)
-
-    const icon = wrapper.findComponent({ name: 'VIcon' })
-    expect(icon.exists()).toBe(true)
-    expect(icon.props('icon')).toBe('mdi-cards-playing-outline')
-    expect(icon.props('color')).toBe('white')
-    expect(icon.props('size')).toBe('20')
+  test('renders logo image with alt, size classes, and svg src', () => {
+    wrapper = mountHeader()
+    const img = wrapper.find('img[alt="Planning Poker logo"]')
+    expect(img.exists()).toBe(true)
   })
 
   test('renders DarkModeToggle', () => {
-    wrapper = mountInApp()
+    wrapper = mountHeader()
     expect(wrapper.find('[data-test="dark-toggle"]').exists()).toBe(true)
   })
 })

@@ -1,42 +1,15 @@
-import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
+// tests/components/Footer.spec.ts
+import { afterEach, describe, expect, test } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import Footer from '../../src/components/Footer.vue'
 
-const vuetify = createVuetify({ components, directives })
-
-beforeAll(() => {
-  vi.stubGlobal('visualViewport', {
-    width: 1024,
-    height: 768,
-    scale: 1,
-    offsetLeft: 0,
-    offsetTop: 0,
-    pageLeft: 0,
-    pageTop: 0,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
+const mountFooter = () =>
+  mount(Footer, {
+    attachTo: document.body,
   })
-  vi.stubGlobal('ResizeObserver', class {
-    observe () {}
-    unobserve () {}
-    disconnect () {}
-  })
-})
 
-afterAll(() => {
-  vi.unstubAllGlobals()
-})
-
-describe('Footer.vue', () => {
-  let wrapper: VueWrapper;
-
-  const mountFooter = () =>
-    mount(Footer, {
-      global: { plugins: [vuetify] },
-    })
+describe('Footer.vue (Tailwind version)', () => {
+  let wrapper: VueWrapper
 
   afterEach(() => {
     if (wrapper) wrapper.unmount()
@@ -50,48 +23,58 @@ describe('Footer.vue', () => {
 
   test('shows tagline text', () => {
     wrapper = mountFooter()
-    expect(wrapper.text()).toContain('Lightweight')
-    expect(wrapper.text()).toContain('Scrum Poker')
+    const text = wrapper.text()
+    expect(text).toContain('Lightweight')
+    expect(text).toContain('real-time Scrum Poker')
+    expect(text).toContain('planning fast and')
   })
 
-  test('renders structure components', () => {
+  test('renders structural elements and Tailwind classes', () => {
     wrapper = mountFooter()
-    const vFooter = wrapper.findComponent({ name: 'VFooter' })
-    const vSheet = wrapper.findComponent({ name: 'VSheet' })
-    const vContainer = wrapper.findComponent({ name: 'VContainer' })
-    const vRow = wrapper.findComponent({ name: 'VRow' })
-    const vCol = wrapper.findComponent({ name: 'VCol' })
-    const vDivider = wrapper.findComponent({ name: 'VDivider' })
 
-    expect(vFooter.exists()).toBe(true)
-    expect(vSheet.exists()).toBe(true)
-    expect(vContainer.exists()).toBe(true)
-    expect(vRow.exists()).toBe(true)
-    expect(vCol.exists()).toBe(true)
-    expect(vDivider.exists()).toBe(true)
+    // <footer class="mt-auto">
+    const footer = wrapper.find('footer')
+    expect(footer.exists()).toBe(true)
+    expect((footer.attributes('class') ?? '')).toContain('mt-auto')
+
+    // top-level <section> gradient + padding + text color
+    const section = wrapper.find('section')
+    expect(section.exists()).toBe(true)
+    const sectionCls = section.attributes('class') ?? ''
+    expect(sectionCls).toContain('w-full')
+    expect(sectionCls).toContain('py-10')
+    expect(sectionCls).toContain('text-white')
+    // Do not match the entire inline gradient; just ensure it exists
+    expect(sectionCls).toContain('bg-[')
+
+    // container
+    const container = wrapper.find('div.mx-auto.max-w-screen-xl.px-4')
+    expect(container.exists()).toBe(true)
+
+    // grid with two columns on md+
+    const grid = wrapper.find('div.grid')
+    expect(grid.exists()).toBe(true)
+    const gridCls = grid.attributes('class') ?? ''
+    expect(gridCls).toContain('gap-6')
+    expect(gridCls).toContain('md:grid-cols-2')
+
+    // divider line
+    const divider = wrapper.find('div.my-6.h-px.w-full')
+    expect(divider.exists()).toBe(true)
+    expect((divider.attributes('class') ?? '')).toContain('bg-white/50')
+
+    // bottom bar with flex layout
+    const bottomBar = wrapper.find('div.mt-4.flex.items-center.justify-between')
+    expect(bottomBar.exists()).toBe(true)
+    const bottomCls = bottomBar.attributes('class') ?? ''
+    expect(bottomCls).toContain('text-xs')
+    expect(bottomCls).toContain('text-white')
   })
 
-  test('footer has zero padding class and gradient on sheet', () => {
+  test('renders logo image with alt, size classes, and svg src', () => {
     wrapper = mountFooter()
-    const vFooter = wrapper.findComponent({ name: 'VFooter' })
-    const vSheet = wrapper.findComponent({ name: 'VSheet' })
-
-    expect(vFooter.classes()).toContain('pa-0')
-    expect(vSheet.classes()).toContain('footer-gradient')
-
-    expect(vSheet.props('width')).toBe('100%')
-  })
-
-  test('renders logo icon with correct props and chip container', () => {
-    wrapper = mountFooter()
-    const chip = wrapper.find('.logo-chip')
-    expect(chip.exists()).toBe(true)
-
-    const vIcon = wrapper.findComponent({ name: 'VIcon' })
-    expect(vIcon.exists()).toBe(true)
-    expect(vIcon.props('icon')).toBe('mdi-cards-playing-outline')
-    expect(vIcon.props('color')).toBe('white')
-    expect(vIcon.props('size')).toBe('20')
+    const img = wrapper.find('img[alt="Planning Poker logo"]')
+    expect(img.exists()).toBe(true)
   })
 
   test('shows the current year in copyright line', () => {

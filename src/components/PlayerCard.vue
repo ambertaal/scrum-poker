@@ -2,7 +2,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "lucide-vue-next";
 
-defineProps<{ playerName: string; estimate: string | null; reveal: boolean }>();
+const { estimate = null } = defineProps<{
+  playerName: string;
+  estimate?: string | null;
+  reveal: boolean;
+}>();
 </script>
 
 <template>
