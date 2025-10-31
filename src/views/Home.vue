@@ -47,7 +47,7 @@ const createRoom = async () => {
   }
 
   const roomId = generateRoomId();
-  const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`);
+  const playerRef = dbRef(db, `players/${roomId}/players/${userId.value}`);
   const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`);
   const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
 
