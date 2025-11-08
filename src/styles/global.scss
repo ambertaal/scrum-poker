@@ -1,10 +1,3 @@
-:root { --font-sans: "HurmeGeometricSans3W05-Rg", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
-html, body, #app { font-family: var(--font-sans); }
-
-:root {
-  --v-font-family: var(--font-sans);
-}
-
 html, body, #app {
   height: 100%;
   margin: 0;
@@ -71,40 +64,6 @@ p {
 .dark .v-card-text {
   color: #ffffff;
 }
-
-/* Buttons */
-// .primary-btn {
-//   background-color: #EC7F31 !important;
-//   min-height: 44px;
-//   border-radius: 22px;
-//   padding: 12px 24px;
-//   color: #FFFFFF !important;
-//   font-size: 14px;
-//   font-family: 'HurmeGeometricSans3W05-Bold', sans-serif;
-//   font-weight: 700;
-//   font-style: normal;
-//   line-height: 18px;
-//   letter-spacing: 0.1em;
-//   text-transform: uppercase;
-//   text-align: center;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-
-// .primary-btn:hover {
-//   background-color: #CE2935 !important;
-//   min-height: 44px;
-//   border-radius: 22px;
-//   padding: 12px 24px;
-//   filter: none;
-// }
-
-// .primary-btn:disabled {
-//   filter: grayscale(0.5);
-//   opacity: 0.5;
-//   cursor: not-allowed;
-// }
 
 .secondary-btn {
   border-radius: 9999px;

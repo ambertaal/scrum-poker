@@ -292,7 +292,7 @@ watch(showConfetti, (isConfettiVisible) => {
         />
       </section>
 
-      <Dialog
+      <BaseDialog
         v-model="showNameDialog"
         v-model:name="tempName"
         title="Provide your name to enter"
@@ -308,7 +308,7 @@ watch(showConfetti, (isConfettiVisible) => {
         @update:name="(newPlayerName: string) => (tempName = newPlayerName)"
       />
 
-      <Dialog
+      <BaseDialog
         v-model="showDeleteDialog"
         title="Clear room"
         message="Are you sure you want to clear the room of all participants?"
@@ -320,7 +320,7 @@ watch(showConfetti, (isConfettiVisible) => {
         @submit="handleDelete"
       />
 
-      <Dialog
+      <BaseDialog
         v-model="showShareDialog"
         :room-id="roomId"
         title="Share room"

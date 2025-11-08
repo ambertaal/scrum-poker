@@ -8,7 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppIcon: typeof import('./components/AppIcon.vue')['default']
+    BaseDialog: typeof import('./components/BaseDialog.vue')['default']
     Button: typeof import('./components/ui/button/Button.vue')['default']
     Card: typeof import('./components/ui/card/Card.vue')['default']
     CardAction: typeof import('./components/ui/card/CardAction.vue')['default']
@@ -18,9 +18,8 @@ declare module 'vue' {
     CardHeader: typeof import('./components/ui/card/CardHeader.vue')['default']
     CardTitle: typeof import('./components/ui/card/CardTitle.vue')['default']
     ConfettiCanvas: typeof import('./components/ConfettiCanvas.vue')['default']
-    CreateRoomForm: typeof import('./components/CreateRoomForm.vue')['default']
     DarkModeToggle: typeof import('./components/DarkModeToggle.vue')['default']
-    Dialog: typeof import('./components/Dialog.vue')['default']
+    Dialog: typeof import('./components/ui/dialog/Dialog.vue')['default']
     DialogClose: typeof import('./components/ui/dialog/DialogClose.vue')['default']
     DialogContent: typeof import('./components/ui/dialog/DialogContent.vue')['default']
     DialogDescription: typeof import('./components/ui/dialog/DialogDescription.vue')['default']
@@ -30,11 +29,9 @@ declare module 'vue' {
     DialogScrollContent: typeof import('./components/ui/dialog/DialogScrollContent.vue')['default']
     DialogTitle: typeof import('./components/ui/dialog/DialogTitle.vue')['default']
     DialogTrigger: typeof import('./components/ui/dialog/DialogTrigger.vue')['default']
-    DividerWithLabel: typeof import('./components/DividerWithLabel.vue')['default']
     EstimateOptions: typeof import('./components/EstimateOptions.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
-    ImageTextSection: typeof import('./components/ImageTextSection.vue')['default']
     Input: typeof import('./components/ui/input/Input.vue')['default']
     JoinRoomForm: typeof import('./components/JoinRoomForm.vue')['default']
     Label: typeof import('./components/ui/label/Label.vue')['default']
