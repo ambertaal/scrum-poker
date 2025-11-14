@@ -128,7 +128,7 @@ const enterRoom = async () => {
                   v-model="username"
                   id="displayName"
                   ref="displayNameField"
-                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left [:placeholder-shown]:text-center placeholder:text-center""
+                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder-shown:text-center placeholder:text-center"
                   placeholder="Enter a display name"
                 />
               </div>
