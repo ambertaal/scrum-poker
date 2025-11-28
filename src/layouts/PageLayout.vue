@@ -1,39 +1,17 @@
 <template>
-  <div class="page-layout">
+  <div class="flex min-h-screen flex-col">
     <Header />
 
-    <v-main class="page-content">
-      <v-container class="py-0">
-        <v-row align="center" justify="center">
-          <v-col class="text-center" cols="12" lg="12" md="12" sm="12">
+    <main class="flex flex-1 flex-col">
+      <div class="w-full bg-gray-50 dark:bg-[#2a1449]">
+        <div class="mx-auto flex max-w-6xl justify-center px-4 py-6">
+          <div class="w-full text-center">
             <slot />
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <Footer />
   </div>
 </template>
-
-<style scoped>
-.page-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-}
-
-.v-container {
-  background-color: #f9f9f9;
-}
-
-.dark .v-container {
-  background-color: #2a1449;
-}
-</style>
