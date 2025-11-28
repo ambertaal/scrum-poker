@@ -230,7 +230,7 @@ watch(showConfetti, (isConfettiVisible) => {
       >
         <header class="text-h6">
           <div class="text-center">
-            <h3 class="!text-[32px] !text-[#492D7B] uppercase dark:!text-white">
+            <h3 class="text-[32px]! text-[#492D7B]! uppercase dark:text-white!">
               Room: {{ roomName }}
             </h3>
             <Button variant="link" @click="onClickShare">
@@ -266,7 +266,7 @@ watch(showConfetti, (isConfettiVisible) => {
 
         <div class="flex flex-wrap justify-center gap-4">
           <Button
-            class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:hover:!bg-white dark:hover:!text-[#492D7B] dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
+            class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark:bg-transparent! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
             :disabled="!hasEstimates"
             @click="resetEstimates"
             variant="outline"
@@ -275,7 +275,7 @@ watch(showConfetti, (isConfettiVisible) => {
 
           <Button
             aria-label="reveal cards"
-            class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+            class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
             :disabled="!hasEstimates"
             @click="toggleRevealEstimates"
           >

@@ -101,11 +101,13 @@ const enterRoom = async () => {
         <div class="w-full max-w-[428px] text-center">
           <div class="w-full">
             <h2
-              class="mt-3 max-w-[414px] text-[#2A1449] uppercase text-[40px] dark:text-white"
+              class="mt-3 max-w-[414px] text-[40px] text-[#2A1449] uppercase dark:text-white"
             >
               Free Online
             </h2>
-            <h2 class="mt-3 text-[40px] font-bold uppercase">Scrum Poker tool</h2>
+            <h2 class="mt-3 text-[40px] font-bold uppercase">
+              Scrum Poker tool
+            </h2>
             <p
               class="mt-3 max-w-[414px] text-lg text-[#2A1449] dark:text-white"
             >
@@ -128,7 +130,7 @@ const enterRoom = async () => {
                   v-model="username"
                   id="displayName"
                   ref="displayNameField"
-                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder-shown:text-center placeholder:text-center"
+                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder:text-center placeholder-shown:text-center"
                   placeholder="Enter a display name"
                 />
               </div>
@@ -137,7 +139,7 @@ const enterRoom = async () => {
                 class="flex flex-col items-center justify-center gap-3 pb-16"
               >
                 <Button
-                  class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+                  class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
                   :disabled="!username.trim()"
                   @click="createRoom"
                 >
@@ -145,12 +147,12 @@ const enterRoom = async () => {
                   Create a room
                 </Button>
 
-                <div class=" text-lg text-[#2A1449] dark:text-white">or</div>
+                <div class="text-lg text-[#2A1449] dark:text-white">or</div>
 
                 <Dialog v-model:open="joinDialog">
                   <DialogTrigger as-child>
                     <Button
-                      class="dark:hover:!bg-white dark:hover:!text-[#492D7B] inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:!bg-[#492D7B] hover:!text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:!border-2 dark:!border-white dark:!bg-transparent dark:!text-white dark:focus-visible:outline-white dark:disabled:!border-2 dark:disabled:!border-white"
+                      class="inline-flex h-11 items-center justify-center rounded-full border-2! border-[#2A1449]! px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark:bg-transparent! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
                       :disabled="!username.trim()"
                       variant="outline"
                     >
@@ -158,9 +160,13 @@ const enterRoom = async () => {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent class="sm:max-w-[420px] rounded-2xl dark:!bg-[#2A1449] bg-[#EDE9F2] !p-6 sm:p-8 text-white">
+                  <DialogContent
+                    class="rounded-2xl bg-[#EDE9F2] p-6! text-white sm:max-w-[420px] sm:p-8 dark:bg-[#2A1449]!"
+                  >
                     <DialogHeader class="mt-4">
-                      <DialogTitle class="text-[#2A1449] dark:text-white">Join room</DialogTitle>
+                      <DialogTitle class="text-[#2A1449] dark:text-white"
+                        >Join room</DialogTitle
+                      >
                     </DialogHeader>
 
                     <JoinRoomForm v-model:id="joinRoomId" @submit="enterRoom" />

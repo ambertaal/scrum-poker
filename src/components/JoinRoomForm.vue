@@ -144,7 +144,7 @@ const handleSubmit = () => {
 
 <template>
   <div
-    class="rounded-2xl bg-[#EDE9F2] p-6 text-white sm:p-8 dark:!bg-[#2A1449]"
+    class="rounded-2xl bg-[#EDE9F2] p-6 text-white sm:p-8 dark:bg-[#2A1449]!"
   >
     <div class="space-y-4">
       <div class="space-y-2">
@@ -185,7 +185,7 @@ const handleSubmit = () => {
       <Button
         :aria-busy="checking ? 'true' : 'false'"
         :disabled="isDisabled"
-        class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 pr-6 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:!bg-[#CE2935] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+        class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 pr-6 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
         variant="outline"
         @click="handleSubmit"
       >
