@@ -164,18 +164,25 @@ const toggleRevealEstimates = async () => {
 };
 
 const resetEstimates = async () => {
+  // Fetch the array of playerIds from the room
   const playersRef = dbRef(db, `rooms/${roomId}/players`);
   const snapshot = await get(playersRef);
   if (!snapshot.exists()) return;
 
-  const updates: Record<string, null> = {};
-  Object.keys(snapshot.val()).forEach((playerId) => {
-    updates[`rooms/${roomId}/players/${playerId}/estimate`] = null;
+  const playerIds = (snapshot.val() as UUID[]).filter(Boolean);
+
+  // Build one updates object for a multi-path update
+  const updates: Record<string, unknown> = {};
+
+  // For each player: reset their estimate to null (or remove the field)
+  playerIds.forEach((playerId) => {
+    updates[`players/${playerId}/estimate`] = null;
   });
 
-  // hide cards again
-  updates[`rooms/${roomId}/revealEstimates`] = false as unknown as null;
+  // Hide cards again
+  updates[`rooms/${roomId}/revealEstimates`] = false;
 
+  // Perform the multi-path update from the root
   await update(dbRef(db), updates);
 };
 
