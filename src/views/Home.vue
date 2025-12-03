@@ -47,8 +47,8 @@ const createRoom = async () => {
   }
 
   const roomId = generateRoomId();
-  const playerRef = dbRef(db, `players/${roomId}/players/${userId.value}`);
-  const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`);
+  const playerRef = dbRef(db, `players/${userId.value}`);
+  const roomRef = dbRef(db, `rooms/${roomId}`);
   const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
 
   try {
@@ -58,10 +58,14 @@ const createRoom = async () => {
       name: username.value,
       estimate: null
     });
-    // Save roomName
-    await set(roomNameRef, roomId);
-    // Set revealEstimates by default to false
-    await set(revealRef, false);
+
+    // Save room
+    await set(roomRef, {
+      players: [userId.value],
+      revealEstimates: false,
+      createdAt: Date.now()
+    });
+
     // Navigate to room
     await router.push(`/room/${roomId}?user=${username.value}`);
   } catch (e) {
@@ -75,12 +79,18 @@ const enterRoom = async () => {
     alert("Enter Room Number please");
     return;
   }
+
+  if (!username.value.trim()) {
+    alert("Enter Display Name please");
+    focusName();
+    return;
+  }
+
   pendingRoomId.value = joinRoomId.value;
 
-  const playerRef = dbRef(
-    db,
-    `rooms/${joinRoomId.value}/players/${userId.value}`
-  );
+  const roomRef = dbRef(db, `rooms/${joinRoomId.value}`);
+  const playerRef = dbRef(db, `players/${userId.value}`);
+
   await set(playerRef, {
     id: userId.value,
     name: username.value,

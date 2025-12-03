@@ -21,8 +21,27 @@ const router = useRouter();
 
 const roomId = (route.params as { roomId: string }).roomId;
 
-const players = ref<{ id: UUID; name: string; estimate: string | null }[]>([]);
-const roomName = ref<string>(roomId);
+const roomPlayerIds = ref<UUID[]>([]);
+const allPlayers = ref<
+  Record<string, { id: UUID; name: string; estimate: string | null }>
+>({});
+const players = computed(() =>
+  roomPlayerIds.value
+    .map((id) => {
+      const player = allPlayers.value[id];
+      if (!player) return null;
+      return {
+        id,
+        name: player.name,
+        estimate: player.estimate ?? null
+      };
+    })
+    .filter(
+      (player): player is { id: UUID; name: string; estimate: string | null } =>
+        player !== null
+    )
+);
+
 const revealEstimates = ref<boolean>(false);
 const showNameDialog = ref<boolean>(false);
 const tempName = ref<string>("");
@@ -74,17 +93,20 @@ const submitName = async () => {
   playerStore.setUsername(tempName.value);
   showNameDialog.value = false;
 
-  const playerRef = dbRef(db, `rooms/${roomId}/players/${userId.value}`);
+  const playerRef = dbRef(db, `players/${userId.value}`);
   await set(playerRef, {
     userId: userId.value,
     name: username.value,
     estimate: null
   });
 
-  await router.replace({
-    path: `/room/${roomId}`,
-    query: { user: username.value }
-  });
+  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
+  const snapshot = await get(roomPlayersRef);
+  const currentIds = (snapshot.val() as UUID[] | null) ?? [];
+
+  if (!currentIds.includes(userId.value)) {
+    await set(roomPlayersRef, [...currentIds, userId.value]);
+  }
 };
 
 const cancelName = () => {
@@ -92,6 +114,7 @@ const cancelName = () => {
 };
 
 onMounted(() => {
+  // If no username, check query or else open dialog
   if (!username.value) {
     const userFromQuery = route.query.user as string;
     if (userFromQuery) {
@@ -101,24 +124,24 @@ onMounted(() => {
     }
   }
 
-  const playersRef = dbRef(db, `rooms/${roomId}/players`);
-  onValue(playersRef, (snapshot) => {
-    const data = snapshot.val() as Record<
-      string,
-      { userId: UUID; name: string; estimate: string | null }
-    > | null;
-    players.value = data
-      ? Object.entries(data).map(([_, val]) => ({
-          id: val.userId,
-          name: val.name,
-          estimate: val.estimate
-        }))
-      : [];
+  // ids in the room
+  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
+  onValue(roomPlayersRef, (snapshot) => {
+    const ids = (snapshot.val() as UUID[] | null) ?? [];
+    roomPlayerIds.value = ids;
   });
 
-  const roomNameRef = dbRef(db, `rooms/${roomId}/roomId`);
-  onValue(roomNameRef, (snapshot) => (roomName.value = snapshot.val()));
+  // all players
+  const allPlayersRef = dbRef(db, "players");
+  onValue(allPlayersRef, (snapshot) => {
+    const data = snapshot.val() as Record<
+      string,
+      { id: UUID; name: string; estimate: string | null }
+    > | null;
+    allPlayers.value = data ?? {};
+  });
 
+  // revealEstimates
   const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
   onValue(
     revealRef,
@@ -131,10 +154,7 @@ const castEstimate = async (estimate: string) => {
     openNameDialog();
     return;
   }
-  const estimateRef = dbRef(
-    db,
-    `rooms/${roomId}/players/${userId.value}/estimate`
-  );
+  const estimateRef = dbRef(db, `players/${userId.value}/estimate`);
   await set(estimateRef, estimate);
 };
 
@@ -231,7 +251,7 @@ watch(showConfetti, (isConfettiVisible) => {
         <header class="text-h6">
           <div class="text-center">
             <h3 class="text-[32px]! text-[#492D7B]! uppercase dark:text-white!">
-              Room: {{ roomName }}
+              Room: {{ roomId }}
             </h3>
             <Button variant="link" @click="onClickShare">
               <Share2

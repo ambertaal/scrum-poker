@@ -55,8 +55,9 @@ watch(rawRoomIdInput, (roomIdInput) => {
   debounceTimer = setTimeout(async () => {
     checking.value = true;
     try {
-      const roomNameRef = dbRef(db, `rooms/${roomIdInput}/roomId`);
-      const snap = await get(roomNameRef);
+      // Check if roomid exists
+      const roomIdRef = dbRef(db, `rooms/${roomIdInput}`);
+      const snap = await get(roomIdRef);
       roomExists.value = snap.exists();
 
       // Only check name if room exists and we have a username
@@ -64,18 +65,34 @@ watch(rawRoomIdInput, (roomIdInput) => {
         const playersRef = dbRef(db, `rooms/${roomIdInput}/players`);
         const playersSnap = await get(playersRef);
         const userName = username.value.trim().toLowerCase();
+
         if (playersSnap.exists()) {
-          const players = playersSnap.val() as Record<
-            string,
-            { name?: string }
-          >;
-          nameTaken.value = Object.values(players).some(
-            (player) => player?.name?.trim()?.toLowerCase() === userName
-          );
+          // Array of playerIds
+          const playerIds = (playersSnap.val() as string[]).filter(Boolean);
+
+          if (playerIds.length === 0) {
+            nameTaken.value = false;
+          } else {
+            // Fetch all players and match names by ids
+            const allPlayersSnap = await get(dbRef(db, "players"));
+            const allPlayers =
+              (allPlayersSnap.val() as Record<
+                string,
+                { name?: string }
+              > | null) ?? {};
+
+            nameTaken.value = playerIds.some((id) => {
+              const player = allPlayers[id];
+              const playerName = player?.name?.trim()?.toLowerCase();
+              return playerName === userName;
+            });
+          }
         } else {
+          // Room exists but has no players yet → name is available
           nameTaken.value = false;
         }
       } else {
+        // No room or no username
         nameTaken.value = null;
       }
     } catch (e) {
