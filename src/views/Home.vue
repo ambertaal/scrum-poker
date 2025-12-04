@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref as dbRef, get, set } from "firebase/database";
 import { useRouter } from "vue-router";
-import { db } from "@/firebase";
 import { ref } from "vue";
 import { usePlayerStore } from "@/stores/player";
 import { storeToRefs } from "pinia";
