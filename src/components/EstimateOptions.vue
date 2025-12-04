@@ -34,7 +34,7 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
   <section class="mt-8">
     <div class="flex flex-col items-center justify-center gap-4 md:flex-row">
       <p
-        class="text-base font-semibold !text-[#492D7B] md:text-lg dark:text-white!"
+        class="text-base font-semibold text-[#492D7B]! md:text-lg dark:text-white!"
       >
         Pick your card {{ arrow }}
       </p>
@@ -56,14 +56,14 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
                 ? '-translate-y-1.5 shadow-lg ring-1 ring-neutral-400'
                 : ''
             "
-            class="h-20 w-16 transform !bg-[#EDE9F2] text-lg font-semibold !text-[#492D7B] transition duration-200 select-none hover:-translate-y-1 dark:bg-white! dark:text-[#2A1449]!"
+            class="h-20 w-16 transform bg-[#EDE9F2]! text-lg font-semibold text-[#492D7B]! transition duration-200 select-none hover:-translate-y-1 dark:bg-white! dark:text-[#2A1449]!"
           >
             {{ option }}
           </Button>
 
           <div
             v-if="props.reveal && (props.counts?.[option] ?? 0) > 0"
-            class="mt-1 text-center text-sm text-white"
+            class="mt-1 text-center text-sm text-[#492D7B] dark:text-white"
           >
             {{ props.counts?.[option] }}x
           </div>

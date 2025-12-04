@@ -7,6 +7,12 @@ import { usePlayerStore, type UUID } from "@/stores/player";
 import { storeToRefs } from "pinia";
 import PageLayout from "@/layouts/PageLayout.vue";
 import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
+import { ESTIMATE_OPTIONS } from "./data/estimateOptions";
+import { mapRoomPlayers, type PlayerEstimate } from "@/utils/getRoomPlayers";
+import {
+  getEstimateCounts,
+  shouldShowConfetti
+} from "@/utils/getEstimateCounts";
 
 // shadcn components
 import { Button } from "@/components/ui/button";
@@ -25,21 +31,9 @@ const roomPlayerIds = ref<UUID[]>([]);
 const allPlayers = ref<
   Record<string, { id: UUID; name: string; estimate: string | null }>
 >({});
-const players = computed(() =>
-  roomPlayerIds.value
-    .map((id) => {
-      const player = allPlayers.value[id];
-      if (!player) return null;
-      return {
-        id,
-        name: player.name,
-        estimate: player.estimate ?? null
-      };
-    })
-    .filter(
-      (player): player is { id: UUID; name: string; estimate: string | null } =>
-        player !== null
-    )
+
+const players = computed<PlayerEstimate[]>(() =>
+  mapRoomPlayers(roomPlayerIds.value, allPlayers.value)
 );
 
 const revealEstimates = ref<boolean>(false);
@@ -49,39 +43,15 @@ const showDeleteDialog = ref<boolean>(false);
 const showShareDialog = ref<boolean>(false);
 const showConfetti = ref<boolean>(false);
 
-const estimateOptions = [
-  "0",
-  "0.5",
-  "1",
-  "2",
-  "3",
-  "5",
-  "8",
-  "13",
-  "20",
-  "40",
-  "100",
-  "?",
-  "☕"
-];
+const estimateOptions = ESTIMATE_OPTIONS;
 
 const hasEstimates = computed(() =>
   players.value.some((p) => p.estimate != null)
 );
 
-const estimateCounts = computed<Record<string, number>>(() => {
-  const counts: Record<string, number> = {};
-  estimateOptions.forEach((option) => {
-    counts[option] = 0;
-  });
-
-  players.value.forEach((player) => {
-    if (player.estimate != null && counts[player.estimate] != null) {
-      counts[player.estimate] += 1;
-    }
-  });
-  return counts;
-});
+const estimateCounts = computed<Record<string, number>>(() =>
+  getEstimateCounts(players.value, estimateOptions)
+);
 
 const openNameDialog = () => {
   tempName.value = "";
@@ -222,21 +192,7 @@ const handleShareDone = () => {
 
 // Confetti logic: show when revealed + all estimates match
 watch([players, revealEstimates], ([newPlayers, shouldRevealEstimates]) => {
-  if (!shouldRevealEstimates) {
-    showConfetti.value = false;
-    return;
-  }
-
-  const estimates = newPlayers
-    .map((player) => player.estimate)
-    .filter((estimate): estimate is string => estimate != null); // laat null/undefined weg
-
-  const hasAtLeastTwoPlayers = newPlayers.length >= 2;
-  const everyoneHasEstimated = estimates.length === newPlayers.length;
-  const uniqueEstimates = new Set(estimates);
-
-  showConfetti.value =
-    hasAtLeastTwoPlayers && everyoneHasEstimated && uniqueEstimates.size === 1;
+  showConfetti.value = shouldShowConfetti(newPlayers, shouldRevealEstimates);
 });
 
 // Hide confetti after 4 seconds
