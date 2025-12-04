@@ -8,6 +8,8 @@ import { storeToRefs } from "pinia";
 import { generateRoomId } from "@/utils/generateRoomid";
 import JoinRoomForm from "@/components/JoinRoomForm.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
+import { savePlayer } from "@/api/playerService";
+import { createRoomWithOwner, addPlayerToRoom } from "@/api/roomService";
 
 // shadcn components
 import { Button } from "@/components/ui/button";
@@ -47,24 +49,13 @@ const createRoom = async () => {
   }
 
   const roomId = generateRoomId();
-  const playerRef = dbRef(db, `players/${userId.value}`);
-  const roomRef = dbRef(db, `rooms/${roomId}`);
-  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
 
   try {
     // Save person
-    await set(playerRef, {
-      id: userId.value,
-      name: username.value,
-      estimate: null
-    });
+    await savePlayer(userId.value, username.value);
 
     // Save room
-    await set(roomRef, {
-      players: [userId.value],
-      revealEstimates: false,
-      createdAt: Date.now()
-    });
+    await createRoomWithOwner(roomId, userId.value);
 
     // Navigate to room
     await router.push(`/room/${roomId}?user=${username.value}`);
@@ -88,23 +79,11 @@ const enterRoom = async () => {
 
   pendingRoomId.value = joinRoomId.value;
 
-  const roomPlayersRef = dbRef(db, `rooms/${joinRoomId.value}/players`);
-  const playerRef = dbRef(db, `players/${userId.value}`);
-
   // save player
-  await set(playerRef, {
-    id: userId.value,
-    name: username.value,
-    estimate: null
-  });
+  await savePlayer(userId.value, username.value);
 
   // add player to room.players
-  const snapshot = await get(roomPlayersRef);
-  const currentIds = (snapshot.val() as string[] | null) ?? [];
-
-  if (!currentIds.includes(userId.value)) {
-    await set(roomPlayersRef, [...currentIds, userId.value]);
-  }
+  await addPlayerToRoom(joinRoomId.value, userId.value);
 
   await router.push(`/room/${joinRoomId.value}?user=${username.value}`);
 };
