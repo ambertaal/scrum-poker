@@ -13,6 +13,13 @@ import {
   getEstimateCounts,
   shouldShowConfetti
 } from "@/utils/getEstimateCounts";
+import { savePlayer, setPlayerEstimate } from "@/api/playerService";
+import {
+  addPlayerToRoom,
+  resetRoomEstimates,
+  setRevealEstimates,
+  clearRoom
+} from "@/api/roomService";
 
 // shadcn components
 import { Button } from "@/components/ui/button";
@@ -60,23 +67,14 @@ const openNameDialog = () => {
 
 const submitName = async () => {
   if (!tempName.value.trim()) return;
+
   playerStore.setUsername(tempName.value);
   showNameDialog.value = false;
 
-  const playerRef = dbRef(db, `players/${userId.value}`);
-  await set(playerRef, {
-    userId: userId.value,
-    name: username.value,
-    estimate: null
-  });
+  if (!userId.value || !username.value) return;
 
-  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
-  const snapshot = await get(roomPlayersRef);
-  const currentIds = (snapshot.val() as UUID[] | null) ?? [];
-
-  if (!currentIds.includes(userId.value)) {
-    await set(roomPlayersRef, [...currentIds, userId.value]);
-  }
+  await savePlayer(userId.value, username.value);
+  await addPlayerToRoom(roomId, userId.value);
 };
 
 const cancelName = () => {
@@ -124,36 +122,16 @@ const castEstimate = async (estimate: string) => {
     openNameDialog();
     return;
   }
-  const estimateRef = dbRef(db, `players/${userId.value}/estimate`);
-  await set(estimateRef, estimate);
+
+  await setPlayerEstimate(userId.value, estimate);
 };
 
 const toggleRevealEstimates = async () => {
-  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
-  await set(revealRef, !revealEstimates.value);
+  await setRevealEstimates(roomId, !revealEstimates.value);
 };
 
 const resetEstimates = async () => {
-  // Fetch the array of playerIds from the room
-  const playersRef = dbRef(db, `rooms/${roomId}/players`);
-  const snapshot = await get(playersRef);
-  if (!snapshot.exists()) return;
-
-  const playerIds = (snapshot.val() as UUID[]).filter(Boolean);
-
-  // Build one updates object for a multi-path update
-  const updates: Record<string, unknown> = {};
-
-  // For each player: reset their estimate to null (or remove the field)
-  playerIds.forEach((playerId) => {
-    updates[`players/${playerId}/estimate`] = null;
-  });
-
-  // Hide cards again
-  updates[`rooms/${roomId}/revealEstimates`] = false;
-
-  // Perform the multi-path update from the root
-  await update(dbRef(db), updates);
+  await resetRoomEstimates(roomId);
 };
 
 const myChoice = computed<string>(() => {
@@ -168,8 +146,7 @@ const handleDelete = () => {
 };
 
 const confirmDelete = async () => {
-  const playersRef = dbRef(db, `rooms/${roomId}/players`);
-  await set(playersRef, null);
+  await clearRoom(roomId);
   showDeleteDialog.value = false;
 };
 
