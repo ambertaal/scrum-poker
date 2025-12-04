@@ -1,4 +1,3 @@
-// tests/components/Footer.spec.ts
 import { afterEach, describe, expect, test } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import Footer from '../../src/components/Footer.vue'

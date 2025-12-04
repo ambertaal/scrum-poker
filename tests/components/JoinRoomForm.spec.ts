@@ -1,48 +1,64 @@
-import { afterEach, describe, expect, it, test } from 'vitest'
+import { afterEach, describe, expect, it, test, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
+import { ComponentPublicInstance, ref } from 'vue'
 import JoinRoomForm from '../../src/components/JoinRoomForm.vue'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import { ComponentPublicInstance } from 'vue'
 
 interface JoinRoomFormProps {
   id: string
 }
 
-type JoinRoomFormComponent = ComponentPublicInstance<JoinRoomFormProps>;
+type JoinRoomFormComponent = ComponentPublicInstance<JoinRoomFormProps>
 
-const vuetify = createVuetify({
-  components,
-  directives,
+// Mock Player store used in the component
+vi.mock('@/stores/player', () => {
+  return {
+    usePlayerStore: () => ({
+      username: ref('Test User'),
+      userId: ref('user-1'),
+    }),
+  }
 })
+
+// Mock Firebase database functions used in the debounced watcher
+vi.mock('firebase/database', () => {
+  return {
+    ref: vi.fn((db, path) => ({ db, path })),
+    get: vi.fn(async () => ({
+      exists: () => false,
+      val: () => null,
+    })),
+  }
+})
+
+// Mock firebase db instance
+vi.mock('@/firebase', () => ({
+  db: {},
+}))
 
 describe('JoinRoomForm component', () => {
   let wrapper: VueWrapper<JoinRoomFormComponent>
 
-  const defaultProps = {
+  const defaultProps: JoinRoomFormProps = {
     id: '123456',
   }
 
-  const mountJoinRoomForm = (props = {}) => {
+  const mountJoinRoomForm = (props: Partial<JoinRoomFormProps> = {}) => {
     return mount(JoinRoomForm, {
       props: { ...defaultProps, ...props },
-      global: {
-        plugins: [vuetify],
-      },
     })
   }
 
   afterEach(() => {
-    if (wrapper) wrapper.unmount();
-  });
-
-  test('renders the title', () => {
-    wrapper = mountJoinRoomForm()
-    expect(wrapper.find('h3').text()).toBe('Enter existing room')
+    if (wrapper) wrapper.unmount()
+    vi.clearAllMocks()
   })
 
-  test('binds the input value to the name prop', async () => {
+  test('renders the label/title', () => {
+    wrapper = mountJoinRoomForm()
+    expect(wrapper.find('label').text()).toBe('Enter existing room number')
+  })
+
+  test('binds the input value to the id prop', async () => {
     wrapper = mountJoinRoomForm()
 
     const input = wrapper.find('input')
@@ -54,13 +70,17 @@ describe('JoinRoomForm component', () => {
 
     const input = wrapper.find('input')
     await input.setValue('654321')
+
     expect(wrapper.emitted('update:id')).toBeTruthy()
     expect(wrapper.emitted('update:id')![0]).toEqual(['654321'])
   })
 
   test('emits submit when button is clicked', async () => {
     wrapper = mountJoinRoomForm({ id: '123456' })
-    await wrapper.find('button').trigger('click')
+
+    const button = wrapper.find('button')
+    await button.trigger('click')
+
     expect(wrapper.emitted('submit')).toBeTruthy()
   })
 
@@ -69,6 +89,7 @@ describe('JoinRoomForm component', () => {
 
     const input = wrapper.find('input')
     await input.trigger('keydown.enter')
+
     expect(wrapper.emitted('submit')).toBeTruthy()
   })
 })
