@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref as dbRef, set } from "firebase/database";
+import { ref as dbRef, get, set } from "firebase/database";
 import { useRouter } from "vue-router";
 import { db } from "@/firebase";
 import { ref } from "vue";
@@ -88,14 +88,23 @@ const enterRoom = async () => {
 
   pendingRoomId.value = joinRoomId.value;
 
-  const roomRef = dbRef(db, `rooms/${joinRoomId.value}`);
+  const roomPlayersRef = dbRef(db, `rooms/${joinRoomId.value}/players`);
   const playerRef = dbRef(db, `players/${userId.value}`);
 
+  // save player
   await set(playerRef, {
     id: userId.value,
     name: username.value,
     estimate: null
   });
+
+  // add player to room.players
+  const snapshot = await get(roomPlayersRef);
+  const currentIds = (snapshot.val() as string[] | null) ?? [];
+
+  if (!currentIds.includes(userId.value)) {
+    await set(roomPlayersRef, [...currentIds, userId.value]);
+  }
 
   await router.push(`/room/${joinRoomId.value}?user=${username.value}`);
 };
