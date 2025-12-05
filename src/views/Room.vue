@@ -226,6 +226,7 @@ watch(showConfetti, (isConfettiVisible) => {
             :estimate="player.estimate ?? null"
             :playerName="player.name"
             :reveal="revealEstimates"
+            :my-name="username ?? ''"
           />
         </div>
 

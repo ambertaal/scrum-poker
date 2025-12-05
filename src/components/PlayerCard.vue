@@ -6,6 +6,7 @@ const { estimate = null } = defineProps<{
   playerName: string;
   estimate?: string | null;
   reveal: boolean;
+  myName: string;
 }>();
 </script>
 
@@ -23,9 +24,15 @@ const { estimate = null } = defineProps<{
           <CardContent
             class="flex h-full w-full items-center justify-center p-0"
           >
-            <span v-if="!estimate" class="text-2xl">-</span>
+            <span v-if="!estimate" class="text-2xl text-[#492D7B]">-</span>
             <span v-else class="text-2xl">
-              <User class="text-[#EC7F31]" />
+              <User
+                :class="
+                  playerName === myName
+                    ? 'text-[#EC7F31]'
+                    : 'text-[#492D7B] dark:text-white'
+                "
+              />
             </span>
           </CardContent>
         </Card>
@@ -37,7 +44,14 @@ const { estimate = null } = defineProps<{
           <CardContent
             class="flex h-full w-full items-center justify-center p-0"
           >
-            <span class="text-2xl font-semibold tracking-wide text-[#EC7F31]">
+            <span
+              class="text-2xl font-semibold tracking-wide"
+              :class="
+                playerName === myName
+                  ? 'text-[#EC7F31]'
+                  : 'text-[#492D7B] dark:text-white'
+              "
+            >
               {{ estimate || "-" }}
             </span>
           </CardContent>
@@ -46,7 +60,14 @@ const { estimate = null } = defineProps<{
     </div>
 
     <!-- Player name -->
-    <span class="mt-2 text-sm font-medium text-[#492D7B] dark:text-white">
+    <span
+      class="mt-2 text-sm font-medium"
+      :class="
+        playerName === myName
+          ? 'text-[#EC7F31]'
+          : 'text-[#492D7B] dark:text-white'
+      "
+    >
       {{ playerName }}
     </span>
   </div>
