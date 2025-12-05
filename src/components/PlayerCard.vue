@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
-import { User } from "lucide-vue-next";
+import { User, Hourglass } from "lucide-vue-next";
 
 const { estimate = null } = defineProps<{
   playerName: string;
@@ -31,7 +31,7 @@ const { estimate = null } = defineProps<{
                 playerName === myName ? 'text-[#EC7F31]' : 'text-[#492D7B]'
               "
             >
-              -
+              <Hourglass />
             </span>
             <span v-else class="text-2xl">
               <User
