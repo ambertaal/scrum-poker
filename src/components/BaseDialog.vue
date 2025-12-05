@@ -115,7 +115,7 @@ const handleCancel = () => {
       <div class="mt-4 space-y-4">
         <!-- NameDialog -->
         <template v-if="variant === 'nameDialog'">
-          <div class="space-y-2 flex flex-col items-center ">
+          <div class="flex flex-col items-center space-y-2">
             <Label
               class="mb-3 pt-4 text-base font-bold text-[#2A1449] dark:text-white"
               for="inputLabel"
@@ -128,7 +128,7 @@ const handleCancel = () => {
               inputmode="string"
               autocomplete="off"
               placeholder="Enter a display name"
-              class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left [:placeholder-shown]:text-center placeholder:text-center""
+              class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder:text-center [:placeholder-shown]:text-center"
               @keydown.enter="handleSubmit"
             />
             <p v-if="message" class="text-xs text-neutral-500">{{ message }}</p>
@@ -161,7 +161,7 @@ const handleCancel = () => {
         <slot name="actions">
           <Button
             v-if="!hideCancel"
-            class="inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark!bg-transparent! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
+            class="dark!bg-transparent! inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
             type="button"
             variant="outline"
             @click="handleCancel"

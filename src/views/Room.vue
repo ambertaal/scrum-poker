@@ -7,6 +7,7 @@ import { usePlayerStore, type UUID } from "@/stores/player";
 import { storeToRefs } from "pinia";
 import PageLayout from "@/layouts/PageLayout.vue";
 import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
+import BaseDialog from "@/components/BaseDialog.vue";
 import { ESTIMATE_OPTIONS } from "./data/estimateOptions";
 import { mapRoomPlayers, type PlayerEstimate } from "@/utils/getRoomPlayers";
 import {
