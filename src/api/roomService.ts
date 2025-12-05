@@ -1,5 +1,5 @@
 import { db } from "@/firebase";
-import { ref as dbRef, get, set, update } from "firebase/database";
+import { ref as dbRef, get, set, update, remove } from "firebase/database";
 import type { UUID } from "@/stores/player";
 
 export const createRoomWithOwner = (roomId: string, ownerId: UUID) =>
@@ -40,5 +40,7 @@ export const resetRoomEstimates = async (roomId: string) => {
   await update(dbRef(db), updates);
 };
 
-export const clearRoom = (roomId: string) =>
-  set(dbRef(db, `rooms/${roomId}/players`), null);
+export const deleteRoom = (roomId: string) => {
+  const roomRef = dbRef(db, `rooms/${roomId}`);
+  return remove(roomRef);
+};

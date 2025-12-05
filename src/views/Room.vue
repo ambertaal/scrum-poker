@@ -18,7 +18,7 @@ import {
   addPlayerToRoom,
   resetRoomEstimates,
   setRevealEstimates,
-  clearRoom
+  deleteRoom
 } from "@/api/roomService";
 
 // shadcn components
@@ -151,8 +151,9 @@ const handleDelete = () => {
 };
 
 const confirmDelete = async () => {
-  await clearRoom(roomId);
+  await deleteRoom(roomId);
   showDeleteDialog.value = false;
+  router.push({ name: "home" });
 };
 
 const handleCancel = () => {
@@ -214,7 +215,7 @@ watch(showConfetti, (isConfettiVisible) => {
                 aria-hidden="true"
               />
               <span class="!text-lg text-[#492D7B] dark:text-white"
-                >Clear room</span
+                >Delete room</span
               >
             </Button>
           </div>
@@ -276,10 +277,10 @@ watch(showConfetti, (isConfettiVisible) => {
 
       <BaseDialog
         v-model="showDeleteDialog"
-        title="Clear room"
-        message="Are you sure you want to clear the room of all participants?"
+        title="Delete room"
+        message="Are you sure you want to delete the room of all participants?"
         cancel-text="Cancel"
-        confirm-text="Clear room"
+        confirm-text="Delete room"
         variant="deleteDialog"
         hide-done
         @cancel="handleCancel"
