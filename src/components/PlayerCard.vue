@@ -23,7 +23,7 @@ const { estimate = null } = defineProps<{
           <CardContent
             class="flex h-full w-full items-center justify-center p-0"
           >
-            <span v-if="!estimate" class="text-2xl"></span>
+            <span v-if="!estimate" class="text-2xl">-</span>
             <span v-else class="text-2xl">
               <User class="text-[#EC7F31]" />
             </span>
@@ -38,7 +38,7 @@ const { estimate = null } = defineProps<{
             class="flex h-full w-full items-center justify-center p-0"
           >
             <span class="text-2xl font-semibold tracking-wide text-[#EC7F31]">
-              {{ estimate }}
+              {{ estimate || "-" }}
             </span>
           </CardContent>
         </Card>

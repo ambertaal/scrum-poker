@@ -61,7 +61,7 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
 </script>
 
 <template>
-  <section class="mt-8">
+  <section class="mt-12">
     <div
       class="flex flex-col items-center justify-center gap-4 md:flex-row md:items-start"
     >
@@ -90,10 +90,10 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
                     @click="handleClick(option)"
                     :class="
                       props.myChoice === option
-                        ? '-translate-y-1.5 shadow-lg ring-1 ring-neutral-400'
-                        : ''
+                        ? '-translate-y-1.5 bg-gray-700! text-white'
+                        : 'bg-[#EDE9F2]! text-[#492D7B]! dark:bg-white! dark:text-[#2A1449]'
                     "
-                    class="h-20 w-16 transform bg-[#EDE9F2]! text-lg font-semibold text-[#492D7B]! transition duration-200 select-none hover:-translate-y-1 dark:bg-white! dark:text-[#2A1449]!"
+                    class="h-20 w-16 transform text-lg font-semibold transition duration-200 select-none hover:-translate-y-1"
                   >
                     {{ option }}
                   </Button>
