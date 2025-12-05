@@ -60,6 +60,11 @@ const estimateCounts = computed<Record<string, number>>(() =>
   getEstimateCounts(players.value, estimateOptions)
 );
 
+const isInRoom = computed(() => {
+  if (!userId.value) return false;
+  return roomPlayerIds.value.includes(userId.value);
+});
+
 const openNameDialog = () => {
   tempName.value = "";
   showNameDialog.value = true;
@@ -118,7 +123,7 @@ onMounted(() => {
 });
 
 const castEstimate = async (estimate: string) => {
-  if (!userId.value) {
+  if (!userId.value || !username.value || !isInRoom.value) {
     openNameDialog();
     return;
   }
