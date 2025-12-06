@@ -85,6 +85,14 @@ const enterRoom = async () => {
 
   await router.push(`/room/${joinRoomId.value}?user=${username.value}`);
 };
+
+// Load saved username from localStorage on mount
+onMounted(() => {
+  const savedUsername = localStorage.getItem("playerUsername");
+  if (savedUsername) {
+    playerStore.setUsername(savedUsername);
+  }
+});
 </script>
 
 <template>

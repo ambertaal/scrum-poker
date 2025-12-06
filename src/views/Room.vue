@@ -87,44 +87,9 @@ const cancelName = () => {
   showNameDialog.value = false;
 };
 
-onMounted(() => {
-  // If no username, check query or else open dialog
-  if (!username.value) {
-    const userFromQuery = route.query.user as string;
-    if (userFromQuery) {
-      playerStore.setUsername(userFromQuery);
-    } else {
-      openNameDialog();
-    }
-  }
-
-  // ids in the room
-  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
-  onValue(roomPlayersRef, (snapshot) => {
-    const ids = (snapshot.val() as UUID[] | null) ?? [];
-    roomPlayerIds.value = ids;
-  });
-
-  // all players
-  const allPlayersRef = dbRef(db, "players");
-  onValue(allPlayersRef, (snapshot) => {
-    const data = snapshot.val() as Record<
-      string,
-      { id: UUID; name: string; estimate: string | null }
-    > | null;
-    allPlayers.value = data ?? {};
-  });
-
-  // revealEstimates
-  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
-  onValue(
-    revealRef,
-    (snapshot) => (revealEstimates.value = snapshot.val() ?? false)
-  );
-});
-
 const castEstimate = async (estimate: string) => {
-  if (!userId.value || !username.value || !isInRoom.value) {
+  // Check if user is in room first, only prompt for name if not
+  if (!isInRoom.value) {
     openNameDialog();
     return;
   }
@@ -184,6 +149,56 @@ watch(showConfetti, (isConfettiVisible) => {
   if (isConfettiVisible) {
     setTimeout(() => (showConfetti.value = false), 4000);
   }
+});
+
+onMounted(async () => {
+  // If no username, check localStorage, then query, else open dialog
+  if (!username.value) {
+    const savedUsername = localStorage.getItem("playerUsername");
+    if (savedUsername) {
+      playerStore.setUsername(savedUsername);
+      // Save player to Firebase and add to room when loading from localStorage
+      await savePlayer(userId.value, savedUsername);
+      await addPlayerToRoom(roomId, userId.value);
+    } else {
+      const userFromQuery = route.query.user as string;
+      if (userFromQuery) {
+        playerStore.setUsername(userFromQuery);
+        await savePlayer(userId.value, userFromQuery);
+        await addPlayerToRoom(roomId, userId.value);
+      } else {
+        openNameDialog();
+      }
+    }
+  } else {
+    // username already in store (persisted or set earlier) — ensure record exists
+    await savePlayer(userId.value, username.value);
+    await addPlayerToRoom(roomId, userId.value);
+  }
+
+  // ids in the room
+  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
+  onValue(roomPlayersRef, (snapshot) => {
+    const ids = (snapshot.val() as UUID[] | null) ?? [];
+    roomPlayerIds.value = ids;
+  });
+
+  // all players
+  const allPlayersRef = dbRef(db, "players");
+  onValue(allPlayersRef, (snapshot) => {
+    const data = snapshot.val() as Record<
+      string,
+      { id: UUID; name: string; estimate: string | null }
+    > | null;
+    allPlayers.value = data ?? {};
+  });
+
+  // revealEstimates
+  const revealRef = dbRef(db, `rooms/${roomId}/revealEstimates`);
+  onValue(
+    revealRef,
+    (snapshot) => (revealEstimates.value = snapshot.val() ?? false)
+  );
 });
 </script>
 
