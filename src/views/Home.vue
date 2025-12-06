@@ -56,7 +56,7 @@ const createRoom = async () => {
     await createRoomWithOwner(roomId, userId.value);
 
     // Navigate to room
-    await router.push(`/room/${roomId}?user=${username.value}`);
+    await router.push(`/room/${roomId}`);
   } catch (e) {
     console.error("❌ Error creating room:", e);
     alert("Something went wrong while creating the room.");
@@ -83,7 +83,7 @@ const enterRoom = async () => {
   // add player to room.players
   await addPlayerToRoom(joinRoomId.value, userId.value);
 
-  await router.push(`/room/${joinRoomId.value}?user=${username.value}`);
+  await router.push(`/room/${joinRoomId.value}`);
 };
 
 // Load saved username from localStorage on mount
