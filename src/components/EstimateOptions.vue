@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import {
   TooltipProvider,
@@ -9,7 +9,8 @@ import {
   TooltipContent,
   TooltipArrow
 } from "reka-ui";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 
 const props = defineProps<{
   options: readonly string[];
@@ -42,28 +43,15 @@ const handleClick = (option: string) => {
   }, 2500);
 };
 
-// Responsive arrow
-const isMobile = ref(false);
-const checkMobile = () => {
-  isMobile.value = window.matchMedia("(max-width: 600px)").matches;
-};
-
-onMounted(() => {
-  checkMobile();
-  window.addEventListener("resize", checkMobile);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", checkMobile);
-});
-
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobile = breakpoints.smaller("lg");
 const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
 </script>
 
 <template>
   <section class="mt-12">
     <div
-      class="flex flex-col items-center justify-center gap-4 md:flex-row md:items-start"
+      class="flex flex-col items-center justify-center gap-4 lg:flex-row lg:items-center"
     >
       <p
         class="text-base font-semibold text-[#492D7B]! md:text-lg dark:text-white!"
@@ -75,7 +63,7 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
       <div class="flex flex-col items-center gap-3">
         <TooltipProvider>
           <div
-            class="grid grid-cols-4 gap-2 sm:grid-cols-6 md:auto-cols-max md:grid-flow-col md:grid-cols-none"
+            class="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-14"
           >
             <div
               v-for="option in props.options"

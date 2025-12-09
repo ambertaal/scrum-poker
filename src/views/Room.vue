@@ -206,10 +206,7 @@ onMounted(async () => {
   <div class="main-content">
     <ConfettiCanvas v-if="showConfetti" />
     <PageLayout>
-      <section
-        class="pa-10 pa-sm-8 pa-md-6 pa-lg-4 estimation-cards"
-        elevation="0"
-      >
+      <section class="pa-10 pa-sm-8 pa-md-6 pa-lg-4" elevation="0">
         <header class="text-h6">
           <div class="text-center">
             <h3 class="text-[32px]! text-[#492D7B]! uppercase dark:text-white!">
