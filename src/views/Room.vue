@@ -233,7 +233,7 @@ onMounted(async () => {
             </Button>
           </div>
         </header>
-        <div class="my-4 flex flex-wrap items-center justify-center gap-4">
+        <div class="my-12 flex flex-wrap items-center justify-center gap-4">
           <PlayerCard
             v-for="(player, index) in players"
             :key="index"
@@ -241,6 +241,8 @@ onMounted(async () => {
             :playerName="player.name"
             :reveal="revealEstimates"
             :my-name="username ?? ''"
+            :player-id="player.id"
+            :room-id="roomId"
           />
         </div>
 

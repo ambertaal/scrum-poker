@@ -19,6 +19,21 @@ export const addPlayerToRoom = async (roomId: string, playerId: UUID) => {
   }
 };
 
+export const removePlayerFromRoom = async (
+  roomId: string,
+  playerId: UUID
+): Promise<void> => {
+  const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
+  const snapshot = await get(roomPlayersRef);
+
+  if (!snapshot.exists()) return;
+
+  const currentIds = (snapshot.val() as UUID[] | null) ?? [];
+  const updatedIds = currentIds.filter((id) => id !== playerId);
+
+  await set(roomPlayersRef, updatedIds);
+};
+
 export const setRevealEstimates = (roomId: string, reveal: boolean) =>
   set(dbRef(db, `rooms/${roomId}/revealEstimates`), reveal);
 
@@ -44,3 +59,4 @@ export const deleteRoom = (roomId: string) => {
   const roomRef = dbRef(db, `rooms/${roomId}`);
   return remove(roomRef);
 };
+
