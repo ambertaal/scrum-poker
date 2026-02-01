@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
-import { User, Hourglass, Trash2 } from "lucide-vue-next";
+import {
+  User,
+  Hourglass,
+  Trash2,
+  Clock,
+  HelpCircle,
+  LucideMessageCircleQuestionMark
+} from "lucide-vue-next";
 import {
   TooltipProvider,
   TooltipRoot,
@@ -65,7 +72,7 @@ const handleRemoveClick = async () => {
                         : 'text-[#492D7B]'
                     "
                   >
-                    <Hourglass />
+                    <LucideMessageCircleQuestionMark class="text-[#94a3b8]" />
                   </span>
                   <span v-else class="text-2xl">
                     <User
