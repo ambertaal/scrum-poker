@@ -8,7 +8,7 @@ import { storeToRefs } from "pinia";
 import PageLayout from "@/layouts/PageLayout.vue";
 import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
 import BaseDialog from "@/components/BaseDialog.vue";
-import { ESTIMATE_OPTIONS } from "./data/estimateOptions";
+import { ESTIMATE_OPTIONS, type EstimateOption } from "./data/estimateOptions";
 import { mapRoomPlayers, type PlayerEstimate } from "@/utils/getRoomPlayers";
 import {
   getEstimateCounts,
@@ -22,7 +22,6 @@ import {
   deleteRoom
 } from "@/api/roomService";
 
-// shadcn components
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-vue-next";
 import { Trash2 } from "lucide-vue-next";
@@ -37,7 +36,7 @@ const roomId = (route.params as { roomId: string }).roomId;
 
 const roomPlayerIds = ref<UUID[]>([]);
 const allPlayers = ref<
-  Record<string, { id: UUID; name: string; estimate: string | null }>
+  Record<string, { id: UUID; name: string; estimate: EstimateOption | null }>
 >({});
 
 const players = computed<PlayerEstimate[]>(() =>
@@ -57,7 +56,7 @@ const hasEstimates = computed(() =>
   players.value.some((p) => p.estimate != null)
 );
 
-const estimateCounts = computed<Record<string, number>>(() =>
+const estimateCounts = computed<Record<EstimateOption, number>>(() =>
   getEstimateCounts(players.value, estimateOptions)
 );
 
@@ -87,7 +86,7 @@ const cancelName = () => {
   showNameDialog.value = false;
 };
 
-const castEstimate = async (estimate: string) => {
+const castEstimate = async (estimate: EstimateOption) => {
   // Check if user is in room first, only prompt for name if not
   if (!isInRoom.value) {
     openNameDialog();
@@ -188,7 +187,7 @@ onMounted(async () => {
   onValue(allPlayersRef, (snapshot) => {
     const data = snapshot.val() as Record<
       string,
-      { id: UUID; name: string; estimate: string | null }
+      { id: UUID; name: string; estimate: EstimateOption | null }
     > | null;
     allPlayers.value = data ?? {};
   });

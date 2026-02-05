@@ -14,4 +14,8 @@ export const ESTIMATE_OPTIONS = [
   "☕"
 ] as const;
 
+/**
+ * The type of the estimate options, derived from the ESTIMATE_OPTIONS array.
+ * This ensures that the type is always in sync with the actual options defined.
+ */
 export type EstimateOption = typeof ESTIMATE_OPTIONS[number];

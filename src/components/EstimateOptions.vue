@@ -12,7 +12,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 
-const props = defineProps<{
+const { options, counts, reveal, myChoice } = defineProps<{
   options: readonly string[];
   counts?: Record<string, number>;
   reveal: boolean;
@@ -66,7 +66,7 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
             class="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-14"
           >
             <div
-              v-for="option in props.options"
+              v-for="option in options"
               :key="option"
               class="flex flex-col items-center"
             >
@@ -77,7 +77,7 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
                     :aria-label="`Select ${option}`"
                     @click="handleClick(option)"
                     :class="
-                      props.myChoice === option
+                      myChoice === option
                         ? '-translate-y-1.5 bg-gray-700! text-white'
                         : 'bg-[#EDE9F2]! text-[#492D7B]! dark:bg-white! dark:text-[#2A1449]'
                     "
@@ -104,10 +104,10 @@ const arrow = computed(() => (isMobile.value ? "👇" : "👉"));
               </TooltipRoot>
 
               <div
-                v-if="props.reveal && (props.counts?.[option] ?? 0) > 0"
+                v-if="reveal && (counts?.[option] ?? 0) > 0"
                 class="mt-1 text-center text-sm text-[#492D7B] dark:text-white"
               >
-                {{ props.counts?.[option] }}x
+                {{ counts?.[option] }}x
               </div>
             </div>
           </div>

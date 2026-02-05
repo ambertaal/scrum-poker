@@ -3,7 +3,6 @@ import { computed } from "vue";
 import { useClipboard } from "@vueuse/core";
 import { useRouter } from "vue-router";
 
-// shadcn-vue
 import {
   Dialog,
   DialogContent,
