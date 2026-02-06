@@ -1,83 +1,114 @@
-import { afterEach, describe, expect, test } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
-import PlayerCard from '../../src/components/PlayerCard.vue'
-import type { ComponentPublicInstance } from 'vue'
+import { afterEach, describe, expect, test, vi } from "vitest";
+import { mount, VueWrapper } from "@vue/test-utils";
+import type { ComponentPublicInstance } from "vue";
+import PlayerCard from "../../src/components/PlayerCard.vue";
+import type { UUID } from "@/stores/player";
+import type { EstimateOption } from "@/views/data/estimateOptions";
+
+// Mock the API call used by handleRemoveClick (prevents real calls if you later test removal)
+vi.mock("@/api/roomService", () => ({
+  removePlayerFromRoom: vi.fn().mockResolvedValue(undefined),
+}));
 
 interface PlayerCardProps {
-  playerName: string
-  estimate?: string | null
-  reveal: boolean
+  playerId: UUID;
+  roomId: string;
+  playerName: string;
+  estimate?: EstimateOption | null;
+  reveal: boolean;
+  myName: string;
 }
 
-type PlayerCardComponent = ComponentPublicInstance<PlayerCardProps>
+type PlayerCardComponent = ComponentPublicInstance<PlayerCardProps>;
 
-describe('PlayerCard component', () => {
-  let wrapper: VueWrapper<PlayerCardComponent>
+describe("PlayerCard component", () => {
+  let wrapper: VueWrapper<PlayerCardComponent>;
 
   const defaultProps: PlayerCardProps = {
-    playerName: 'Amber',
+    playerId: "00000000-0000-0000-0000-000000000001" as UUID,
+    roomId: "room-1",
+    playerName: "Amber",
     estimate: null,
     reveal: false,
-  }
+    myName: "SomeoneElse",
+  };
 
   const mountPlayerCard = (props: Partial<PlayerCardProps> = {}) => {
     return mount(PlayerCard, {
       props: { ...defaultProps, ...props },
-    })
-  }
+      global: {
+        stubs: {
+          TooltipProvider: { template: "<div><slot /></div>" },
+          TooltipRoot: { template: "<div><slot /></div>" },
+          TooltipTrigger: { template: "<div><slot /></div>" },
+          TooltipPortal: { template: "<div><slot /></div>" },
+          TooltipContent: { template: "<div><slot /></div>" },
+          TooltipArrow: { template: "<div />" },
+
+          Card: { template: "<div><slot /></div>" },
+          CardContent: { template: "<div><slot /></div>" },
+          Button: { template: "<button><slot /></button>" },
+        },
+      },
+    });
+  };
 
   afterEach(() => {
-    if (wrapper) wrapper.unmount()
-  })
+    if (wrapper) wrapper.unmount();
+  });
 
-  test('renders the player name', () => {
-    wrapper = mountPlayerCard()
-    expect(wrapper.text()).toContain('Amber')
-  })
+  test("renders the player name", () => {
+    wrapper = mountPlayerCard();
+    expect(wrapper.text()).toContain("Amber");
+  });
 
-  test('estimate is null and reveal is false → no User icon and empty estimate text', () => {
-    wrapper = mountPlayerCard({ estimate: null, reveal: false })
+  test("estimate is null and reveal is false → shows question icon and back renders '-'", () => {
+    wrapper = mountPlayerCard({ estimate: null, reveal: false });
 
-    // Front: no User icon (lucide renders as <svg />)
-    const svgs = wrapper.findAll('svg')
-    expect(svgs.length).toBe(0)
+    // Don’t assert SVG counts: both User and QuestionMark are SVGs.
+    // Instead assert the back-face text is "-"
+    const backEstimateSpan = wrapper
+      .findAll("span")
+      .find((s) => s.classes().includes("tracking-wide"));
 
-    // Back: estimate span (second span) should be empty
-    const spans = wrapper.findAll('span')
-    const estimateSpan = spans[1] // front span, back span, name span
-    expect(estimateSpan.text()).toBe('')
-  })
+    expect(backEstimateSpan).toBeTruthy();
+    expect(backEstimateSpan!.text()).toBe("-");
+  });
 
-  test('estimate is set and reveal is false → shows User icon and has estimate text in DOM', () => {
-    wrapper = mountPlayerCard({ estimate: '5', reveal: false })
+  test("estimate is set and reveal is false → shows estimate text in DOM (back)", () => {
+    wrapper = mountPlayerCard({ estimate: "5" as EstimateOption, reveal: false });
 
-    // Front: User icon rendered as an <svg>
-    const svgs = wrapper.findAll('svg')
-    expect(svgs.length).toBeGreaterThan(0)
+    const backEstimateSpan = wrapper
+      .findAll("span")
+      .find((s) => s.classes().includes("tracking-wide"));
 
-    // Back: estimate should be present somewhere in text
-    expect(wrapper.text()).toContain('5')
-  })
+    expect(backEstimateSpan).toBeTruthy();
+    expect(backEstimateSpan!.text()).toBe("5");
+  });
 
-  test('estimate is set and reveal is true → flip class is applied and estimate is visible', () => {
-    wrapper = mountPlayerCard({ estimate: '8', reveal: true })
+  test("estimate is set and reveal is true → flip class is applied and estimate is rendered", () => {
+    wrapper = mountPlayerCard({ estimate: "8" as EstimateOption, reveal: true });
 
-    // Flip container is the div with transition-transform in its class list
-    const flipContainer = wrapper.find('div[class*="transition-transform"]')
-    expect(flipContainer.exists()).toBe(true)
-    expect(flipContainer.attributes('class')).toContain('[transform:rotateY(180deg)]')
+    const flipContainer = wrapper.find('div[class*="transition-transform"]');
+    expect(flipContainer.exists()).toBe(true);
+    expect(flipContainer.attributes("class")).toContain("[transform:rotateY(180deg)]");
 
-    // Back: estimate text should be present
-    const spans = wrapper.findAll('span')
-    const estimateSpan = spans[1] // second span is the back estimate
-    expect(estimateSpan.text()).toBe('8')
-  })
+    const backEstimateSpan = wrapper
+      .findAll("span")
+      .find((s) => s.classes().includes("tracking-wide"));
 
-  test('estimate is empty string → renders empty estimate on the back', () => {
-    wrapper = mountPlayerCard({ estimate: '', reveal: true })
+    expect(backEstimateSpan).toBeTruthy();
+    expect(backEstimateSpan!.text()).toBe("8");
+  });
 
-    const spans = wrapper.findAll('span')
-    const estimateSpan = spans[1]
-    expect(estimateSpan.text()).toBe('')
-  })
-})
+  test("estimate is empty string → back renders '-' (because estimate || '-')", () => {
+    wrapper = mountPlayerCard({ estimate: "" as unknown as EstimateOption, reveal: true });
+
+    const backEstimateSpan = wrapper
+      .findAll("span")
+      .find((s) => s.classes().includes("tracking-wide"));
+
+    expect(backEstimateSpan).toBeTruthy();
+    expect(backEstimateSpan!.text()).toBe("-");
+  });
+});

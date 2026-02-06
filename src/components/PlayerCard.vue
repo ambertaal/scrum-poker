@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  User,
-  Hourglass,
-  Trash2,
-  Clock,
-  HelpCircle,
-  LucideMessageCircleQuestionMark
-} from "lucide-vue-next";
+import { User, Trash2, LucideMessageCircleQuestionMark } from "lucide-vue-next";
 import {
   TooltipProvider,
   TooltipRoot,
@@ -18,6 +11,7 @@ import {
 } from "reka-ui";
 import type { UUID } from "@/stores/player";
 import { removePlayerFromRoom } from "@/api/roomService";
+import { type EstimateOption } from "@/views/data/estimateOptions";
 
 const {
   estimate = null,
@@ -27,7 +21,7 @@ const {
   playerId: UUID;
   roomId: string;
   playerName: string;
-  estimate?: string | null;
+  estimate?: EstimateOption | null;
   reveal: boolean;
   myName: string;
 }>();
@@ -72,7 +66,13 @@ const handleRemoveClick = async () => {
                         : 'text-[#492D7B]'
                     "
                   >
-                    <LucideMessageCircleQuestionMark class="text-[#94a3b8]" />
+                    <LucideMessageCircleQuestionMark
+                      :class="
+                        playerName === myName
+                          ? 'text-[#EC7F31]'
+                          : 'text-[#94a3b8]'
+                      "
+                    />
                   </span>
                   <span v-else class="text-2xl">
                     <User

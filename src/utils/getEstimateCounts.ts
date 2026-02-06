@@ -41,7 +41,7 @@ export const shouldShowConfetti =(
 
   const estimates = players
     .map((player) => player.estimate)
-    .filter((estimate): estimate is string => estimate != null);
+    .filter((estimate): estimate is EstimateOption => estimate != null);
 
   const hasAtLeastTwoPlayers = players.length >= 2;
   const everyoneHasEstimated = estimates.length === players.length;

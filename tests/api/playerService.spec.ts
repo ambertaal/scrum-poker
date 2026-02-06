@@ -19,9 +19,9 @@ vi.mock('@/firebase', () => {
 })
 
 // Now import after mocks
-import { db } from '@/firebase'
-import { savePlayer, setPlayerEstimate } from '@/api/playerService'
-import type { UUID } from '@/stores/player'
+import { db } from '../../src/firebase'
+import { savePlayer, setPlayerEstimate } from '../../src/api/playerService'
+import type { UUID } from '../../src/stores/player'
 
 describe('playerService', () => {
   beforeEach(() => {

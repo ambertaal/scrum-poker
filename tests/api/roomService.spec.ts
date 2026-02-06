@@ -8,6 +8,7 @@ const refMock = vi.fn()
 const getMock = vi.fn()
 const setMock = vi.fn()
 const updateMock = vi.fn()
+const removeMock = vi.fn();
 
 vi.mock('firebase/database', () => {
   return {
@@ -15,6 +16,7 @@ vi.mock('firebase/database', () => {
     get: (...args: unknown[]) => getMock(...args),
     set: (...args: unknown[]) => setMock(...args),
     update: (...args: unknown[]) => updateMock(...args),
+    remove: (...args: unknown[]) => removeMock(...args),
   }
 })
 
@@ -26,14 +28,14 @@ vi.mock('@/firebase', () => {
 
 // ---- Import after mocks ----
 
-import { db } from '@/firebase'
+import { db } from '../../src/firebase'
 import {
   createRoomWithOwner,
   addPlayerToRoom,
   setRevealEstimates,
   resetRoomEstimates,
-  clearRoom,
-} from '@/api/roomService' // adjust path if needed
+  deleteRoom
+} from '../../src/api/roomService'
 
 // Local alias for the UUID type
 type UUID = string
@@ -196,21 +198,21 @@ describe('roomService', () => {
     })
   })
 
-  describe('clearRoom', () => {
-    it('clears all players from the room', () => {
-      const roomId = 'room-7'
-      const playersRef = { path: `rooms/${roomId}/players` }
+describe("deleteRoom", () => {
+    it("removes the room node (rooms/<roomId>)", () => {
+      const roomId = "room-7";
+      const roomRef = { path: `rooms/${roomId}` };
 
-      ;(refMock as Mock).mockReturnValueOnce(playersRef)
+      (refMock as Mock).mockReturnValueOnce(roomRef);
 
-      const fakePromise = Promise.resolve()
-      ;(setMock as Mock).mockReturnValueOnce(fakePromise)
+      const fakePromise = Promise.resolve();
+      (removeMock as Mock).mockReturnValueOnce(fakePromise);
 
-      const result = clearRoom(roomId)
+      const result = deleteRoom(roomId);
 
-      expect(refMock).toHaveBeenCalledWith(db, `rooms/${roomId}/players`)
-      expect(setMock).toHaveBeenCalledWith(playersRef, null)
-      expect(result).toBe(fakePromise)
-    })
-  })
+      expect(refMock).toHaveBeenCalledWith(db, `rooms/${roomId}`);
+      expect(removeMock).toHaveBeenCalledWith(roomRef);
+      expect(result).toBe(fakePromise);
+    });
+  });
 })

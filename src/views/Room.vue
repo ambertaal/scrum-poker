@@ -8,7 +8,10 @@ import { storeToRefs } from "pinia";
 import PageLayout from "@/layouts/PageLayout.vue";
 import ConfettiCanvas from "@/components/ConfettiCanvas.vue";
 import BaseDialog from "@/components/BaseDialog.vue";
-import { ESTIMATE_OPTIONS, type EstimateOption } from "./data/estimateOptions";
+import {
+  ESTIMATE_OPTIONS,
+  type EstimateOption
+} from "@/views/data/estimateOptions";
 import { mapRoomPlayers, type PlayerEstimate } from "@/utils/getRoomPlayers";
 import {
   getEstimateCounts,
@@ -42,6 +45,8 @@ const allPlayers = ref<
 const players = computed<PlayerEstimate[]>(() =>
   mapRoomPlayers(roomPlayerIds.value, allPlayers.value)
 );
+
+const myName = computed(() => username.value ?? "");
 
 const revealEstimates = ref<boolean>(false);
 const showNameDialog = ref<boolean>(false);
@@ -104,9 +109,9 @@ const resetEstimates = async () => {
   await resetRoomEstimates(roomId);
 };
 
-const myChoice = computed<string>(() => {
+const myChoice = computed<EstimateOption | null>(() => {
   const me = players.value.find((p) => p.name === username.value);
-  return me?.estimate ?? "";
+  return me?.estimate ?? null;
 });
 
 // Delete dialog logic
@@ -239,7 +244,7 @@ onMounted(async () => {
             :estimate="player.estimate ?? null"
             :playerName="player.name"
             :reveal="revealEstimates"
-            :my-name="username ?? ''"
+            :my-name="myName"
             :player-id="player.id"
             :room-id="roomId"
           />

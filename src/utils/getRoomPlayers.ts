@@ -1,15 +1,16 @@
 import type { UUID } from "@/stores/player";
+import type { EstimateOption } from "@/views/data/estimateOptions";
 
 export interface PlayerEstimate {
   id: UUID;
   name: string;
-  estimate: string | null;
+  estimate: EstimateOption | null;
 }
 
 // Shape of the data you get from Firebase
 export type PlayersById = Record<
   string,
-  { id: UUID; name: string; estimate: string | null }
+  { id: UUID; name: string; estimate: EstimateOption | null }
 >;
 
 /**

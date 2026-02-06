@@ -11,21 +11,22 @@ import {
 } from "reka-ui";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
+import type { EstimateOption } from "@/views/data/estimateOptions";
 
 const { options, counts, reveal, myChoice } = defineProps<{
-  options: readonly string[];
-  counts?: Record<string, number>;
+  options: readonly EstimateOption[];
+  counts?: Record<EstimateOption, number>;
   reveal: boolean;
-  myChoice?: string;
+  myChoice?: EstimateOption | null;
 }>();
 
-const emit = defineEmits<(event: "select", value: string) => void>();
+const emit = defineEmits<(event: "select", value: EstimateOption) => void>();
 
 // Alert state
 const showAlert = ref(false);
 let alertTimeout: ReturnType<typeof setTimeout> | null = null;
 
-const handleClick = (option: string) => {
+const handleClick = (option: EstimateOption) => {
   emit("select", option);
 
   // show the alert

@@ -1,15 +1,22 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
-
 import { usePlayerStore, type UUID } from "@/stores/player";
 
-// --- Mock crypto.randomUUID so tests stay deterministic ---
-vi.stubGlobal("crypto", {
-  randomUUID: vi.fn(() => "0000-1111-2222-3333-4444"),
-});
+// Make a deterministic UUID that fits your UUID template type
+const FIXED_UUID = "00000000-1111-2222-3333-444444444444" as UUID;
+
+// Stub BOTH globalThis.crypto and self.crypto because the store uses self.crypto.randomUUID()
+const randomUUIDMock = vi.fn(() => FIXED_UUID);
+
+vi.stubGlobal("crypto", { randomUUID: randomUUIDMock });
+// @vitest-environment jsdom usually provides self; in case it doesn't, stub it:
+vi.stubGlobal("self", { crypto: { randomUUID: randomUUIDMock } });
 
 describe("usePlayerStore", () => {
   beforeEach(() => {
+    // ensure deterministic initialization every test
+    localStorage.clear();
+
     setActivePinia(createPinia());
     vi.clearAllMocks();
   });
@@ -19,35 +26,50 @@ describe("usePlayerStore", () => {
     expect(store.username).toBe("");
   });
 
-  it("initializes userId with crypto.randomUUID()", () => {
+  it("initializes userId with crypto.randomUUID() when localStorage has no playerId", () => {
     const store = usePlayerStore();
-    expect(crypto.randomUUID).toHaveBeenCalled();
-    expect(store.userId).toBe("0000-1111-2222-3333-4444");
+
+    expect(randomUUIDMock).toHaveBeenCalledTimes(1);
+    expect(store.userId).toBe(FIXED_UUID);
+    expect(localStorage.getItem("playerId")).toBe(FIXED_UUID);
+  });
+
+  it("initializes userId from localStorage when playerId exists", () => {
+    const existing = "aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" as UUID;
+    localStorage.setItem("playerId", existing);
+
+    const store = usePlayerStore();
+
+    // should NOT generate a new id
+    expect(randomUUIDMock).not.toHaveBeenCalled();
+    expect(store.userId).toBe(existing);
   });
 
   it("setUsername() trims and sets username", () => {
     const store = usePlayerStore();
     store.setUsername("   Pino   ");
-
     expect(store.username).toBe("Pino");
   });
 
-  it("setUserId() directly sets userId", () => {
+  it("setUserId() sets userId and persists to localStorage", () => {
     const store = usePlayerStore();
-    const newId = "aaaa-bbbb-cccc-dddd-eeee" as UUID;
+    const newId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" as UUID;
 
     store.setUserId(newId);
 
     expect(store.userId).toBe(newId);
+    expect(localStorage.getItem("playerId")).toBe(newId);
   });
 
-  it("setPlayer() sets both userId and trimmed username", () => {
+  it("setPlayer() sets userId + trimmed username and persists both", () => {
     const store = usePlayerStore();
-    const newId = "ffff-1111-2222-3333-9999" as UUID;
+    const newId = "ffffffff-1111-2222-3333-999999999999" as UUID;
 
     store.setPlayer(newId, "   Elmo  ");
 
     expect(store.userId).toBe(newId);
     expect(store.username).toBe("Elmo");
+    expect(localStorage.getItem("playerId")).toBe(newId);
+    expect(localStorage.getItem("playerUsername")).toBe("Elmo");
   });
 });

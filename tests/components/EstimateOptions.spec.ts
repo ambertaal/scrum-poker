@@ -1,13 +1,14 @@
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { ComponentPublicInstance } from 'vue'
-import EstimateOptions from '../../src/components/EstimateOptions.vue'
+import EstimateOptions from "@/components/EstimateOptions.vue"
+import type { EstimateOption } from "@/views/data/estimateOptions";
 
 interface EstimateOptionsProps {
-  options: readonly string[]
-  counts?: Record<string, number>
-  reveal?: boolean
-  myChoice?: string
+  options: readonly EstimateOption[]
+  counts?: Record<EstimateOption, number>
+  reveal: boolean
+  myChoice?: EstimateOption | null
 }
 
 type EstimateOptionsComponent = ComponentPublicInstance<EstimateOptionsProps>
@@ -29,6 +30,7 @@ describe('EstimateOptions', () => {
 
   const defaultProps: EstimateOptionsProps = {
     options: ['?', '☕', '0', '0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100'],
+    reveal: false,
   }
 
   const mountEstimateOptions = (props: Partial<EstimateOptionsProps> = {}) => {
