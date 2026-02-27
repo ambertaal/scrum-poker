@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { text } from "./data/footer";
+
 const year = new Date().getFullYear();
 </script>
 
@@ -12,17 +14,16 @@ const year = new Date().getFullYear();
           <div>
             <div class="flex items-center gap-3">
               <img
-                alt="Planning Poker logo"
+                :alt="text.logoAlt"
                 src="@/assets/logo.svg"
                 class="h-9 w-9"
               />
               <div class="text-lg leading-none font-semibold">
-                Planning Poker
+                {{ text.brandName }}
               </div>
             </div>
             <p class="mt-3 max-w-prose text-sm text-white dark:text-white">
-              Lightweight, real-time Scrum Poker to keep your planning fast and
-              focused.
+              {{ text.tagline }}
             </p>
           </div>
         </div>
@@ -32,7 +33,7 @@ const year = new Date().getFullYear();
         <div
           class="mt-4 flex items-center justify-between text-xs text-white dark:text-white"
         >
-          <span>© {{ year }} Planning Poker. All rights reserved.</span>
+          <span>© {{ year }} {{ text.copyrightSuffix }}</span>
         </div>
       </div>
     </section>

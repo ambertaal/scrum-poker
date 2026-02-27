@@ -8,8 +8,6 @@ import JoinRoomForm from "@/components/JoinRoomForm.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { savePlayer } from "@/api/playerService";
 import { createRoomWithOwner, addPlayerToRoom } from "@/api/roomService";
-
-// shadcn components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Plus } from "lucide-vue-next";
+import { text } from "./data/home";
 
 const playerStore = usePlayerStore();
 const { userId, username } = storeToRefs(playerStore);
@@ -107,16 +106,15 @@ onMounted(() => {
             <h2
               class="mt-3 max-w-[414px] text-[40px] text-[#2A1449] uppercase dark:text-white"
             >
-              Free Online
+              {{ text.headingLight }}
             </h2>
             <h2 class="mt-3 text-[40px] font-bold uppercase">
-              Scrum Poker tool
+              {{ text.headingBold }}
             </h2>
             <p
               class="mt-3 max-w-[414px] text-lg text-[#2A1449] dark:text-white"
             >
-              Estimate stories with a clean, distraction‑free interface. Create
-              a room in seconds, invite your team, and vote in real time.
+              {{ text.description }}
             </p>
 
             <div

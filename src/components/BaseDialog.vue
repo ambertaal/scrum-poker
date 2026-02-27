@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+type DialogVariant = "nameDialog" | "deleteDialog" | "shareDialog";
+
 const {
   title,
   message,
@@ -33,7 +35,7 @@ const {
   modelValue: boolean;
   title: string;
   message?: string;
-  variant: "nameDialog" | "deleteDialog" | "shareDialog";
+  variant: DialogVariant;
   persistent?: boolean;
   maxWidth?: number | string;
   confirmText?: string;
