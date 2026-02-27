@@ -1,5 +1,6 @@
 import type { EstimateOption } from "@/types/estimates";
 import type { PlayerEstimate } from "@/utils/getRoomPlayers";
+import { isNonNull } from "@/lib/utils";
 
 /**
  * Returns a count per estimate option.
@@ -41,7 +42,7 @@ export const shouldShowConfetti =(
 
   const estimates = players
     .map((player) => player.estimate)
-    .filter((estimate): estimate is EstimateOption => estimate != null);
+    .filter(isNonNull);
 
   const hasAtLeastTwoPlayers = players.length >= 2;
   const everyoneHasEstimated = estimates.length === players.length;

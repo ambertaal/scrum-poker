@@ -1,4 +1,5 @@
 import type { UUID, PlayerEstimate, PlayersById } from "@/types/player";
+import { isNonNull } from "@/lib/utils";
 
 export type { PlayerEstimate, PlayersById };
 
@@ -20,5 +21,5 @@ export const mapRoomPlayers = (
         estimate: player.estimate ?? null
       };
     })
-    .filter((player): player is PlayerEstimate => player !== null);
+    .filter(isNonNull);
 }
