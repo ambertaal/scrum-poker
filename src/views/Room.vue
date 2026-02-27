@@ -11,7 +11,7 @@ import BaseDialog from "@/components/BaseDialog.vue";
 import {
   ESTIMATE_OPTIONS,
   type EstimateOption
-} from "@/views/data/estimateOptions";
+} from "@/types/estimates";
 import { mapRoomPlayers, type PlayerEstimate } from "@/utils/getRoomPlayers";
 import {
   getEstimateCounts,

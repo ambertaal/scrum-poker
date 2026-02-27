@@ -1,8 +1,8 @@
 import { afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import { ComponentPublicInstance } from 'vue'
-import EstimateOptions from "@/components/EstimateOptions.vue"
-import type { EstimateOption } from "@/views/data/estimateOptions";
+import EstimateOptions from '@/components/EstimateOptions.vue'
+import type { EstimateOption } from "@/types/estimates";
 
 interface EstimateOptionsProps {
   options: readonly EstimateOption[]

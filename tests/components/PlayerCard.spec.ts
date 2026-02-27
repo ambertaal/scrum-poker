@@ -3,7 +3,7 @@ import { mount, VueWrapper } from "@vue/test-utils";
 import type { ComponentPublicInstance } from "vue";
 import PlayerCard from "../../src/components/PlayerCard.vue";
 import type { UUID } from "@/stores/player";
-import type { EstimateOption } from "@/views/data/estimateOptions";
+import type { EstimateOption } from "@/types/estimates";
 
 // Mock the API call used by handleRemoveClick (prevents real calls if you later test removal)
 vi.mock("@/api/roomService", () => ({

@@ -11,7 +11,7 @@ import {
 } from "reka-ui";
 import type { UUID } from "@/stores/player";
 import { removePlayerFromRoom } from "@/api/roomService";
-import { type EstimateOption } from "@/views/data/estimateOptions";
+import { type EstimateOption } from "@/types/estimates";
 
 const {
   estimate = null,

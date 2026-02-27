@@ -1,4 +1,4 @@
-import type { EstimateOption } from "@/views/data/estimateOptions";
+import type { EstimateOption } from "@/types/estimates";
 import type { PlayerEstimate } from "@/utils/getRoomPlayers";
 
 /**

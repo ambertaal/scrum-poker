@@ -11,7 +11,7 @@ import {
 } from "reka-ui";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
-import type { EstimateOption } from "@/views/data/estimateOptions";
+import type { EstimateOption } from "@/types/estimates";
 
 const { options, counts, reveal, myChoice } = defineProps<{
   options: readonly EstimateOption[];

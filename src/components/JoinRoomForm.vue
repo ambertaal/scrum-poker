@@ -4,8 +4,6 @@ import { ref as dbRef, get } from "firebase/database";
 import { db } from "@/firebase";
 import { usePlayerStore } from "@/stores/player";
 import { storeToRefs } from "pinia";
-
-// shadcn components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

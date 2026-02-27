@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { UUID } from '@/types/player'
 
-export type UUID = `${string}-${string}-${string}-${string}-${string}`
+export type { UUID }
 
 export const usePlayerStore = defineStore('player', () => {
   const storedId = (localStorage.getItem('playerId') ?? null) as UUID | null

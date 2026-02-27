@@ -1,17 +1,6 @@
-import type { UUID } from "@/stores/player";
-import type { EstimateOption } from "@/views/data/estimateOptions";
+import type { UUID, PlayerEstimate, PlayersById } from "@/types/player";
 
-export interface PlayerEstimate {
-  id: UUID;
-  name: string;
-  estimate: EstimateOption | null;
-}
-
-// Shape of the data you get from Firebase
-export type PlayersById = Record<
-  string,
-  { id: UUID; name: string; estimate: EstimateOption | null }
->;
+export type { PlayerEstimate, PlayersById };
 
 /**
  * Maps roomPlayerIds + allPlayers to a clean array of PlayerEstimate.
