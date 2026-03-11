@@ -38,9 +38,7 @@ const router = useRouter();
 const roomId = (route.params as { roomId: string }).roomId;
 
 const roomPlayerIds = ref<UUID[]>([]);
-const allPlayers = ref<
-  Record<string, { id: UUID; name: string; estimate: EstimateOption | null }>
->({});
+const allPlayers = ref<Record<string, PlayerEstimate>>({});
 
 const players = computed<PlayerEstimate[]>(() =>
   mapRoomPlayers(roomPlayerIds.value, allPlayers.value)
@@ -190,10 +188,7 @@ onMounted(async () => {
   // all players
   const allPlayersRef = dbRef(db, "players");
   onValue(allPlayersRef, (snapshot) => {
-    const data = snapshot.val() as Record<
-      string,
-      { id: UUID; name: string; estimate: EstimateOption | null }
-    > | null;
+    const data = snapshot.val() as Record<string, PlayerEstimate> | null;
     allPlayers.value = data ?? {};
   });
 

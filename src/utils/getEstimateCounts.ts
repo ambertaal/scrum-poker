@@ -6,10 +6,10 @@ import { isNonNull } from "@/lib/utils";
  * Returns a count per estimate option.
  */
 export const getEstimateCounts = (
-  players: PlayerEstimate[],
+  players: Readonly<PlayerEstimate>[],
   options: readonly EstimateOption[]
-): Record<string, number> => {
-  const counts: Record<string, number> = {};
+): Record<EstimateOption, number> => {
+  const counts = {} as Record<EstimateOption, number>;
 
   options.forEach((option) => {
     counts[option] = 0;
@@ -35,7 +35,7 @@ export const getEstimateCounts = (
  * - all estimates are the same
  */
 export const shouldShowConfetti =(
-  players: PlayerEstimate[],
+  players: Readonly<PlayerEstimate>[],
   revealEstimates: boolean
 ): boolean => {
   if (!revealEstimates) return false;

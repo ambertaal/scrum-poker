@@ -19,3 +19,9 @@ export const ESTIMATE_OPTIONS = [
  * This ensures that the type is always in sync with the actual options defined.
  */
 export type EstimateOption = typeof ESTIMATE_OPTIONS[number];
+
+/** Special (non-numeric) estimate cards. */
+export type SpecialOption = Extract<EstimateOption, "?" | "☕">
+
+/** Numeric-only estimate cards. Safe to use with parseFloat(). */
+export type NumericOption = Exclude<EstimateOption, "?" | "☕">
