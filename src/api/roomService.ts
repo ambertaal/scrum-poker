@@ -2,14 +2,14 @@ import { db } from "@/firebase";
 import { ref as dbRef, get, set, update, remove } from "firebase/database";
 import type { UUID } from "@/stores/player";
 
-export const createRoomWithOwner = (roomId: string, ownerId: UUID) =>
+export const createRoomWithOwner = (roomId: string, playerId: UUID): Promise<void> =>
   set(dbRef(db, `rooms/${roomId}`), {
-    players: [ownerId],
+    players: [playerId],
     revealEstimates: false,
     createdAt: Date.now()
   });
 
-export const addPlayerToRoom = async (roomId: string, playerId: UUID) => {
+export const addPlayerToRoom = async (roomId: string, playerId: UUID): Promise<void> => {
   const roomPlayersRef = dbRef(db, `rooms/${roomId}/players`);
   const snapshot = await get(roomPlayersRef);
   const currentIds = (snapshot.val() as UUID[] | null) ?? [];
@@ -34,7 +34,7 @@ export const removePlayerFromRoom = async (
   await set(roomPlayersRef, updatedIds);
 };
 
-export const setRevealEstimates = (roomId: string, reveal: boolean) =>
+export const setRevealEstimates = (roomId: string, reveal: boolean): Promise<void> =>
   set(dbRef(db, `rooms/${roomId}/revealEstimates`), reveal);
 
 export const resetRoomEstimates = async (roomId: string) => {
@@ -55,7 +55,7 @@ export const resetRoomEstimates = async (roomId: string) => {
   await update(dbRef(db), updates);
 };
 
-export const deleteRoom = (roomId: string) => {
+export const deleteRoom = (roomId: string): Promise<void> => {
   const roomRef = dbRef(db, `rooms/${roomId}`);
   return remove(roomRef);
 };

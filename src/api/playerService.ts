@@ -4,7 +4,7 @@ import type { UUID } from "@/stores/player";
 import type { EstimateOption } from "@/types/estimates";
 import type { PlayerEstimate } from "@/types/player";
 
-export const savePlayer = (userId: UUID, username: string) => {
+export const savePlayer = (userId: UUID, username: string): Promise<void> => {
   // Persist identity and username preference to localStorage
   localStorage.setItem("playerId", userId);
   localStorage.setItem("playerUsername", username);
@@ -16,6 +16,6 @@ export const savePlayer = (userId: UUID, username: string) => {
   } satisfies PlayerEstimate);
 };
 
-export const setPlayerEstimate = (userId: UUID, estimate: EstimateOption | null) => {
+export const setPlayerEstimate = (userId: UUID, estimate: EstimateOption | null): Promise<void> => {
   return set(dbRef(db, `players/${userId}/estimate`), estimate);
 };
