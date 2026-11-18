@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Room from '@/views/Room.vue'
 

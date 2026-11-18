@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+  '@parcel/watcher': true
+  '@firebase/util': false
+  protobufjs: false
+
+overrides:
+  glob: ^13.0.6

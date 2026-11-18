@@ -26,8 +26,8 @@ import {
 } from "@/api/roomService";
 
 import { Button } from "@/components/ui/button";
-import { Share2 } from "lucide-vue-next";
-import { Trash2 } from "lucide-vue-next";
+import { Share2 } from "@lucide/vue";
+import { Trash2 } from "@lucide/vue";
 
 const playerStore = usePlayerStore();
 const { userId, username } = storeToRefs(playerStore);

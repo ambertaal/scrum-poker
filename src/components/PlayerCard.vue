@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
-import { User, Trash2, LucideMessageCircleQuestionMark } from "lucide-vue-next";
+import { User, Trash2, LucideMessageCircleQuestionMark } from "@lucide/vue";
 import {
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
   TooltipPortal,
-  TooltipContent,
-  TooltipArrow
+  TooltipContent
 } from "reka-ui";
 import type { UUID } from "@/stores/player";
 import { removePlayerFromRoom } from "@/api/roomService";
@@ -92,31 +91,14 @@ const handleRemoveClick = async () => {
                 :side-offset="5"
                 class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade leading-snug whitespace-normal will-change-[transform,opacity] select-none"
               >
-                <TooltipRoot>
-                  <TooltipTrigger asChild>
-                    <Button
-                      class="rounded-full bg-white! shadow-sm"
-                      @click="handleRemoveClick"
-                    >
-                      <Trash2 class="text-red-500" />
-                    </Button>
-                  </TooltipTrigger>
-
-                  <TooltipPortal>
-                    <TooltipContent
-                      side="right"
-                      :side-offset="5"
-                      class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade rounded-md border bg-[#c7c7c8] px-3 py-2 text-sm leading-snug whitespace-normal shadow-sm will-change-[transform,opacity] select-none dark:text-[#492D7B]"
-                    >
-                      Remove player
-                      <TooltipArrow
-                        class="fill-[#c7c7c8] stroke-gray-200"
-                        :width="12"
-                        :height="6"
-                      />
-                    </TooltipContent>
-                  </TooltipPortal>
-                </TooltipRoot>
+                <Button
+                  class="rounded-full bg-white! shadow-sm"
+                  aria-label="Remove player"
+                  title="Remove player"
+                  @click="handleRemoveClick"
+                >
+                  <Trash2 class="text-red-500" />
+                </Button>
               </TooltipContent>
             </TooltipPortal>
           </TooltipRoot>
@@ -125,7 +107,7 @@ const handleRemoveClick = async () => {
           <TooltipRoot>
             <TooltipTrigger asChild>
               <Card
-                class="absolute inset-0 grid [transform:rotateY(180deg)] place-items-center rounded-lg border border-neutral-200 bg-white [backface-visibility:hidden] dark:border-neutral-700 dark:bg-neutral-900"
+                class="absolute inset-0 grid [transform:rotateY(180deg)] place-items-center rounded-lg border border-neutral-200 bg-white [backface-visibility:hidden]"
               >
                 <CardContent
                   class="flex h-full w-full items-center justify-center p-0"
@@ -150,31 +132,14 @@ const handleRemoveClick = async () => {
                 :side-offset="5"
                 class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade leading-snug whitespace-normal will-change-[transform,opacity] select-none"
               >
-                <TooltipRoot>
-                  <TooltipTrigger asChild>
-                    <Button
-                      class="rounded-full bg-white! shadow-sm"
-                      @click="handleRemoveClick"
-                    >
-                      <Trash2 class="text-red-500" />
-                    </Button>
-                  </TooltipTrigger>
-
-                  <TooltipPortal>
-                    <TooltipContent
-                      side="right"
-                      :side-offset="5"
-                      class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade rounded-md border bg-[#c7c7c8] px-3 py-2 text-sm leading-snug whitespace-normal shadow-sm will-change-[transform,opacity] select-none dark:text-[#492D7B]"
-                    >
-                      Remove player
-                      <TooltipArrow
-                        class="fill-[#c7c7c8] stroke-gray-200"
-                        :width="12"
-                        :height="6"
-                      />
-                    </TooltipContent>
-                  </TooltipPortal>
-                </TooltipRoot>
+                <Button
+                  class="rounded-full bg-white! shadow-sm"
+                  aria-label="Remove player"
+                  title="Remove player"
+                  @click="handleRemoveClick"
+                >
+                  <Trash2 class="text-red-500" />
+                </Button>
               </TooltipContent>
             </TooltipPortal>
           </TooltipRoot>

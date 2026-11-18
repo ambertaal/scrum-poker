@@ -19,7 +19,7 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog";
 
-import { Plus } from "lucide-vue-next";
+import { Plus } from "@lucide/vue";
 import { text } from "./data/home";
 
 const playerStore = usePlayerStore();
