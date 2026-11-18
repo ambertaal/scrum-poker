@@ -2,12 +2,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { User, Trash2, LucideMessageCircleQuestionMark } from "@lucide/vue";
 import {
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger,
-  TooltipPortal,
-  TooltipContent
-} from "reka-ui";
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from "@/components/ui/popover";
 import type { UUID } from "@/stores/player";
 import { removePlayerFromRoom } from "@/api/roomService";
 import { type EstimateOption } from "@/types/estimates";
@@ -29,9 +27,12 @@ const emit = defineEmits<{
   (e: "removed", playerId: UUID): void;
 }>();
 
+const isPopoverOpen = ref(false);
+
 const handleRemoveClick = async () => {
   try {
     await removePlayerFromRoom(roomId, playerId);
+    isPopoverOpen.value = false;
     emit("removed", playerId);
   } catch (error) {
     console.error("Error removing player:", error);
@@ -41,111 +42,85 @@ const handleRemoveClick = async () => {
 
 <template>
   <div class="flex flex-col items-center">
-    <div class="relative [perspective:1000px]">
-      <TooltipProvider>
-        <div
-          class="relative h-[140px] w-[100px] transition-transform duration-500 ease-in-out will-change-transform [transform-style:preserve-3d]"
-          :class="reveal ? '[transform:rotateY(180deg)]' : ''"
+    <Popover v-model:open="isPopoverOpen">
+      <PopoverTrigger as-child>
+        <button
+          type="button"
+          class="relative cursor-pointer rounded-lg [perspective:1000px] focus-visible:ring-[3px] focus-visible:ring-[#492D7B]/50 focus-visible:outline-none"
+          :aria-label="`Options for ${playerName}`"
         >
-          <!-- Front -->
-          <TooltipRoot>
-            <TooltipTrigger asChild>
-              <Card
-                class="absolute inset-0 grid place-items-center rounded-lg border-0 bg-[#EDE9F2] [backface-visibility:hidden] dark:bg-white"
+          <div
+            class="relative h-[140px] w-[100px] transition-transform duration-500 ease-in-out will-change-transform [transform-style:preserve-3d]"
+            :class="reveal ? '[transform:rotateY(180deg)]' : ''"
+          >
+            <!-- Front -->
+            <Card
+              class="absolute inset-0 grid place-items-center rounded-lg border-0 bg-[#EDE9F2] [backface-visibility:hidden] dark:bg-white"
+            >
+              <CardContent
+                class="flex h-full w-full items-center justify-center p-0"
               >
-                <CardContent
-                  class="flex h-full w-full items-center justify-center p-0"
+                <span
+                  v-if="!estimate"
+                  class="text-2xl"
+                  :class="
+                    playerName === myName ? 'text-[#EC7F31]' : 'text-[#492D7B]'
+                  "
                 >
-                  <span
-                    v-if="!estimate"
-                    class="text-2xl"
+                  <LucideMessageCircleQuestionMark
+                    :class="
+                      playerName === myName
+                        ? 'text-[#EC7F31]'
+                        : 'text-[#94a3b8]'
+                    "
+                  />
+                </span>
+                <span v-else class="text-2xl">
+                  <User
                     :class="
                       playerName === myName
                         ? 'text-[#EC7F31]'
                         : 'text-[#492D7B]'
                     "
-                  >
-                    <LucideMessageCircleQuestionMark
-                      :class="
-                        playerName === myName
-                          ? 'text-[#EC7F31]'
-                          : 'text-[#94a3b8]'
-                      "
-                    />
-                  </span>
-                  <span v-else class="text-2xl">
-                    <User
-                      :class="
-                        playerName === myName
-                          ? 'text-[#EC7F31]'
-                          : 'text-[#492D7B]'
-                      "
-                    />
-                  </span>
-                </CardContent>
-              </Card>
-            </TooltipTrigger>
-            <TooltipPortal>
-              <TooltipContent
-                side="top"
-                :side-offset="5"
-                class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade leading-snug whitespace-normal will-change-[transform,opacity] select-none"
-              >
-                <Button
-                  class="rounded-full bg-white! shadow-sm"
-                  aria-label="Remove player"
-                  title="Remove player"
-                  @click="handleRemoveClick"
-                >
-                  <Trash2 class="text-red-500" />
-                </Button>
-              </TooltipContent>
-            </TooltipPortal>
-          </TooltipRoot>
+                  />
+                </span>
+              </CardContent>
+            </Card>
 
-          <!-- Back -->
-          <TooltipRoot>
-            <TooltipTrigger asChild>
-              <Card
-                class="absolute inset-0 grid [transform:rotateY(180deg)] place-items-center rounded-lg border border-neutral-200 bg-white [backface-visibility:hidden]"
+            <!-- Back -->
+            <Card
+              class="absolute inset-0 grid [transform:rotateY(180deg)] place-items-center rounded-lg border border-neutral-200 bg-white [backface-visibility:hidden]"
+            >
+              <CardContent
+                class="flex h-full w-full items-center justify-center p-0"
               >
-                <CardContent
-                  class="flex h-full w-full items-center justify-center p-0"
+                <span
+                  class="text-2xl font-semibold tracking-wide"
+                  :class="
+                    playerName === myName ? 'text-[#EC7F31]' : 'text-[#492D7B]'
+                  "
                 >
-                  <span
-                    class="text-2xl font-semibold tracking-wide"
-                    :class="
-                      playerName === myName
-                        ? 'text-[#EC7F31]'
-                        : 'text-[#492D7B]'
-                    "
-                  >
-                    {{ estimate || "-" }}
-                  </span>
-                </CardContent>
-              </Card>
-            </TooltipTrigger>
+                  {{ estimate || "-" }}
+                </span>
+              </CardContent>
+            </Card>
+          </div>
+        </button>
+      </PopoverTrigger>
 
-            <TooltipPortal>
-              <TooltipContent
-                side="top"
-                :side-offset="5"
-                class="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade leading-snug whitespace-normal will-change-[transform,opacity] select-none"
-              >
-                <Button
-                  class="rounded-full bg-white! shadow-sm"
-                  aria-label="Remove player"
-                  title="Remove player"
-                  @click="handleRemoveClick"
-                >
-                  <Trash2 class="text-red-500" />
-                </Button>
-              </TooltipContent>
-            </TooltipPortal>
-          </TooltipRoot>
+      <PopoverContent side="top" class="w-auto p-3">
+        <p class="mb-3 text-sm font-medium">Remove {{ playerName }}?</p>
+        <div class="flex justify-end gap-2">
+          <Button variant="outline" size="sm" @click="isPopoverOpen = false">
+            Cancel
+          </Button>
+          <Button variant="destructive" size="sm" @click="handleRemoveClick">
+            <Trash2 />
+            Remove
+          </Button>
         </div>
-      </TooltipProvider>
-    </div>
+      </PopoverContent>
+    </Popover>
 
     <!-- Player name -->
     <span
