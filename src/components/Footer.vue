@@ -22,7 +22,7 @@ const year = new Date().getFullYear();
                 {{ text.brandName }}
               </div>
             </div>
-            <p class="mt-3 max-w-prose text-sm text-white dark:text-white">
+            <p class="mt-3 max-w-prose text-sm text-white!">
               {{ text.tagline }}
             </p>
           </div>
@@ -30,9 +30,7 @@ const year = new Date().getFullYear();
 
         <div class="my-6 h-px w-full bg-white/50"></div>
 
-        <div
-          class="mt-4 flex items-center justify-between text-xs text-white dark:text-white"
-        >
+        <div class="mt-4 flex items-center justify-between text-xs text-white">
           <span>© {{ year }} {{ text.copyrightSuffix }}</span>
         </div>
       </div>

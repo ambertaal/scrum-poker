@@ -13,7 +13,7 @@
             class="h-9 w-9"
             src="@/assets/logo.svg"
           />
-          <h2 class="m-0 text-lg leading-none font-semibold text-white">
+          <h2 class="m-0 text-lg leading-none font-semibold text-white!">
             Planning Poker
           </h2>
         </RouterLink>

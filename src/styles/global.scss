@@ -32,12 +32,15 @@ h2, h3 {
   color: #ffffff;
 }
 
-p {
-  color:#1a1a1a;
-}
+// In a layer so Tailwind utilities (e.g. text-white) can override it
+@layer base {
+  p {
+    color: #1a1a1a;
+  }
 
-.dark p {
-  color: #ffffff !important;
+  .dark p {
+    color: #ffffff !important;
+  }
 }
 /* Algemeen voor input veld teksten */
 .name-input,
