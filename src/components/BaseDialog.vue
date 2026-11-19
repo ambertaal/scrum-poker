@@ -14,6 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import RoleSelect from "@/components/RoleSelect.vue";
+import type { PlayerRole } from "@/types/player";
 
 type DialogVariant = "nameDialog" | "deleteDialog" | "shareDialog";
 
@@ -27,30 +29,31 @@ const {
   cancelText = "Cancel",
   inputLabel = "Value",
   name,
+  role,
   roomId,
   hideCancel = false,
-  hideConfirm = false,
-  hideDone = false
+  hideConfirm = false
 } = defineProps<{
   modelValue: boolean;
   title: string;
   message?: string;
   variant: DialogVariant;
   persistent?: boolean;
-  maxWidth?: number | string;
   confirmText?: string;
   cancelText?: string;
   name?: string;
+  /** nameDialog: when set, a Player/Spectator choice is shown. */
+  role?: PlayerRole;
   inputLabel?: string;
   roomId?: string;
   hideCancel?: boolean;
   hideConfirm?: boolean;
-  hideDone?: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void;
   (e: "update:name", value: string): void;
+  (e: "update:role", value: PlayerRole): void;
   (e: "submit", value?: string): void;
   (e: "cancel"): void;
 }>();
@@ -73,6 +76,11 @@ const handleOpenChange = (nextOpen: boolean) => {
 const tempName = computed({
   get: () => name ?? "",
   set: (val: string) => emit("update:name", val)
+});
+
+const tempRole = computed({
+  get: () => role ?? "player",
+  set: (val: PlayerRole) => emit("update:role", val)
 });
 
 /** shareDialog */
@@ -134,6 +142,7 @@ const handleCancel = () => {
             />
             <p v-if="message" class="text-xs text-neutral-500">{{ message }}</p>
           </div>
+          <RoleSelect v-if="role" v-model="tempRole" class="pt-2" />
         </template>
 
         <!-- ShareDialog -->
@@ -162,7 +171,7 @@ const handleCancel = () => {
         <slot name="actions">
           <Button
             v-if="!hideCancel"
-            class="dark!bg-transparent! inline-flex h-11 items-center justify-center rounded-full !border-2 !border-[#2A1449] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
+            class="dark!bg-transparent! inline-flex h-11 items-center justify-center rounded-full border-2! border-[#2A1449]! px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#492D7B] uppercase hover:bg-[#492D7B]! hover:text-white! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:border-2! dark:border-white! dark:text-white! dark:hover:bg-white! dark:hover:text-[#492D7B]! dark:focus-visible:outline-white dark:disabled:border-2! dark:disabled:border-white!"
             type="button"
             variant="outline"
             @click="handleCancel"
@@ -171,7 +180,7 @@ const handleCancel = () => {
           </Button>
           <Button
             v-if="!hideConfirm"
-            class="inline-flex h-11 items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+            class="inline-flex h-11 items-center justify-center rounded-full bg-[#EC7F31]! px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#26164a] uppercase hover:bg-[#F29B5C]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
             type="button"
             @click="handleSubmit"
           >

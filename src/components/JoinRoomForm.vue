@@ -15,7 +15,7 @@ const emit = defineEmits<{
 }>();
 
 const playerStore = usePlayerStore();
-const { username, userId } = storeToRefs(playerStore);
+const { username } = storeToRefs(playerStore);
 
 /**
  * Local state: keep a raw field value so the user can type non-digits.
@@ -191,7 +191,7 @@ const handleSubmit = () => {
         <p
           v-else-if="isInvalid"
           id="roomNumber-error"
-          class="mt-2 text-sm !text-red-600"
+          class="mt-2 text-sm text-red-600!"
         >
           {{ validationMessage }}
         </p>
@@ -200,7 +200,7 @@ const handleSubmit = () => {
       <Button
         :aria-busy="checking ? 'true' : 'false'"
         :disabled="isDisabled"
-        class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full !bg-[#EC7F31] px-6 py-3 pr-6 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+        class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#EC7F31]! px-6 py-3 pr-6 text-[14px] leading-4.5 font-bold tracking-[0.1em] text-[#26164a] uppercase hover:bg-[#F29B5C]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
         variant="outline"
         @click="handleSubmit"
       >

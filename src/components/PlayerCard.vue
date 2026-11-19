@@ -13,7 +13,11 @@ import { type EstimateOption } from "@/types/estimates";
 const {
   estimate = null,
   playerId,
-  roomId
+  roomId,
+  playerName,
+  myName,
+  isMe: isMeProp = false,
+  highlight = false
 } = defineProps<{
   playerId: UUID;
   roomId: string;
@@ -21,7 +25,13 @@ const {
   estimate?: EstimateOption | null;
   reveal: boolean;
   myName: string;
+  /** Identity by id (preferred); name comparison kept as fallback. */
+  isMe?: boolean;
+  /** Orange ring, e.g. right after joining as a player. */
+  highlight?: boolean;
 }>();
+
+const isMe = computed(() => isMeProp || playerName === myName);
 
 const emit = defineEmits<{
   (e: "removed", playerId: UUID): void;
@@ -50,8 +60,11 @@ const handleRemoveClick = async () => {
           :aria-label="`Options for ${playerName}`"
         >
           <div
-            class="relative h-[140px] w-[100px] transition-transform duration-500 ease-in-out will-change-transform [transform-style:preserve-3d]"
-            :class="reveal ? '[transform:rotateY(180deg)]' : ''"
+            class="relative h-35 w-25 rounded-lg transition-transform duration-500 ease-in-out will-change-transform [transform-style:preserve-3d]"
+            :class="[
+              reveal ? '[transform:rotateY(180deg)]' : '',
+              highlight ? 'ring-[3px] ring-[#EC7F31]' : ''
+            ]"
           >
             <!-- Front -->
             <Card
@@ -63,26 +76,14 @@ const handleRemoveClick = async () => {
                 <span
                   v-if="!estimate"
                   class="text-2xl"
-                  :class="
-                    playerName === myName ? 'text-[#EC7F31]' : 'text-[#492D7B]'
-                  "
+                  :class="isMe ? 'text-[#b45f12]' : 'text-[#492D7B]'"
                 >
                   <LucideMessageCircleQuestionMark
-                    :class="
-                      playerName === myName
-                        ? 'text-[#EC7F31]'
-                        : 'text-[#94a3b8]'
-                    "
+                    :class="isMe ? 'text-[#b45f12]' : 'text-[#94a3b8]'"
                   />
                 </span>
                 <span v-else class="text-2xl">
-                  <User
-                    :class="
-                      playerName === myName
-                        ? 'text-[#EC7F31]'
-                        : 'text-[#492D7B]'
-                    "
-                  />
+                  <User :class="isMe ? 'text-[#b45f12]' : 'text-[#492D7B]'" />
                 </span>
               </CardContent>
             </Card>
@@ -96,9 +97,7 @@ const handleRemoveClick = async () => {
               >
                 <span
                   class="text-2xl font-semibold tracking-wide"
-                  :class="
-                    playerName === myName ? 'text-[#EC7F31]' : 'text-[#492D7B]'
-                  "
+                  :class="isMe ? 'text-[#b45f12]' : 'text-[#492D7B]'"
                 >
                   {{ estimate || "-" }}
                 </span>
@@ -126,12 +125,15 @@ const handleRemoveClick = async () => {
     <span
       class="mt-2 text-sm font-medium"
       :class="
-        playerName === myName
-          ? 'text-[#EC7F31]'
+        isMe
+          ? 'text-[#b45f12] dark:text-[#EC7F31]'
           : 'text-[#492D7B] dark:text-white'
       "
     >
       {{ playerName }}
     </span>
+
+    <!-- Extra content below the name (e.g. role chip for yourself) -->
+    <slot />
   </div>
 </template>

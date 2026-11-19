@@ -1,0 +1,43 @@
+{
+  "rules": {
+    "rooms": {
+      ".read": "auth != null",
+      "$roomId": {
+        ".write": "auth != null",
+        "players": {
+          "$index": {
+            ".validate": "newData.isString()"
+          }
+        },
+        "revealEstimates": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+    "players": {
+      ".read": "auth != null",
+      "$playerId": {
+        ".write": "auth != null && (!data.exists() || !data.child('ownerUid').exists() || data.child('ownerUid').val() === auth.uid) && (!newData.exists() || newData.child('ownerUid').val() === auth.uid)",
+        "id": {
+          ".validate": "newData.val() === $playerId"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "ownerUid": {
+          ".validate": "newData.val() === auth.uid"
+        },
+        "role": {
+          ".validate": "newData.val() === 'player' || newData.val() === 'spectator'"
+        },
+        "estimate": {
+          ".write": "auth != null && !newData.exists()",
+          ".validate": "newData.isString() && newData.val().length <= 4 && newData.parent().child('role').val() !== 'spectator'"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

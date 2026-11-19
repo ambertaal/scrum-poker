@@ -5,6 +5,7 @@ import { usePlayerStore } from "@/stores/player";
 import { storeToRefs } from "pinia";
 import { generateRoomId } from "@/utils/generateRoomid";
 import JoinRoomForm from "@/components/JoinRoomForm.vue";
+import RoleSelect from "@/components/RoleSelect.vue";
 import PageLayout from "@/layouts/PageLayout.vue";
 import { savePlayer } from "@/api/playerService";
 import { createRoomWithOwner, addPlayerToRoom } from "@/api/roomService";
@@ -23,7 +24,7 @@ import { Plus } from "@lucide/vue";
 import { text } from "./data/home";
 
 const playerStore = usePlayerStore();
-const { userId, username } = storeToRefs(playerStore);
+const { userId, username, role } = storeToRefs(playerStore);
 
 const router = useRouter();
 const joinRoomId = ref("");
@@ -49,7 +50,7 @@ const createRoom = async () => {
 
   try {
     // Save person
-    await savePlayer(userId.value, username.value);
+    await savePlayer(userId.value, username.value, role.value);
 
     // Save room
     await createRoomWithOwner(roomId, userId.value);
@@ -77,7 +78,7 @@ const enterRoom = async () => {
   pendingRoomId.value = joinRoomId.value;
 
   // save player
-  await savePlayer(userId.value, username.value);
+  await savePlayer(userId.value, username.value, role.value);
 
   // add player to room.players
   await addPlayerToRoom(joinRoomId.value, userId.value);
@@ -85,7 +86,7 @@ const enterRoom = async () => {
   await router.push(`/room/${joinRoomId.value}`);
 };
 
-// Load saved username from localStorage on mount
+// Load saved username from localStorage on mount (role is restored by the store)
 onMounted(() => {
   const savedUsername = localStorage.getItem("playerUsername");
   if (savedUsername) {
@@ -132,16 +133,22 @@ onMounted(() => {
                   v-model="username"
                   id="displayName"
                   ref="displayNameField"
-                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder:text-center placeholder-shown:text-center"
+                  class="name-input mx-auto mt-2 w-full rounded-lg bg-white text-left placeholder:text-center placeholder-shown:text-center dark:border-[#6B5A8C] dark:bg-[#3A2462] dark:text-white dark:placeholder:text-white/60"
                   placeholder="Enter a display name"
                 />
               </div>
+
+              <RoleSelect
+                :model-value="role"
+                class="-mt-2 mb-2"
+                @update:model-value="playerStore.setRole"
+              />
 
               <div
                 class="flex flex-col items-center justify-center gap-3 pb-16"
               >
                 <Button
-                  class="inline-flex h-11 items-center justify-center rounded-full bg-[#EC7F31]! px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[#CE2935]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
+                  class="inline-flex h-11 items-center justify-center rounded-full bg-[#EC7F31]! px-6 py-3 text-[14px] leading-[18px] font-bold tracking-[0.1em] text-[#26164a] uppercase hover:bg-[#F29B5C]! focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale dark:focus-visible:outline-white"
                   :disabled="!username.trim()"
                   @click="createRoom"
                 >

@@ -1,9 +1,10 @@
 import type { EstimateOption } from "@/types/estimates";
-import type { PlayerEstimate } from "@/utils/getRoomPlayers";
+import { isVoter, type PlayerEstimate } from "@/utils/getRoomPlayers";
 import { isNonNull } from "@/lib/utils";
 
 /**
  * Returns a count per estimate option.
+ * Spectators never count.
  */
 export const getEstimateCounts = (
   players: Readonly<PlayerEstimate>[],
@@ -15,7 +16,7 @@ export const getEstimateCounts = (
     counts[option] = 0;
   });
 
-  players.forEach((player) => {
+  players.filter(isVoter).forEach((player) => {
     if (
       player.estimate != null &&
       Object.prototype.hasOwnProperty.call(counts, player.estimate)
@@ -30,8 +31,8 @@ export const getEstimateCounts = (
 /**
  * Confetti should show when:
  * - reveal is true
- * - at least 2 players
- * - everyone has an estimate
+ * - at least 2 players (spectators excluded)
+ * - every player has an estimate
  * - all estimates are the same
  */
 export const shouldShowConfetti =(
@@ -40,12 +41,13 @@ export const shouldShowConfetti =(
 ): boolean => {
   if (!revealEstimates) return false;
 
-  const estimates = players
+  const voters = players.filter(isVoter);
+  const estimates = voters
     .map((player) => player.estimate)
     .filter(isNonNull);
 
-  const hasAtLeastTwoPlayers = players.length >= 2;
-  const everyoneHasEstimated = estimates.length === players.length;
+  const hasAtLeastTwoPlayers = voters.length >= 2;
+  const everyoneHasEstimated = estimates.length === voters.length;
   const uniqueEstimates = new Set(estimates);
 
   return (

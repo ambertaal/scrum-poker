@@ -73,3 +73,31 @@ describe("usePlayerStore", () => {
     expect(localStorage.getItem("playerUsername")).toBe("Elmo");
   });
 });
+
+describe("usePlayerStore role", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    setActivePinia(createPinia());
+  });
+
+  it("defaults to player", () => {
+    expect(usePlayerStore().role).toBe("player");
+  });
+
+  it("restores the role from localStorage", () => {
+    localStorage.setItem("playerRole", "spectator");
+    expect(usePlayerStore().role).toBe("spectator");
+  });
+
+  it("ignores an invalid stored role", () => {
+    localStorage.setItem("playerRole", "admin");
+    expect(usePlayerStore().role).toBe("player");
+  });
+
+  it("setRole() persists to localStorage", () => {
+    const store = usePlayerStore();
+    store.setRole("spectator");
+    expect(store.role).toBe("spectator");
+    expect(localStorage.getItem("playerRole")).toBe("spectator");
+  });
+});
